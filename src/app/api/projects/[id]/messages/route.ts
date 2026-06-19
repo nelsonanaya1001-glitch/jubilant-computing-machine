@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { notifyAdmin } from "@/lib/notify";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   const session = await auth();
@@ -26,6 +27,16 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       },
       include: { sender: { select: { id: true, name: true, role: true } } },
     });
+
+    // Alert the agency when a client (not an admin) sends a message.
+    if (session.user.role !== "ADMIN") {
+      await notifyAdmin(
+        `New client message — ${project.title}`,
+        `<p><strong>${session.user.name || session.user.email}</strong> sent a message on project "${project.title}":</p>
+         <blockquote>${content.trim()}</blockquote>
+         <p>Reply from the admin dashboard.</p>`
+      );
+    }
 
     return NextResponse.json(message, { status: 201 });
   } catch (err) {

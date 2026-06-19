@@ -5,6 +5,7 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { put } from "@vercel/blob";
+import { notifyAdmin } from "@/lib/notify";
 
 // Use Vercel Blob in production (persistent storage), local filesystem in dev.
 const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
@@ -38,6 +39,7 @@ export async function POST(req: NextRequest) {
 
     // Find or create user
     let userId = session?.user?.id;
+    let accountCreated = false;
     if (!userId) {
       // Guest submission — create user account
       let user = await prisma.user.findUnique({ where: { email } });
@@ -45,6 +47,7 @@ export async function POST(req: NextRequest) {
         user = await prisma.user.create({
           data: { email, name: contactName, role: "CLIENT" },
         });
+        accountCreated = true;
       }
       userId = user.id;
     }
@@ -125,7 +128,22 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ message: "Project submitted successfully", projectId: project.id }, { status: 201 });
+    // Alert the agency immediately about the new submission.
+    await notifyAdmin(
+      `New project submission — ${businessName}`,
+      `<h2>New website project submitted</h2>
+       <p><strong>Business:</strong> ${businessName} (${industry})</p>
+       <p><strong>Contact:</strong> ${contactName} — ${email} — ${phone}</p>
+       <p><strong>Services:</strong> ${servicesOffered}</p>
+       <p><strong>Style:</strong> ${preferredStyle} · <strong>Colors:</strong> ${preferredColors}</p>
+       <p><strong>Features:</strong> ${(featuresNeeded || []).join(", ")}</p>
+       <p>Open the admin dashboard to review the full brief and files.</p>`
+    );
+
+    return NextResponse.json(
+      { message: "Project submitted successfully", projectId: project.id, email, accountCreated },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("Submission error:", err);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });

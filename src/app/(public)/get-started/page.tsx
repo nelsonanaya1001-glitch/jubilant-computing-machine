@@ -76,6 +76,37 @@ export default function GetStartedPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [submittedEmail, setSubmittedEmail] = useState("");
+  const [accountCreated, setAccountCreated] = useState(false);
+  const [portalPassword, setPortalPassword] = useState("");
+  const [portalDone, setPortalDone] = useState(false);
+  const [portalError, setPortalError] = useState("");
+  const [portalSaving, setPortalSaving] = useState(false);
+
+  async function setupPortal() {
+    if (portalPassword.length < 8) {
+      setPortalError("Password must be at least 8 characters");
+      return;
+    }
+    setPortalSaving(true);
+    setPortalError("");
+    try {
+      const res = await fetch("/api/auth/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: submittedEmail, password: portalPassword }),
+      });
+      if (!res.ok) {
+        const e = await res.json();
+        throw new Error(e.message || "Could not set up access");
+      }
+      setPortalDone(true);
+    } catch (err: any) {
+      setPortalError(err.message);
+    } finally {
+      setPortalSaving(false);
+    }
+  }
 
   const form1 = useForm<Step1Data>({ resolver: zodResolver(step1Schema), defaultValues: formState.step1 });
   const form2 = useForm<Step2Data>({ resolver: zodResolver(step2Schema), defaultValues: formState.step2 });
@@ -171,6 +202,9 @@ export default function GetStartedPage() {
         throw new Error(error.message || "Submission failed");
       }
 
+      const result = await response.json();
+      setSubmittedEmail(result.email || formState.step1.email || "");
+      setAccountCreated(!!result.accountCreated);
       setSubmitted(true);
     } catch (err: any) {
       setSubmitError(err.message || "Something went wrong. Please try again.");
@@ -190,7 +224,7 @@ export default function GetStartedPage() {
           <p className="text-gray-500 mb-6">
             Thank you for submitting your project details. Our team will review your information and reach out within 1 business day to discuss next steps.
           </p>
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-left mb-8">
+          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-left mb-6">
             <h4 className="font-semibold text-gray-900 mb-2">What happens next?</h4>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> We review your project details</li>
@@ -198,6 +232,46 @@ export default function GetStartedPage() {
               <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Custom proposal sent within 24–48 hours</li>
             </ul>
           </div>
+
+          {/* Stay in touch — set up portal access to message us */}
+          {portalDone ? (
+            <div className="bg-green-50 border border-green-100 rounded-xl p-5 text-left mb-8">
+              <h4 className="font-semibold text-gray-900 mb-1">Your portal is ready</h4>
+              <p className="text-sm text-gray-600 mb-3">
+                Sign in any time to track progress and message us directly.
+              </p>
+              <a href="/login">
+                <Button className="w-full" size="lg">Go to Sign In</Button>
+              </a>
+            </div>
+          ) : accountCreated ? (
+            <div className="bg-white border border-gray-200 rounded-xl p-5 text-left mb-8">
+              <h4 className="font-semibold text-gray-900 mb-1">Stay in touch</h4>
+              <p className="text-sm text-gray-500 mb-4">
+                Create a password to access your client portal — track your project status and message us directly, any time.
+              </p>
+              <div className="space-y-3">
+                <Input
+                  type="password"
+                  placeholder="Choose a password (min. 8 characters)"
+                  value={portalPassword}
+                  onChange={(e) => setPortalPassword(e.target.value)}
+                  error={portalError}
+                />
+                <Button className="w-full" size="lg" onClick={setupPortal} disabled={portalSaving}>
+                  {portalSaving ? "Setting up..." : "Create Portal Access"}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white border border-gray-200 rounded-xl p-5 text-left mb-8">
+              <p className="text-sm text-gray-500 mb-3">
+                You can track this project and message us from your client portal.
+              </p>
+              <a href="/login"><Button variant="outline" className="w-full">Sign In to Your Portal</Button></a>
+            </div>
+          )}
+
           <a href="/" className="text-blue-600 font-semibold hover:underline">← Return to Homepage</a>
         </div>
       </div>
