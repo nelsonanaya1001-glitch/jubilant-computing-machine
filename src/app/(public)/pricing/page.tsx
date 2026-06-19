@@ -31,7 +31,7 @@ const plans = [
       "Launch in 3–5 business days",
     ],
     accent: "#16a34a",
-    popular: false,
+    popular: true,
   },
   {
     name: "Booking Website",
@@ -47,7 +47,7 @@ const plans = [
       "Launch in 5–7 business days",
     ],
     accent: "#ea580c",
-    popular: true,
+    popular: false,
   },
   {
     name: "Online Store",
