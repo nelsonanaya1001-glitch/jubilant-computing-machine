@@ -2,8 +2,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 
-// Add your real projects here when ready.
-const work: { title: string; cat: string; color: string; accent: string }[] = [];
+const work: { title: string; cat: string; color: string; accent: string; url: string }[] = [
+  { title: "InvestingHouse", cat: "Finance & Investing", color: "#0f172a", accent: "#38bdf8", url: "https://investinghouse.net" },
+  { title: "El Barullo", cat: "Restaurant & Bar", color: "#1a0a00", accent: "#f97316", url: "https://elbarullo.com" },
+];
 
 const services = [
   { n: "01", title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads." },
@@ -114,9 +116,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {work.map((p) => (
-              <div
+              <a
                 key={p.title}
-                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer"
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer block"
                 style={{ backgroundColor: p.color }}
               >
                 <div
@@ -133,7 +138,7 @@ export default function HomePage() {
                 >
                   <ArrowUpRight className="w-4 h-4" style={{ color: p.accent }} />
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
