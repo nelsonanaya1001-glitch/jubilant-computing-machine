@@ -4,6 +4,10 @@ import { auth } from "@/lib/auth";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import { put } from "@vercel/blob";
+
+// Use Vercel Blob in production (persistent storage), local filesystem in dev.
+const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
 export async function POST(req: NextRequest) {
   try {
@@ -75,12 +79,9 @@ export async function POST(req: NextRequest) {
 
     // Handle file uploads
     const uploadDir = path.join(process.cwd(), "public", "uploads", project.id);
-    await mkdir(uploadDir, { recursive: true });
-
-    const fileEntries = formData.getAll("file_logo")
-      .concat(formData.getAll("file_brand"))
-      .concat(formData.getAll("file_images"))
-      .concat(formData.getAll("file_docs"));
+    if (!useBlob) {
+      await mkdir(uploadDir, { recursive: true });
+    }
 
     const categoriesMap: { [key: string]: string } = {
       file_logo: "logo",
@@ -94,9 +95,21 @@ export async function POST(req: NextRequest) {
         const category = categoriesMap[key] || "other";
         const ext = path.extname(value.name);
         const fileName = `${uuidv4()}${ext}`;
-        const filePath = path.join(uploadDir, fileName);
         const buffer = Buffer.from(await value.arrayBuffer());
-        await writeFile(filePath, buffer);
+
+        let storedPath: string;
+        if (useBlob) {
+          // Persistent cloud storage (Vercel Blob)
+          const blob = await put(`${project.id}/${fileName}`, buffer, {
+            access: "public",
+            contentType: value.type || "application/octet-stream",
+          });
+          storedPath = blob.url;
+        } else {
+          // Local filesystem (development)
+          await writeFile(path.join(uploadDir, fileName), buffer);
+          storedPath = `/uploads/${project.id}/${fileName}`;
+        }
 
         await prisma.uploadedFile.create({
           data: {
@@ -105,7 +118,7 @@ export async function POST(req: NextRequest) {
             originalName: value.name,
             fileType: value.type,
             fileSize: value.size,
-            filePath: `/uploads/${project.id}/${fileName}`,
+            filePath: storedPath,
             category,
           },
         });
