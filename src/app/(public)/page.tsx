@@ -1,280 +1,162 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  CheckCircle,
-  Star,
-  ChevronDown,
-  Globe,
-  ShoppingCart,
-  Smartphone,
-  Calendar,
-  Code2,
-  TrendingUp,
-  Shield,
-  Headphones,
-  Award,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 
-const services = [
-  {
-    icon: Globe,
-    title: "Business Websites",
-    description: "Professional multi-page websites that establish credibility and generate leads for your business.",
-    color: "bg-blue-50 text-blue-600",
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-Commerce Stores",
-    description: "Fully featured online stores with secure payments, inventory management, and conversion optimization.",
-    color: "bg-purple-50 text-purple-600",
-  },
-  {
-    icon: Smartphone,
-    title: "Landing Pages",
-    description: "High-converting single-page experiences designed to turn visitors into leads or customers.",
-    color: "bg-green-50 text-green-600",
-  },
-  {
-    icon: Calendar,
-    title: "Booking Websites",
-    description: "Online booking systems for service businesses — salons, consultants, healthcare, and more.",
-    color: "bg-orange-50 text-orange-600",
-  },
-  {
-    icon: Code2,
-    title: "Custom Web Apps",
-    description: "Bespoke web applications built to your exact specifications and business workflow.",
-    color: "bg-pink-50 text-pink-600",
-  },
+const work = [
+  { title: "Hartwell Law Group", cat: "Business Website", color: "#1a1a2e", accent: "#4f46e5" },
+  { title: "GreenLeaf Organics", cat: "E-Commerce Store", color: "#0d1a12", accent: "#16a34a" },
+  { title: "Elevate Fitness", cat: "Booking System", color: "#1c0f05", accent: "#ea580c" },
+  { title: "Crestwood Realty", cat: "Business Website", color: "#0f0f1a", accent: "#7c3aed" },
+  { title: "Bliss Beauty Studio", cat: "Booking System", color: "#1a0d14", accent: "#db2777" },
+  { title: "TechVault Solutions", cat: "Custom Web App", color: "#0a0f1a", accent: "#0ea5e9" },
 ];
 
-const portfolioProjects = [
-  { title: "Hartwell Law Group", category: "Business Website", color: "from-blue-600 to-blue-800" },
-  { title: "GreenLeaf Organics", category: "E-Commerce", color: "from-green-600 to-green-800" },
-  { title: "Elevate Fitness", category: "Booking System", color: "from-orange-600 to-orange-800" },
-  { title: "Crestwood Realty", category: "Business Website", color: "from-purple-600 to-purple-800" },
-  { title: "Bliss Beauty Studio", category: "Booking System", color: "from-pink-600 to-pink-800" },
-  { title: "TechVault Solutions", category: "Custom Web App", color: "from-slate-600 to-slate-800" },
+const services = [
+  { n: "01", title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads." },
+  { n: "02", title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management." },
+  { n: "03", title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales." },
+  { n: "04", title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls." },
+  { n: "05", title: "Custom Web Apps", desc: "Bespoke platforms built to your workflow when off-the-shelf software falls short." },
 ];
 
 const testimonials = [
-  {
-    name: "Marcus Chen",
-    company: "Hartwell Law Group",
-    rating: 5,
-    text: "PixelForge Studio delivered a website that completely transformed our online presence. Client inquiries increased by 340% within the first two months.",
-  },
-  {
-    name: "Sarah Beaumont",
-    company: "GreenLeaf Organics",
-    rating: 5,
-    text: "Our e-commerce store is beautiful and our customers love the shopping experience. Revenue doubled in the first quarter after launch.",
-  },
-  {
-    name: "David Okonkwo",
-    company: "Elevate Fitness",
-    rating: 5,
-    text: "The booking system they built is flawless. Our no-show rate dropped 60% and administrative time was cut in half. Worth every penny.",
-  },
+  { name: "Marcus Chen", co: "Hartwell Law Group", text: "Client inquiries went up 340% in two months. The site looks exactly like we envisioned — but actually converts.", stars: 5 },
+  { name: "Sarah Beaumont", co: "GreenLeaf Organics", text: "Our e-commerce revenue doubled in Q1 after launch. The shopping experience is genuinely beautiful.", stars: 5 },
+  { name: "David Okonkwo", co: "Elevate Fitness", text: "No-show rate dropped 60% and we cut admin time in half. I wish we'd done this two years earlier.", stars: 5 },
 ];
 
 const faqs = [
-  {
-    q: "How long does it take to build a website?",
-    a: "Project timelines vary based on complexity. A standard business website typically takes 3–5 weeks, while e-commerce or custom web applications can take 6–12 weeks. We'll provide a detailed timeline during our discovery call.",
-  },
-  {
-    q: "What information do you need to get started?",
-    a: "We'll need your business details, branding assets (logo, colors), content, and a clear picture of your goals. Our intake form guides you through everything we need — it takes about 10 minutes to complete.",
-  },
-  {
-    q: "Do you offer ongoing maintenance and support?",
-    a: "Yes. We offer monthly maintenance plans that include security updates, content changes, performance monitoring, and priority support.",
-  },
-  {
-    q: "Will my website work on mobile devices?",
-    a: "Absolutely. Every website we build is fully responsive and tested across all major devices and browsers. Mobile performance is a core requirement, not an afterthought.",
-  },
-  {
-    q: "Can I update the website myself after launch?",
-    a: "Yes. We build on platforms that give you full control over your content. We also provide training and documentation so you can manage updates independently.",
-  },
-  {
-    q: "Do you work with businesses outside your local area?",
-    a: "We work with clients globally. Our process is fully remote-friendly, with clear communication at every stage of the project.",
-  },
+  { q: "How long does a project take?", a: "A business website typically takes 3–5 weeks. E-commerce and custom apps run 6–12 weeks depending on scope. We'll give you a firm timeline before we start." },
+  { q: "What do you need from me to begin?", a: "Fill out our intake form — it covers your business, design preferences, and goals. It takes about 10 minutes. We handle the rest." },
+  { q: "Do you offer maintenance after launch?", a: "Yes. We offer monthly plans covering security patches, content updates, performance monitoring, and priority support." },
+  { q: "Will the site work on mobile?", a: "Every site we build is fully responsive and tested across devices and browsers. Mobile-first is standard, not optional." },
+  { q: "Are there ongoing fees?", a: "Our quoted price is a one-time project fee. Hosting and domain costs are yours to own directly. Maintenance plans are optional add-ons." },
+  { q: "Do you work with international clients?", a: "Yes — our entire workflow is remote-friendly. We have clients across North America, Europe, and Australia." },
 ];
 
 export default function HomePage() {
   return (
-    <div className="bg-white">
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-indigo-600 rounded-full filter blur-3xl"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 rounded-full px-4 py-2 text-sm font-medium text-blue-300 mb-8">
-              <Award className="w-4 h-4" />
-              Premium Web Development Agency
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              We Build Websites That{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                Drive Results
-              </span>
-            </h1>
-            <p className="text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
-              From concept to launch, we craft high-performance websites and web applications
-              that grow your business. No templates. No shortcuts. Just exceptional work.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/get-started">
-                <Button size="xl" className="bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-900/50">
-                  Start Your Project
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button size="xl" variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                  View Our Work
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="bg-black text-white">
 
-      {/* Stats */}
-      <section className="bg-slate-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: "150+", label: "Projects Delivered" },
-              { value: "98%", label: "Client Satisfaction" },
-              { value: "5+", label: "Years Experience" },
-              { value: "24/7", label: "Support Available" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-1">{stat.value}</div>
-                <div className="text-sm text-slate-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Hero ─────────────────────────────────── */}
+      <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+        {/* Background grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        {/* Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full filter blur-[120px]" />
 
-      {/* Services */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What We Build</h2>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-              Every project is custom-built to match your brand and business goals.
-            </p>
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
+          <div className="inline-flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 rounded-full px-4 py-1.5 text-xs font-medium text-violet-400 mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+            Taking on new projects — limited slots available
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <div
-                  key={service.title}
-                  className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
-                >
-                  <div className={`w-12 h-12 rounded-xl ${service.color} flex items-center justify-center mb-5`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{service.title}</h3>
-                  <p className="text-gray-500 leading-relaxed">{service.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
-      {/* Why Choose Us */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Why Businesses Choose PixelForge Studio
-              </h2>
-              <p className="text-lg text-gray-500 mb-10">
-                We don't just build websites — we build business assets that work around the clock to attract, convert, and retain customers.
-              </p>
-              <div className="space-y-5">
-                {[
-                  { icon: TrendingUp, title: "Performance-First Development", desc: "Every line of code is optimized for speed, SEO, and conversion." },
-                  { icon: Shield, title: "Security Built-In", desc: "Enterprise-grade security practices on every project we deliver." },
-                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your project team throughout development and after launch." },
-                  { icon: Award, title: "No Templates, Ever", desc: "Every website is designed and built from scratch to your specifications." },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={item.title} className="flex gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">{item.title}</h4>
-                        <p className="text-gray-500 text-sm">{item.desc}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-slate-900 to-blue-950 rounded-3xl p-10 text-white">
-              <h3 className="text-2xl font-bold mb-8">Our Process</h3>
-              <div className="space-y-6">
-                {[
-                  { step: "01", title: "Discovery", desc: "We learn everything about your business, goals, and audience." },
-                  { step: "02", title: "Strategy & Design", desc: "Custom design concepts tailored to your brand identity." },
-                  { step: "03", title: "Development", desc: "Clean, fast, and secure code built for performance." },
-                  { step: "04", title: "Launch & Support", desc: "Smooth launch with ongoing maintenance and support." },
-                ].map((item) => (
-                  <div key={item.step} className="flex gap-4">
-                    <div className="text-blue-400 font-bold text-sm w-8 flex-shrink-0">{item.step}</div>
-                    <div>
-                      <div className="font-semibold mb-1">{item.title}</div>
-                      <div className="text-slate-400 text-sm">{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tight mb-8 max-w-5xl">
+            Websites that
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">
+              actually work.
+            </span>
+          </h1>
 
-      {/* Portfolio Preview */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">Recent Work</h2>
-              <p className="text-gray-500">A selection of projects we're proud of</p>
-            </div>
+          <p className="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-10">
+            We build custom websites and web applications for businesses serious about growth.
+            No templates. No shortcuts. Just results.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/get-started">
+              <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-2xl shadow-violet-900/40 group">
+                Start Your Project
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+              </Button>
+            </Link>
             <Link href="/portfolio">
-              <Button variant="outline">View All Projects</Button>
+              <Button size="xl" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/5">
+                See Our Work <ArrowUpRight className="ml-1.5 w-4 h-4" />
+              </Button>
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {portfolioProjects.map((project) => (
+
+          {/* Stats strip */}
+          <div className="mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { v: "150+", l: "Projects shipped" },
+              { v: "98%", l: "Client satisfaction" },
+              { v: "5+", l: "Years building" },
+              { v: "24/7", l: "Support" },
+            ].map((s) => (
+              <div key={s.l}>
+                <div className="text-3xl font-black text-white mb-1">{s.v}</div>
+                <div className="text-sm text-white/40">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Services ─────────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">What we do</div>
+              <h2 className="text-4xl md:text-5xl font-black">Our services</h2>
+            </div>
+            <Link href="/services" className="text-sm text-white/40 hover:text-white flex items-center gap-1.5 transition-colors">
+              View all services <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="divide-y divide-white/5">
+            {services.map((s) => (
+              <div key={s.n} className="flex flex-col md:flex-row md:items-center gap-6 py-7 group cursor-default">
+                <div className="text-xs font-mono text-white/20 w-8 flex-shrink-0">{s.n}</div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white group-hover:text-violet-400 transition-colors mb-1">{s.title}</h3>
+                  <p className="text-white/40 text-sm leading-relaxed max-w-xl">{s.desc}</p>
+                </div>
+                <ArrowUpRight className="w-5 h-5 text-white/10 group-hover:text-violet-400 transition-colors flex-shrink-0 hidden md:block" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Work ─────────────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Portfolio</div>
+              <h2 className="text-4xl md:text-5xl font-black">Selected work</h2>
+            </div>
+            <Link href="/portfolio" className="text-sm text-white/40 hover:text-white flex items-center gap-1.5 transition-colors">
+              View all projects <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {work.map((p) => (
               <div
-                key={project.title}
-                className={`bg-gradient-to-br ${project.color} rounded-2xl h-56 flex items-end p-6 text-white group cursor-pointer hover:scale-[1.02] transition-transform`}
+                key={p.title}
+                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer"
+                style={{ backgroundColor: p.color }}
               >
-                <div>
-                  <div className="text-xs font-medium text-white/60 uppercase tracking-wider mb-1">
-                    {project.category}
-                  </div>
-                  <div className="text-xl font-bold">{project.title}</div>
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: `radial-gradient(circle at 30% 50%, ${p.accent}22, transparent 60%)` }}
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="text-xs font-medium uppercase tracking-widest mb-1" style={{ color: p.accent }}>{p.cat}</div>
+                  <div className="text-lg font-bold text-white">{p.title}</div>
+                </div>
+                <div
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ backgroundColor: p.accent + "33" }}
+                >
+                  <ArrowUpRight className="w-4 h-4" style={{ color: p.accent }} />
                 </div>
               </div>
             ))}
@@ -282,25 +164,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Client Success Stories</h2>
-            <p className="text-gray-500 text-lg">Real results from real businesses</p>
+      {/* ── Process ──────────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">How we work</div>
+              <h2 className="text-4xl md:text-5xl font-black mb-6">Built around your results</h2>
+              <p className="text-white/40 text-lg leading-relaxed">
+                We don't hand you a template and call it done. Every project starts with
+                understanding your business, your customers, and what success looks like for you.
+              </p>
+            </div>
+            <div className="space-y-0 divide-y divide-white/5">
+              {[
+                { step: "01", title: "Discovery", desc: "We learn everything about your business, audience, and goals before writing a line of code." },
+                { step: "02", title: "Design", desc: "Custom design built around your brand — not a theme with your colors slapped on." },
+                { step: "03", title: "Build", desc: "Fast, secure, and clean code. Tested across devices before it ever touches production." },
+                { step: "04", title: "Launch", desc: "Smooth go-live with full handoff, training, and ongoing support as needed." },
+              ].map((item) => (
+                <div key={item.step} className="flex gap-6 py-6">
+                  <div className="text-xs font-mono text-white/20 pt-1 w-6 flex-shrink-0">{item.step}</div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1">{item.title}</h4>
+                    <p className="text-sm text-white/40 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        </div>
+      </section>
+
+      {/* ── Testimonials ─────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Client stories</div>
+            <h2 className="text-4xl md:text-5xl font-black">Results that speak</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t) => (
-              <div key={t.name} className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              <div key={t.name} className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 hover:border-violet-500/20 transition-colors">
+                <div className="flex gap-0.5 mb-5">
+                  {Array.from({ length: t.stars }).map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-violet-400 text-violet-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 leading-relaxed mb-6 italic">"{t.text}"</p>
+                <p className="text-white/60 text-sm leading-relaxed mb-6 italic">"{t.text}"</p>
                 <div>
-                  <div className="font-semibold text-gray-900">{t.name}</div>
-                  <div className="text-sm text-gray-500">{t.company}</div>
+                  <div className="font-semibold text-white text-sm">{t.name}</div>
+                  <div className="text-white/30 text-xs mt-0.5">{t.co}</div>
                 </div>
               </div>
             ))}
@@ -308,48 +222,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── FAQ ──────────────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">FAQ</div>
+            <h2 className="text-4xl md:text-5xl font-black">Questions</h2>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {faqs.map((faq) => (
-              <details key={faq.q} className="bg-white rounded-xl border border-gray-100 group">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-semibold text-gray-900">
+              <details key={faq.q} className="group bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-semibold text-white text-sm">
                   {faq.q}
-                  <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
+                  <ChevronDown className="w-4 h-4 text-white/30 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
                 </summary>
-                <div className="px-6 pb-6 text-gray-500 leading-relaxed">{faq.a}</div>
+                <div className="px-6 pb-6 text-white/40 text-sm leading-relaxed">{faq.a}</div>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Build Something Great?
+      {/* ── CTA ──────────────────────────────────── */}
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-5xl md:text-7xl font-black mb-6 leading-[0.9]">
+            Ready to
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+              build?
+            </span>
           </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            Tell us about your project. Our intake form takes 10 minutes and gives us everything we need to get started.
+          <p className="text-white/40 text-lg mb-10 max-w-xl mx-auto">
+            Our intake form takes 10 minutes. We'll review your project and get back to you within one business day.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/get-started">
-              <Button size="xl" className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg">
-                Start Your Project
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button size="xl" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                Talk to Us First
-              </Button>
-            </Link>
-          </div>
+          <Link href="/get-started">
+            <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-2xl shadow-violet-900/40 group">
+              Start Your Project
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+          </Link>
         </div>
       </section>
     </div>

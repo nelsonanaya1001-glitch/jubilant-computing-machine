@@ -2,17 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PixelForge Studio | Premium Web Development Agency",
+  title: "Launchboard | Web Development That Converts",
   description:
-    "PixelForge Studio builds high-performance, conversion-focused websites for ambitious businesses. Custom web development, e-commerce, and digital experiences.",
+    "Launchboard builds high-performance websites and web applications for ambitious businesses. No templates. No shortcuts.",
   keywords: "web development, web design, custom websites, e-commerce, digital agency",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="antialiased">{children}</body>

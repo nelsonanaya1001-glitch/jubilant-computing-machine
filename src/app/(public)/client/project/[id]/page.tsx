@@ -108,7 +108,7 @@ export default function ClientProjectPage() {
                     msg.isAdminMessage ? "bg-blue-50 text-gray-900" : "bg-blue-600 text-white"
                   }`}>
                     <div className={`text-xs mb-1 ${msg.isAdminMessage ? "text-gray-400" : "text-blue-200"}`}>
-                      {msg.isAdminMessage ? "PixelForge Studio" : "You"} • {formatDate(msg.createdAt)}
+                      {msg.isAdminMessage ? "Launchboard" : "You"} • {formatDate(msg.createdAt)}
                     </div>
                     {msg.content}
                   </div>

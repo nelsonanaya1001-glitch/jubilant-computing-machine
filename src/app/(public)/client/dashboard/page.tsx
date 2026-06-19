@@ -27,7 +27,7 @@ export default function ClientDashboardPage() {
       <header className="bg-white border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="font-bold text-gray-900">
-            PixelForge<span className="text-blue-600">Studio</span>
+            launch<span className="text-violet-400">board</span>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-500">{session?.user?.name || session?.user?.email}</span>

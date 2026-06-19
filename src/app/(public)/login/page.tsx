@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginSchema, LoginData } from "@/lib/validations";
-import { Zap, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -56,11 +56,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
+            <div className="w-7 h-7 bg-violet-500 rounded-md rotate-12" />
             <span className="font-bold text-gray-900 text-xl">
-              PixelForge<span className="text-blue-600">Studio</span>
+              launch<span className="text-violet-400">board</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>

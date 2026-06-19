@@ -46,8 +46,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Email Us</div>
-                    <a href="mailto:hello@pixelforgestudio.com" className="text-blue-600 hover:underline">
-                      hello@pixelforgestudio.com
+                    <a href="mailto:hello@launchboard.com" className="text-blue-600 hover:underline">
+                      hello@launchboard.com
                     </a>
                   </div>
                 </div>

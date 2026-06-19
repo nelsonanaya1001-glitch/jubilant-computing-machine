@@ -1,4 +1,4 @@
-# PixelForge Studio — Deployment Guide
+# Launchboard — Deployment Guide
 
 ## Local Development
 
@@ -23,7 +23,7 @@ cp .env.example .env
 
 Edit `.env`:
 ```
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/pixelforge_db"
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/launchboard_db"
 NEXTAUTH_SECRET="run: openssl rand -base64 32"
 NEXTAUTH_URL="http://localhost:3000"
 ```
@@ -36,7 +36,7 @@ npm run prisma:seed
 ```
 
 Default admin credentials:
-- Email: `admin@pixelforgestudio.com`
+- Email: `admin@launchboard.co`
 - Password: `Admin@123!`
 
 ### 4. Run Development Server
@@ -167,7 +167,7 @@ For the current implementation, files are stored locally — this works in devel
 ## Customization
 
 ### Change Company Name
-Replace all instances of `PixelForge Studio` / `PixelForgeStudio` / `pixelforgestudio` with your company name.
+Replace all instances of `Launchboard` / `Launchboard` / `launchboard` with your company name.
 
 Key files:
 - `src/components/layout/Header.tsx`
