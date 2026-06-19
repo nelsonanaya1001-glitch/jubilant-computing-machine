@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
   { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
+  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
 ];
 
 const services = [
@@ -114,7 +115,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {work.map((p) => (
               <a
                 key={p.title}

@@ -17,6 +17,13 @@ const projects = [
     url: "https://elbarullo.com",
     tags: ["Landing Page", "Logistics", "Branding"],
   },
+  {
+    title: "Motorland MIA",
+    category: "E-Commerce Store",
+    description: "Full e-commerce storefront for an automotive parts & accessories dealer. Built for browsing, filtering, and purchasing with a seamless checkout experience.",
+    url: "https://motorlandmia.com",
+    tags: ["E-Commerce", "Automotive", "Store"],
+  },
 ];
 
 export default function PortfolioPage() {
@@ -38,7 +45,7 @@ export default function PortfolioPage() {
       {/* Grid */}
       <section className="py-24">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {projects.map((project) => (
               <div
                 key={project.title}
