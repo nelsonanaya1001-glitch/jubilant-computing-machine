@@ -43,12 +43,6 @@ export default function HomePage() {
         <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-pink-600/8 rounded-full filter blur-[100px]" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-8">
-            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
-            Now taking on new projects
-          </div>
-
           <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tight mb-8 max-w-5xl">
             Websites that
             <br />
