@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
@@ -15,12 +15,6 @@ const services = [
   { n: "04", title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls." },
 ];
 
-// Placeholder reviews — replace with real client testimonials when ready.
-const testimonials = [
-  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
-  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
-  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
-];
 
 const faqs = [
   { q: "How long does a project take?", a: "Landing pages and business websites typically take 3–5 business days. Booking websites and online stores take 5–7 business days. We'll give you a firm timeline before we start." },
@@ -177,32 +171,6 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Testimonials ─────────────────────────── */}
-      <section className="py-28 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Client stories</div>
-            <h2 className="text-4xl md:text-5xl font-black">Results that speak</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div key={t.name} className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 hover:border-violet-500/20 transition-colors">
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: t.stars }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-violet-400 text-violet-400" />
-                  ))}
-                </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-6 italic">"{t.text}"</p>
-                <div>
-                  <div className="font-semibold text-white text-sm">{t.name}</div>
-                  <div className="text-white/30 text-xs mt-0.5">{t.co}</div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
