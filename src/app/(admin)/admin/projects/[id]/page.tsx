@@ -16,6 +16,8 @@ import {
   MessageSquare,
   StickyNote,
   User,
+  ClipboardCopy,
+  Check,
 } from "lucide-react";
 
 const statusFlow = ["SUBMITTED", "DISCOVERY", "DESIGN", "DEVELOPMENT", "REVIEW", "COMPLETED"];
@@ -31,6 +33,57 @@ export default function AdminProjectDetailPage() {
   const [savingNote, setSavingNote] = useState(false);
   const [statusNote, setStatusNote] = useState("");
   const [changingStatus, setChangingStatus] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function buildBrief(): string {
+    const s = project.submission || {};
+    const features = Array.isArray(s.featuresNeeded) ? s.featuresNeeded.join(", ") : "";
+    const files = (project.files || [])
+      .map((f: any) => `- ${f.category}: ${f.originalName} (${f.filePath})`)
+      .join("\n") || "None uploaded";
+
+    return `# Website Build Brief — ${s.businessName || project.title}
+
+## Business
+- Business name: ${s.businessName || "—"}
+- Industry: ${s.industry || "—"}
+- Contact: ${s.contactName || "—"}
+- Email: ${s.email || "—"}
+- Phone: ${s.phone || "—"}
+- Current website: ${s.website || "—"}
+
+## What they do
+- Services offered: ${s.servicesOffered || "—"}
+- Service area: ${s.serviceArea || "—"}
+- Target audience: ${s.targetAudience || "—"}
+- About the business: ${s.businessDescription || "—"}
+
+## Design preferences
+- Preferred colors: ${s.preferredColors || "—"}
+- Preferred style: ${s.preferredStyle || "—"}
+- Competitor websites: ${s.competitorWebsites || "—"}
+- Websites they like: ${s.websitesTheyLike || "—"}
+
+## Features requested
+${features || "—"}
+
+## Uploaded files
+${files}
+
+---
+Build a complete, production-ready website for this client based on the brief above.`;
+  }
+
+  async function copyBrief() {
+    try {
+      await navigator.clipboard.writeText(buildBrief());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback: open a prompt so they can copy manually
+      window.prompt("Copy the project brief:", buildBrief());
+    }
+  }
 
   async function loadProject() {
     const res = await fetch(`/api/projects/${id}`);
@@ -115,6 +168,9 @@ export default function AdminProjectDetailPage() {
             </div>
           </div>
         </div>
+        <Button onClick={copyBrief} variant={copied ? "secondary" : "default"}>
+          {copied ? <><Check className="w-4 h-4 mr-2" /> Copied!</> : <><ClipboardCopy className="w-4 h-4 mr-2" /> Copy Project Brief</>}
+        </Button>
       </div>
 
       {/* Status Pipeline */}
