@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 
-const work: { title: string; cat: string; color: string; accent: string; url: string }[] = [
-  { title: "InvestingHouse", cat: "Finance & Investing", color: "#0f172a", accent: "#38bdf8", url: "https://investinghouse.net" },
-  { title: "El Barullo", cat: "Restaurant & Bar", color: "#1a0a00", accent: "#f97316", url: "https://elbarullo.com" },
+const work: { title: string; cat: string; url: string }[] = [
+  { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
+  { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
 ];
 
 const services = [
@@ -114,29 +114,32 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {work.map((p) => (
               <a
                 key={p.title}
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer block"
-                style={{ backgroundColor: p.color }}
+                className="group w-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all duration-300 block"
               >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `radial-gradient(circle at 30% 50%, ${p.accent}22, transparent 60%)` }}
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="text-xs font-medium uppercase tracking-widest mb-1" style={{ color: p.accent }}>{p.cat}</div>
-                  <div className="text-lg font-bold text-white">{p.title}</div>
+                <div className="relative w-full h-44 overflow-hidden bg-white/5">
+                  <iframe
+                    src={p.url}
+                    title={p.title}
+                    className="border-0 pointer-events-none"
+                    style={{ width: "166.67%", height: "166.67%", transform: "scale(0.6)", transformOrigin: "top left" }}
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin"
+                  />
+                  <div className="absolute inset-0" />
                 </div>
-                <div
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ backgroundColor: p.accent + "33" }}
-                >
-                  <ArrowUpRight className="w-4 h-4" style={{ color: p.accent }} />
+                <div className="p-4 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs text-violet-400 font-medium mb-0.5">{p.cat}</div>
+                    <div className="text-sm font-bold text-white">{p.title}</div>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 transition-colors" />
                 </div>
               </a>
             ))}
