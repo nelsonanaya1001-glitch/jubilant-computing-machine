@@ -93,7 +93,7 @@ export default function ClientProjectPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
           <div className="p-6 border-b border-gray-100">
             <h3 className="font-semibold text-gray-900">Messages</h3>
-            <p className="text-sm text-gray-500 mt-1">Communicate directly with the Launchboard team</p>
+            <p className="text-sm text-gray-500 mt-1">Communicate directly with the Launchboarding team</p>
           </div>
           <div className="p-6 space-y-4 max-h-80 overflow-y-auto">
             {project.messages?.length === 0 ? (
@@ -108,7 +108,7 @@ export default function ClientProjectPage() {
                     msg.isAdminMessage ? "bg-blue-50 text-gray-900" : "bg-blue-600 text-white"
                   }`}>
                     <div className={`text-xs mb-1 ${msg.isAdminMessage ? "text-gray-400" : "text-blue-200"}`}>
-                      {msg.isAdminMessage ? "Launchboard" : "You"} • {formatDate(msg.createdAt)}
+                      {msg.isAdminMessage ? "Launchboarding" : "You"} • {formatDate(msg.createdAt)}
                     </div>
                     {msg.content}
                   </div>

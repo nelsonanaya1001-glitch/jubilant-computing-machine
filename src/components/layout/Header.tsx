@@ -37,7 +37,7 @@ export function Header() {
           <Link href="/" className="group flex items-center gap-2.5">
             <div className="w-7 h-7 bg-violet-500 rounded-md rotate-12 group-hover:rotate-0 transition-transform duration-200" />
             <span className="font-bold text-white text-lg tracking-tight">
-              launch<span className="text-violet-400">board</span>
+              launch<span className="text-violet-400">boarding</span>
             </span>
           </Link>
 

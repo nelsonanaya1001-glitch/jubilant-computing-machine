@@ -25,7 +25,7 @@ export async function notifyAdmin(subject: string, html: string): Promise<void> 
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.NOTIFY_FROM || "Launchboard <onboarding@resend.dev>",
+        from: process.env.NOTIFY_FROM || "Launchboarding <onboarding@resend.dev>",
         to: [to],
         subject,
         html,

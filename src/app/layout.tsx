@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Launchboard | Web Development That Converts",
+  title: "Launchboarding | Web Development That Converts",
   description:
-    "Launchboard builds high-performance websites for ambitious businesses. No templates. No shortcuts.",
+    "Launchboarding builds high-performance websites for ambitious businesses. No templates. No shortcuts.",
   keywords: "web development, web design, custom websites, e-commerce, digital agency",
 };
 
