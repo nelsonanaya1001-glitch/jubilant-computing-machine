@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
@@ -26,6 +27,10 @@ const projects = [
   },
 ];
 
+function screenshotUrl(siteUrl: string) {
+  return `https://image.thum.io/get/width/800/crop/560/noanimate/${siteUrl}`;
+}
+
 export default function PortfolioPage() {
   return (
     <div className="bg-black text-white">
@@ -51,18 +56,21 @@ export default function PortfolioPage() {
                 key={project.title}
                 className="group w-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all duration-300"
               >
-                {/* Live preview */}
-                <div className="relative w-full h-56 overflow-hidden bg-white/5">
-                  <iframe
-                    src={project.url}
-                    title={project.title}
-                    className="w-full h-full border-0 pointer-events-none scale-[0.6] origin-top-left"
-                    style={{ width: "166.67%", height: "166.67%", transform: "scale(0.6)", transformOrigin: "top left" }}
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin"
+                {/* Screenshot preview */}
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="block relative w-full h-52 overflow-hidden bg-zinc-900">
+                  <Image
+                    src={screenshotUrl(project.url)}
+                    alt={`${project.title} preview`}
+                    fill
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
                   />
-                  <div className="absolute inset-0" />
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                      Visit site <ExternalLink className="w-3 h-3" />
+                    </span>
+                  </div>
+                </a>
 
                 {/* Info */}
                 <div className="p-6">

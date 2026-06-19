@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar } from "lucide-react";
 
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
@@ -9,12 +10,11 @@ const work: { title: string; cat: string; url: string }[] = [
 ];
 
 const services = [
-  { n: "01", title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads." },
-  { n: "02", title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management." },
-  { n: "03", title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales." },
-  { n: "04", title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls." },
+  { n: "01", icon: Zap, title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads.", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
+  { n: "02", icon: ShoppingBag, title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management.", color: "text-fuchsia-400", bg: "bg-fuchsia-500/10 border-fuchsia-500/20" },
+  { n: "03", icon: MousePointerClick, title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales.", color: "text-pink-400", bg: "bg-pink-500/10 border-pink-500/20" },
+  { n: "04", icon: Calendar, title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls.", color: "text-sky-400", bg: "bg-sky-500/10 border-sky-500/20" },
 ];
-
 
 const faqs = [
   { q: "How long does a project take?", a: "Landing pages and business websites typically take 3–5 business days. Booking websites and online stores take 5–7 business days. We'll give you a firm timeline before we start." },
@@ -25,19 +25,30 @@ const faqs = [
   { q: "Do you work with international clients?", a: "Yes — our entire workflow is remote-friendly. We have clients across North America, Europe, and Australia." },
 ];
 
+function screenshotUrl(url: string) {
+  return `https://image.thum.io/get/width/800/crop/560/noanimate/${url}`;
+}
+
 export default function HomePage() {
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#080810] text-white">
 
       {/* ── Hero ─────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-        {/* Background grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
-        {/* Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full filter blur-[120px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080810] via-transparent to-[#080810]" />
+        {/* Multi-color glows */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-violet-600/15 rounded-full filter blur-[130px]" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-fuchsia-600/10 rounded-full filter blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-pink-600/8 rounded-full filter blur-[100px]" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 rounded-full px-4 py-1.5 text-xs font-semibold text-violet-300 mb-8">
+            <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+            Now taking on new projects
+          </div>
+
           <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tight mb-8 max-w-5xl">
             Websites that
             <br />
@@ -53,16 +64,30 @@ export default function HomePage() {
 
           <div className="flex flex-wrap items-center gap-4">
             <Link href="/get-started">
-              <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-2xl shadow-violet-900/40 group">
+              <Button size="xl" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-2xl shadow-violet-900/50 group">
                 Start Your Project
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
               </Button>
             </Link>
             <Link href="/portfolio">
-              <Button size="xl" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/5">
+              <Button size="xl" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/5 border border-white/10">
                 See Our Work <ArrowUpRight className="ml-1.5 w-4 h-4" />
               </Button>
             </Link>
+          </div>
+
+          {/* Stats row */}
+          <div className="flex flex-wrap gap-8 mt-16 pt-16 border-t border-white/5">
+            {[
+              { value: "3–5", label: "Days to launch" },
+              { value: "$399", label: "Starting price" },
+              { value: "100%", label: "Custom design" },
+            ].map((s) => (
+              <div key={s.label}>
+                <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">{s.value}</div>
+                <div className="text-xs text-white/30 mt-1">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -80,15 +105,17 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="divide-y divide-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {services.map((s) => (
-              <div key={s.n} className="flex flex-col md:flex-row md:items-center gap-6 py-7 group cursor-default">
-                <div className="text-xs font-mono text-white/20 w-8 flex-shrink-0">{s.n}</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white group-hover:text-violet-400 transition-colors mb-1">{s.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed max-w-xl">{s.desc}</p>
+              <div key={s.n} className={`group relative rounded-2xl border p-7 hover:scale-[1.01] transition-all duration-200 cursor-default ${s.bg}`}>
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.bg} border`}>
+                    <s.icon className={`w-5 h-5 ${s.color}`} />
+                  </div>
+                  <span className="text-xs font-mono text-white/20">{s.n}</span>
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-white/10 group-hover:text-violet-400 transition-colors flex-shrink-0 hidden md:block" />
+                <h3 className={`text-xl font-bold mb-2 ${s.color}`}>{s.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -101,7 +128,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
-              <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Portfolio</div>
+              <div className="text-xs font-semibold text-fuchsia-400 uppercase tracking-widest mb-3">Portfolio</div>
               <h2 className="text-4xl md:text-5xl font-black">Selected work</h2>
             </div>
             <Link href="/portfolio" className="text-sm text-white/40 hover:text-white flex items-center gap-1.5 transition-colors">
@@ -116,18 +143,17 @@ export default function HomePage() {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group w-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all duration-300 block"
+                className="group w-full bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-900/20 transition-all duration-300 block"
               >
-                <div className="relative w-full h-44 overflow-hidden bg-white/5">
-                  <iframe
-                    src={p.url}
-                    title={p.title}
-                    className="border-0 pointer-events-none"
-                    style={{ width: "166.67%", height: "166.67%", transform: "scale(0.6)", transformOrigin: "top left" }}
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin"
+                <div className="relative w-full h-44 overflow-hidden bg-zinc-900">
+                  <Image
+                    src={screenshotUrl(p.url)}
+                    alt={`${p.title} preview`}
+                    fill
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
                   />
-                  <div className="absolute inset-0" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 <div className="p-4 flex items-center justify-between">
                   <div>
@@ -144,11 +170,12 @@ export default function HomePage() {
       )}
 
       {/* ── Process ──────────────────────────────── */}
-      <section className="py-28 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="py-28 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/5 rounded-full filter blur-[100px]" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">How we work</div>
+              <div className="text-xs font-semibold text-pink-400 uppercase tracking-widest mb-3">How we work</div>
               <h2 className="text-4xl md:text-5xl font-black mb-6">Built around your results</h2>
               <p className="text-white/40 text-lg leading-relaxed">
                 We don't hand you a template and call it done. Every project starts with
@@ -157,15 +184,15 @@ export default function HomePage() {
             </div>
             <div className="space-y-0 divide-y divide-white/5">
               {[
-                { step: "01", title: "Discovery", desc: "We learn everything about your business, audience, and goals before writing a line of code." },
-                { step: "02", title: "Design", desc: "Custom design built around your brand — not a theme with your colors slapped on." },
-                { step: "03", title: "Build", desc: "Fast, secure, and clean code. Tested across devices before it ever touches production." },
-                { step: "04", title: "Launch", desc: "Smooth go-live with full handoff, training, and ongoing support as needed." },
+                { step: "01", title: "Discovery", desc: "We learn everything about your business, audience, and goals before writing a line of code.", color: "text-violet-400" },
+                { step: "02", title: "Design", desc: "Custom design built around your brand — not a theme with your colors slapped on.", color: "text-fuchsia-400" },
+                { step: "03", title: "Build", desc: "Fast, secure, and clean code. Tested across devices before it ever touches production.", color: "text-pink-400" },
+                { step: "04", title: "Launch", desc: "Smooth go-live with full handoff, training, and ongoing support as needed.", color: "text-sky-400" },
               ].map((item) => (
-                <div key={item.step} className="flex gap-6 py-6">
-                  <div className="text-xs font-mono text-white/20 pt-1 w-6 flex-shrink-0">{item.step}</div>
+                <div key={item.step} className="flex gap-6 py-6 group">
+                  <div className={`text-xs font-mono pt-1 w-6 flex-shrink-0 ${item.color}`}>{item.step}</div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">{item.title}</h4>
+                    <h4 className={`font-bold mb-1 ${item.color}`}>{item.title}</h4>
                     <p className="text-sm text-white/40 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -179,12 +206,12 @@ export default function HomePage() {
       <section className="py-28 border-t border-white/5">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">FAQ</div>
+            <div className="text-xs font-semibold text-sky-400 uppercase tracking-widest mb-3">FAQ</div>
             <h2 className="text-4xl md:text-5xl font-black">Questions</h2>
           </div>
           <div className="space-y-2">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
+              <details key={faq.q} className="group bg-white/[0.02] border border-white/5 rounded-xl hover:border-violet-500/30 transition-colors">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-semibold text-white text-sm">
                   {faq.q}
                   <ChevronDown className="w-4 h-4 text-white/30 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
@@ -197,12 +224,14 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────── */}
-      <section className="py-28 border-t border-white/5">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <section className="py-28 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/10 to-pink-900/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-violet-600/15 rounded-full filter blur-[80px]" />
+        <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-5xl md:text-7xl font-black mb-6 leading-[0.9]">
             Ready to
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">
               build?
             </span>
           </h2>
@@ -210,7 +239,7 @@ export default function HomePage() {
             Our intake form takes 10 minutes. We'll review your project and get back to you within one business day.
           </p>
           <Link href="/get-started">
-            <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-2xl shadow-violet-900/40 group">
+            <Button size="xl" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-2xl shadow-violet-900/50 group">
               Start Your Project
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
             </Button>
