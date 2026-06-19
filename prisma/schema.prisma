@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+enum ProjectStatus {
+  SUBMITTED
+  DISCOVERY
+  DESIGN
+  DEVELOPMENT
+  REVIEW
+  COMPLETED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  role          Role      @default(CLIENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  projects      Project[]
+  sentMessages  Message[] @relation("SentMessages")
+  adminNotes    AdminNote[]
+
+  @@map("users")
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  clientId      String
+  title         String
+  status        ProjectStatus @default(SUBMITTED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  client        User          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  submission    FormSubmission?
+  files         UploadedFile[]
+  statusUpdates ProjectStatusUpdate[]
+  messages      Message[]
+  adminNotes    AdminNote[]
+
+  @@map("projects")
+}
+
+model FormSubmission {
+  id                  String   @id @default(cuid())
+  projectId           String   @unique
+  businessName        String
+  industry            String
+  contactName         String
+  email               String
+  phone               String
+  website             String?
+  servicesOffered     String
+  serviceArea         String
+  targetAudience      String
+  businessDescription String
+  preferredColors     String
+  preferredStyle      String
+  competitorWebsites  String?
+  websitesTheyLike    String?
+  featuresNeeded      Json
+  createdAt           DateTime @default(now())
+
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("form_submissions")
+}
+
+model UploadedFile {
+  id           String   @id @default(cuid())
+  projectId    String
+  fileName     String
+  originalName String
+  fileType     String
+  fileSize     Int
+  filePath     String
+  category     String   @default("other")
+  uploadedAt   DateTime @default(now())
+
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("uploaded_files")
+}
+
+model ProjectStatusUpdate {
+  id        String        @id @default(cuid())
+  projectId String
+  oldStatus ProjectStatus
+  newStatus ProjectStatus
+  note      String?
+  createdAt DateTime      @default(now())
+
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_status_updates")
+}
+
+model Message {
+  id             String    @id @default(cuid())
+  projectId      String
+  senderId       String
+  content        String
+  isAdminMessage Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  readAt         DateTime?
+
+  project        Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sender         User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model AdminNote {
+  id        String   @id @default(cuid())
+  projectId String
+  content   String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("admin_notes")
+}
