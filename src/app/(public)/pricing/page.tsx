@@ -44,6 +44,7 @@ const plans = [
       "Payment collection at booking",
       "Calendar sync (Google, Outlook)",
       "Secure database included",
+      "$150/mo maintenance available",
       "Launch in 5–7 business days",
     ],
     accent: "#ea580c",
@@ -61,6 +62,7 @@ const plans = [
       "Order notifications",
       "Secure database included",
       "Shopify integration",
+      "$150/mo maintenance available",
       "Launch in 5–7 business days",
     ],
     accent: "#db2777",
@@ -135,27 +137,6 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* Maintenance */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-5">
-          <div className="bg-gradient-to-r from-violet-600/10 to-pink-600/10 border border-violet-500/20 rounded-2xl p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <h3 className="text-xl font-bold mb-1">Ongoing Maintenance</h3>
-              <p className="text-white/50 text-sm max-w-xl">
-                Keep your site secure, updated, and fast. Includes security patches, content updates, performance monitoring, and priority support.
-              </p>
-            </div>
-            <div className="flex items-center gap-6 flex-shrink-0">
-              <div className="text-right">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-lg font-medium text-white/40">$</span>
-                  <span className="text-3xl font-black text-white">150</span>
-                  <span className="text-white/40 text-sm">/mo</span>
-                </div>
-                <span className="text-xs text-white/30">Optional · cancel anytime</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* FAQ */}
