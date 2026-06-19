@@ -2,31 +2,25 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, Star, ChevronDown } from "lucide-react";
 
-const work = [
-  { title: "Hartwell Law Group", cat: "Business Website", color: "#1a1a2e", accent: "#4f46e5" },
-  { title: "GreenLeaf Organics", cat: "E-Commerce Store", color: "#0d1a12", accent: "#16a34a" },
-  { title: "Elevate Fitness", cat: "Booking System", color: "#1c0f05", accent: "#ea580c" },
-  { title: "Crestwood Realty", cat: "Business Website", color: "#0f0f1a", accent: "#7c3aed" },
-  { title: "Bliss Beauty Studio", cat: "Booking System", color: "#1a0d14", accent: "#db2777" },
-  { title: "TechVault Solutions", cat: "Custom Web App", color: "#0a0f1a", accent: "#0ea5e9" },
-];
+// Add your real projects here when ready.
+const work: { title: string; cat: string; color: string; accent: string }[] = [];
 
 const services = [
   { n: "01", title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads." },
   { n: "02", title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management." },
   { n: "03", title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales." },
   { n: "04", title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls." },
-  { n: "05", title: "Custom Web Apps", desc: "Bespoke platforms built to your workflow when off-the-shelf software falls short." },
 ];
 
+// Placeholder reviews — replace with real client testimonials when ready.
 const testimonials = [
-  { name: "Marcus Chen", co: "Hartwell Law Group", text: "Client inquiries went up 340% in two months. The site looks exactly like we envisioned — but actually converts.", stars: 5 },
-  { name: "Sarah Beaumont", co: "GreenLeaf Organics", text: "Our e-commerce revenue doubled in Q1 after launch. The shopping experience is genuinely beautiful.", stars: 5 },
-  { name: "David Okonkwo", co: "Elevate Fitness", text: "No-show rate dropped 60% and we cut admin time in half. I wish we'd done this two years earlier.", stars: 5 },
+  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
+  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
+  { name: "Client Name", co: "Company Name", text: "Your testimonial will appear here. Share a few words about your experience working with us.", stars: 5 },
 ];
 
 const faqs = [
-  { q: "How long does a project take?", a: "A business website typically takes 3–5 weeks. E-commerce and custom apps run 6–12 weeks depending on scope. We'll give you a firm timeline before we start." },
+  { q: "How long does a project take?", a: "Landing pages and business websites typically take 3–5 business days. Booking websites and online stores take 5–7 business days. We'll give you a firm timeline before we start." },
   { q: "What do you need from me to begin?", a: "Fill out our intake form — it covers your business, design preferences, and goals. It takes about 10 minutes. We handle the rest." },
   { q: "Do you offer maintenance after launch?", a: "Yes. We offer monthly plans covering security patches, content updates, performance monitoring, and priority support." },
   { q: "Will the site work on mobile?", a: "Every site we build is fully responsive and tested across devices and browsers. Mobile-first is standard, not optional." },
@@ -56,7 +50,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-10">
-            We build custom websites and web applications for businesses serious about growth.
+            We build custom websites for businesses serious about growth.
             No templates. No shortcuts. Just results.
           </p>
 
@@ -105,6 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Work ─────────────────────────────────── */}
+      {work.length > 0 && (
       <section className="py-28 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -143,6 +138,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ── Process ──────────────────────────────── */}
       <section className="py-28 border-t border-white/5">

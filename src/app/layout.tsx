@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Launchboard | Web Development That Converts",
   description:
-    "Launchboard builds high-performance websites and web applications for ambitious businesses. No templates. No shortcuts.",
+    "Launchboard builds high-performance websites for ambitious businesses. No templates. No shortcuts.",
   keywords: "web development, web design, custom websites, e-commerce, digital agency",
 };
 

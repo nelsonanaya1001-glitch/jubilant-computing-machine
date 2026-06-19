@@ -114,7 +114,6 @@ export default function ContactPage() {
                       <option>E-Commerce Store</option>
                       <option>Landing Page</option>
                       <option>Booking System</option>
-                      <option>Custom Web Application</option>
                       <option>Not Sure Yet</option>
                     </select>
                   </div>

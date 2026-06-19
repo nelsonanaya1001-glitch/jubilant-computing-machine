@@ -1,165 +1,163 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Globe, ShoppingCart, Smartphone, Calendar, Code2, CheckCircle, ArrowRight } from "lucide-react";
+import { Globe, ShoppingCart, Smartphone, Calendar, Check, ArrowRight, ArrowUpRight } from "lucide-react";
 
 const services = [
   {
     icon: Globe,
     title: "Business Websites",
-    tagline: "Establish credibility. Generate leads. Grow your brand.",
+    tagline: "Establish credibility. Generate leads.",
     description:
-      "Your website is often the first impression a potential customer has of your business. We build professional, fast, and visually striking websites that communicate your value and convert visitors into leads.",
+      "Your website is the first impression most customers get of your business. We build professional, fast, and striking sites that communicate your value and turn visitors into leads.",
     features: [
-      "Custom design aligned to your brand identity",
-      "Mobile-first, fully responsive layout",
-      "SEO-optimized structure and content",
-      "Contact forms and lead capture",
+      "Custom design aligned to your brand",
+      "Mobile-first, fully responsive",
+      "SEO-optimized structure",
+      "Contact forms & lead capture",
       "Google Maps integration",
-      "Fast load times and performance optimization",
+      "Performance optimization",
     ],
-    color: "from-blue-600 to-blue-800",
-    startingAt: "2,500",
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-Commerce Stores",
-    tagline: "Sell online. Scale your revenue. Own your store.",
-    description:
-      "We build high-converting online stores that make purchasing easy and enjoyable for your customers. From product pages to checkout, every element is designed to maximize sales.",
-    features: [
-      "Custom storefront design",
-      "Secure payment gateway integration",
-      "Product catalog and inventory management",
-      "Shopping cart and checkout optimization",
-      "Order management and email notifications",
-      "Mobile shopping experience",
-    ],
-    color: "from-purple-600 to-purple-800",
-    startingAt: "4,500",
+    accent: "#4f46e5",
+    price: "399",
   },
   {
     icon: Smartphone,
     title: "Landing Pages",
-    tagline: "Focus. Convert. Dominate your market.",
+    tagline: "Focus. Convert. Dominate.",
     description:
-      "A high-performance landing page focused on a single goal: converting visitors. Whether you're running ads or launching a product, we build pages engineered to maximize your ROI.",
+      "A high-performance page focused on a single goal: converting visitors. Whether you're running ads or launching a product, we build pages engineered to maximize your return.",
     features: [
       "Single-purpose conversion design",
-      "A/B testing ready structure",
-      "Fast load speed (sub-2 second target)",
-      "Lead capture and CRM integration",
-      "Pixel and analytics tracking setup",
+      "A/B testing ready",
+      "Sub-2 second load speed",
+      "Lead capture & CRM integration",
+      "Pixel & analytics tracking",
       "Mobile and desktop optimized",
     ],
-    color: "from-green-600 to-green-800",
-    startingAt: "1,200",
+    accent: "#16a34a",
+    price: "399",
+  },
+  {
+    icon: ShoppingCart,
+    title: "E-Commerce Stores",
+    tagline: "Sell online. Scale revenue.",
+    description:
+      "We build high-converting online stores that make purchasing easy and enjoyable. From product pages to checkout, every element is designed to maximize sales.",
+    features: [
+      "Custom storefront design",
+      "Secure payment gateways",
+      "Product & inventory management",
+      "Checkout optimization",
+      "Order management & emails",
+      "Mobile shopping experience",
+    ],
+    accent: "#db2777",
+    price: "549",
   },
   {
     icon: Calendar,
     title: "Booking Websites",
-    tagline: "Fill your calendar. Reduce no-shows. Streamline operations.",
+    tagline: "Fill your calendar. Cut no-shows.",
     description:
-      "Perfect for service businesses — salons, consultants, healthcare providers, fitness studios, and more. We build booking systems that let clients self-schedule 24/7.",
+      "Perfect for service businesses — salons, consultants, healthcare, fitness studios, and more. We build booking systems that let clients self-schedule 24/7.",
     features: [
-      "Online booking and appointment scheduling",
-      "Automated confirmation and reminder emails",
-      "Staff and resource management",
+      "Online appointment scheduling",
+      "Automated confirmations & reminders",
+      "Staff & resource management",
       "Payment collection at booking",
       "Calendar sync (Google, Outlook)",
       "Client account portal",
     ],
-    color: "from-orange-600 to-orange-800",
-    startingAt: "3,500",
-  },
-  {
-    icon: Code2,
-    title: "Custom Web Applications",
-    tagline: "Your workflow. Digitized. Perfected.",
-    description:
-      "When off-the-shelf software doesn't cut it, we build bespoke web applications tailored to your exact business processes. From internal tools to client-facing platforms.",
-    features: [
-      "Full-stack custom development",
-      "User authentication and role management",
-      "Database design and architecture",
-      "Third-party API integrations",
-      "Admin dashboards and reporting",
-      "Scalable, cloud-ready infrastructure",
-    ],
-    color: "from-slate-600 to-slate-800",
-    startingAt: "8,000",
+    accent: "#ea580c",
+    price: "549",
   },
 ];
 
 export default function ServicesPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-black text-white">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">What We Build</h1>
-          <p className="text-xl text-slate-300">
-            Every project is custom-built from the ground up. We don't use templates — we craft digital experiences designed specifically for your business and audience.
+      <section className="relative overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-violet-600/10 rounded-full filter blur-[120px]" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-40 pb-24">
+          <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-4">What we do</div>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6 max-w-3xl leading-[0.95]">
+            Built from scratch.
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">Never templated.</span>
+          </h1>
+          <p className="text-lg text-white/50 max-w-xl leading-relaxed">
+            Every project is custom-built for your business and audience. Pick the service that fits — we'll handle the rest.
           </p>
         </div>
       </section>
 
       {/* Services */}
       <section className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-20">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              const isEven = index % 2 === 0;
-              return (
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {services.map((service) => {
+            const Icon = service.icon;
+            return (
+              <div
+                key={service.title}
+                className="group relative bg-white/[0.02] border border-white/5 rounded-2xl p-8 hover:border-white/10 transition-colors overflow-hidden"
+              >
                 <div
-                  key={service.title}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? "" : "lg:flex-row-reverse"}`}
-                >
-                  <div className={isEven ? "order-1" : "order-1 lg:order-2"}>
-                    <div className={`bg-gradient-to-br ${service.color} rounded-3xl p-12 text-white h-80 flex items-center justify-center`}>
-                      <Icon className="w-24 h-24 opacity-80" />
-                    </div>
+                  className="absolute -top-20 -right-20 w-48 h-48 rounded-full filter blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ backgroundColor: service.accent + "33" }}
+                />
+                <div className="relative">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
+                    style={{ backgroundColor: service.accent + "1a", color: service.accent }}
+                  >
+                    <Icon className="w-6 h-6" />
                   </div>
-                  <div className={isEven ? "order-2" : "order-2 lg:order-1"}>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">{service.title}</h2>
-                    <p className="text-blue-600 font-semibold mb-4">{service.tagline}</p>
-                    <p className="text-gray-500 leading-relaxed mb-6">{service.description}</p>
-                    <ul className="space-y-2 mb-8">
-                      {service.features.map((f) => (
-                        <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex items-center gap-4">
-                      <Link href="/get-started">
-                        <Button>
-                          Get Started <ArrowRight className="ml-2 w-4 h-4" />
-                        </Button>
-                      </Link>
-                      <span className="text-sm text-gray-500">
-                        Starting at <span className="font-semibold text-gray-900">${service.startingAt}</span>
-                      </span>
+                  <h3 className="text-2xl font-bold mb-1">{service.title}</h3>
+                  <p className="text-sm font-medium mb-4" style={{ color: service.accent }}>{service.tagline}</p>
+                  <p className="text-white/40 text-sm leading-relaxed mb-6">{service.description}</p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
+                    {service.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm text-white/60">
+                        <Check className="w-4 h-4 flex-shrink-0" style={{ color: service.accent }} />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div>
+                      <span className="text-xs text-white/30">Starting at</span>
+                      <div className="text-2xl font-black text-white">${service.price}</div>
                     </div>
+                    <Link href="/get-started">
+                      <Button className="bg-violet-600 hover:bg-violet-500 text-white border-0">
+                        Get Started <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-blue-600 text-white">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">Not sure which service you need?</h2>
-          <p className="text-blue-100 text-lg mb-8">
-            Tell us about your business and goals. We'll recommend the right solution.
+      <section className="py-28 border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 leading-[0.95]">
+            Not sure which
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">you need?</span>
+          </h2>
+          <p className="text-white/40 text-lg mb-10 max-w-lg mx-auto">
+            Tell us about your business and goals. We'll recommend the right fit — no pressure.
           </p>
           <Link href="/get-started">
-            <Button size="xl" className="bg-white text-blue-700 hover:bg-blue-50">
-              Start the Conversation <ArrowRight className="ml-2 w-5 h-5" />
+            <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0 shadow-2xl shadow-violet-900/40 group">
+              Start the Conversation
+              <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Button>
           </Link>
         </div>

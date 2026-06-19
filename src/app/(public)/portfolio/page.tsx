@@ -44,14 +44,6 @@ const projects = [
     tags: ["Booking", "Beauty", "Automations"],
   },
   {
-    title: "TechVault Solutions",
-    category: "Custom Web App",
-    description: "Internal client portal and ticketing system for an IT services company. Role-based access, SLA tracking, and reporting dashboards.",
-    color: "from-slate-600 to-slate-800",
-    result: "80% faster issue resolution",
-    tags: ["Web App", "Portal", "Dashboard"],
-  },
-  {
     title: "Meridian Medical Clinic",
     category: "Booking System",
     description: "HIPAA-compliant patient intake and appointment scheduling platform. Integrated with existing EHR system.",

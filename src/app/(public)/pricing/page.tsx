@@ -68,10 +68,10 @@ const plans = [
     tagline: "Complex projects with custom requirements",
     features: [
       "Unlimited pages",
-      "Custom web application development",
+      "Multi-location & franchise sites",
       "Third-party API integrations",
-      "User authentication & portals",
-      "Advanced database architecture",
+      "Customer accounts & portals",
+      "Advanced SEO & analytics",
       "Performance SLA",
       "Dedicated project manager",
       "Ongoing retainer available",

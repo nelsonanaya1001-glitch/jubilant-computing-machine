@@ -20,7 +20,7 @@ export function Footer() {
           <div>
             <h4 className="text-white text-sm font-semibold mb-4">Services</h4>
             <ul className="space-y-2.5 text-sm">
-              {["Business Websites", "E-Commerce", "Landing Pages", "Booking Systems", "Web Apps"].map((s) => (
+              {["Business Websites", "E-Commerce", "Landing Pages", "Booking Systems"].map((s) => (
                 <li key={s}><Link href="/services" className="hover:text-white transition-colors">{s}</Link></li>
               ))}
             </ul>
