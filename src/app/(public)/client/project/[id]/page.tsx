@@ -93,7 +93,7 @@ export default function ClientProjectPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
           <div className="p-6 border-b border-gray-100">
             <h3 className="font-semibold text-gray-900">Messages</h3>
-            <p className="text-sm text-gray-500 mt-1">Communicate directly with the PixelForge team</p>
+            <p className="text-sm text-gray-500 mt-1">Communicate directly with the Launchboard team</p>
           </div>
           <div className="p-6 space-y-4 max-h-80 overflow-y-auto">
             {project.messages?.length === 0 ? (

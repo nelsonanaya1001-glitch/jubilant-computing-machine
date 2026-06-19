@@ -47,11 +47,6 @@ export default function HomePage() {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full filter blur-[120px]" />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
-          <div className="inline-flex items-center gap-2 border border-violet-500/20 bg-violet-500/5 rounded-full px-4 py-1.5 text-xs font-medium text-violet-400 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            Taking on new projects — limited slots available
-          </div>
-
           <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tight mb-8 max-w-5xl">
             Websites that
             <br />
@@ -77,21 +72,6 @@ export default function HomePage() {
                 See Our Work <ArrowUpRight className="ml-1.5 w-4 h-4" />
               </Button>
             </Link>
-          </div>
-
-          {/* Stats strip */}
-          <div className="mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { v: "150+", l: "Projects shipped" },
-              { v: "98%", l: "Client satisfaction" },
-              { v: "5+", l: "Years building" },
-              { v: "24/7", l: "Support" },
-            ].map((s) => (
-              <div key={s.l}>
-                <div className="text-3xl font-black text-white mb-1">{s.v}</div>
-                <div className="text-sm text-white/40">{s.l}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
