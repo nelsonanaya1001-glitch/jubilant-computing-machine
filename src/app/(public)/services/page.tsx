@@ -50,6 +50,7 @@ const services = [
       "Checkout optimization",
       "Order management & emails",
       "Secure database included",
+      "Shopify integration",
       "Mobile shopping experience",
     ],
     accent: "#db2777",

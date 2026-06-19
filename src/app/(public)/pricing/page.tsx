@@ -60,6 +60,7 @@ const plans = [
       "Cart & checkout optimization",
       "Order notifications",
       "Secure database included",
+      "Shopify integration",
       "Launch in 5–7 business days",
     ],
     accent: "#db2777",
