@@ -76,19 +76,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-8 mt-16 pt-16 border-t border-white/5">
-            {[
-              { value: "3–5", label: "Days to launch" },
-              { value: "$399", label: "Starting price" },
-              { value: "100%", label: "Custom design" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">{s.value}</div>
-                <div className="text-xs text-white/30 mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
