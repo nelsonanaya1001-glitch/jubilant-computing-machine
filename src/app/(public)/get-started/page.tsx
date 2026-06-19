@@ -23,9 +23,28 @@ const colorOptions = [
   { value: "warm-earthy", label: "Warm & Earthy", colors: ["#92400e", "#d97706", "#fffbeb"] },
   { value: "purple-luxury", label: "Purple & Luxury", colors: ["#6d28d9", "#a855f7", "#f5f3ff"] },
   { value: "red-energetic", label: "Red & Energetic", colors: ["#b91c1c", "#ef4444", "#fff1f2"] },
+  { value: "teal-fresh", label: "Teal & Fresh", colors: ["#0f766e", "#14b8a6", "#f0fdfa"] },
+  { value: "pink-playful", label: "Pink & Playful", colors: ["#be185d", "#ec4899", "#fdf2f8"] },
+  { value: "orange-vibrant", label: "Orange & Vibrant", colors: ["#c2410c", "#f97316", "#fff7ed"] },
+  { value: "navy-gold", label: "Navy & Gold", colors: ["#1e293b", "#ca8a04", "#fefce8"] },
+  { value: "black-white", label: "Black & White", colors: ["#000000", "#6b7280", "#ffffff"] },
+  { value: "pastel-soft", label: "Soft Pastels", colors: ["#a5b4fc", "#f9a8d4", "#fef3c7"] },
+  { value: "monochrome-gray", label: "Sleek Greyscale", colors: ["#111827", "#9ca3af", "#f3f4f6"] },
+  { value: "sunset-gradient", label: "Sunset Tones", colors: ["#db2777", "#f97316", "#fbbf24"] },
 ];
 
-const styleOptions = ["Modern & Minimal", "Classic & Professional", "Bold & Creative", "Playful & Friendly", "Luxury & Premium"];
+const styleOptions = [
+  "Modern & Minimal",
+  "Classic & Professional",
+  "Bold & Creative",
+  "Playful & Friendly",
+  "Luxury & Premium",
+  "Clean & Corporate",
+  "Warm & Welcoming",
+  "Sleek & High-Tech",
+  "Elegant & Refined",
+  "Fun & Energetic",
+];
 
 const featuresList = [
   { id: "contact-form", label: "Contact Form" },
@@ -115,6 +134,13 @@ export default function GetStartedPage() {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{ [category: string]: File[] }>({});
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [showCustomColors, setShowCustomColors] = useState(false);
+  const [customColors, setCustomColors] = useState<string[]>(["#7c3aed", "#ec4899", "#f8fafc"]);
+
+  function applyCustomColors(next: string[]) {
+    setCustomColors(next);
+    form3.setValue("preferredColors", `Custom palette: ${next.join(", ")}`, { shouldValidate: true });
+  }
 
   function toggleFeature(id: string) {
     setSelectedFeatures((prev) =>
@@ -389,13 +415,23 @@ export default function GetStartedPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Business Details</h2>
               <p className="text-gray-500">Help us understand what you do and who you serve.</p>
             </div>
-            <Textarea
-              label="Services You Offer *"
-              placeholder="Describe the products or services your business provides..."
-              rows={3}
-              {...form2.register("servicesOffered")}
-              error={form2.formState.errors.servicesOffered?.message}
-            />
+            <div>
+              <Textarea
+                label="Services You Offer * (be detailed — at least 50 words)"
+                placeholder="Describe your products or services in detail. The more you share — what you offer, who it's for, what makes you different, your pricing approach, and any specialties — the better we can build for you. Aim for at least 50 words."
+                rows={5}
+                {...form2.register("servicesOffered")}
+                error={form2.formState.errors.servicesOffered?.message}
+              />
+              {(() => {
+                const words = (form2.watch("servicesOffered") || "").trim().split(/\s+/).filter(Boolean).length;
+                return (
+                  <p className={cn("mt-1 text-xs", words >= 50 ? "text-green-600" : "text-gray-400")}>
+                    {words} / 50 words {words >= 50 ? "✓" : ""}
+                  </p>
+                );
+              })()}
+            </div>
             <Input
               label="Service Area / Location *"
               placeholder="e.g., New York City, Nationwide, Online"
@@ -462,13 +498,58 @@ export default function GetStartedPage() {
                   </label>
                 ))}
               </div>
+
+              {/* Custom color picker */}
+              <button
+                type="button"
+                onClick={() => {
+                  const next = !showCustomColors;
+                  setShowCustomColors(next);
+                  if (next) applyCustomColors(customColors);
+                }}
+                className={cn(
+                  "mt-3 w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all",
+                  showCustomColors ? "border-blue-500 bg-blue-50 text-blue-700" : "border-dashed border-gray-300 text-gray-600 hover:border-gray-400"
+                )}
+              >
+                + Choose my own exact colors
+              </button>
+
+              {showCustomColors && (
+                <div className="mt-3 p-4 rounded-xl border-2 border-blue-200 bg-blue-50/40">
+                  <p className="text-sm text-gray-600 mb-3">Pick the exact colors you'd like us to use:</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { label: "Primary", i: 0 },
+                      { label: "Accent", i: 1 },
+                      { label: "Background", i: 2 },
+                    ].map(({ label, i }) => (
+                      <div key={label} className="flex flex-col items-center gap-2">
+                        <input
+                          type="color"
+                          value={customColors[i]}
+                          onChange={(e) => {
+                            const next = [...customColors];
+                            next[i] = e.target.value;
+                            applyCustomColors(next);
+                          }}
+                          className="w-14 h-14 rounded-lg border border-gray-200 cursor-pointer bg-white p-1"
+                        />
+                        <span className="text-xs font-medium text-gray-600">{label}</span>
+                        <span className="text-[10px] text-gray-400 uppercase">{customColors[i]}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {form3.formState.errors.preferredColors && (
                 <p className="mt-1 text-xs text-red-600">{form3.formState.errors.preferredColors.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Website Style *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-3">Website Style / Feel *</label>
               <div className="space-y-2">
                 {styleOptions.map((style) => (
                   <label

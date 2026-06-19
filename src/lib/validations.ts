@@ -10,7 +10,12 @@ export const step1Schema = z.object({
 });
 
 export const step2Schema = z.object({
-  servicesOffered: z.string().min(10, "Please describe your services (at least 10 characters)"),
+  servicesOffered: z
+    .string()
+    .refine(
+      (v) => v.trim().split(/\s+/).filter(Boolean).length >= 50,
+      "Please describe your services in detail — at least 50 words"
+    ),
   serviceArea: z.string().min(2, "Please enter your service area"),
   targetAudience: z.string().min(5, "Please describe your target audience"),
   businessDescription: z.string().min(20, "Please provide a business description (at least 20 characters)"),
