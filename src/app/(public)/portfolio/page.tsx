@@ -33,13 +33,16 @@ function screenshotUrl(siteUrl: string) {
 
 export default function PortfolioPage() {
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#080810] text-white">
       {/* Hero */}
-      <section className="relative py-28 border-b border-white/5">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-violet-600/10 rounded-full filter blur-[100px]" />
+      <section className="relative py-28 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080810] via-transparent to-[#080810]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-violet-600/15 rounded-full filter blur-[120px]" />
+        <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-fuchsia-600/10 rounded-full filter blur-[100px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[250px] h-[250px] bg-pink-600/8 rounded-full filter blur-[100px]" />
         <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-4">Portfolio</div>
+          <div className="text-xs font-semibold text-fuchsia-400 uppercase tracking-widest mb-4">Portfolio</div>
           <h1 className="text-5xl md:text-6xl font-black mb-6">Our Work</h1>
           <p className="text-white/50 text-lg max-w-xl mx-auto">
             Real projects. Real businesses. Built to convert.
@@ -48,8 +51,9 @@ export default function PortfolioPage() {
       </section>
 
       {/* Grid */}
-      <section className="py-24">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <section className="py-24 relative">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-violet-600/5 rounded-full filter blur-[100px]" />
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {projects.map((project) => (
               <div
@@ -100,14 +104,16 @@ export default function PortfolioPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6 text-center">
+      <section className="py-24 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/10 to-pink-900/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-violet-600/15 rounded-full filter blur-[80px]" />
+        <div className="relative max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-4">Your project could be next</h2>
           <p className="text-white/40 text-lg mb-8">
             We'd love to learn about your business and show you what we can build together.
           </p>
           <Link href="/get-started">
-            <Button size="xl" className="bg-violet-600 hover:bg-violet-500 text-white border-0">
+            <Button size="xl" className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-2xl shadow-violet-900/50">
               Start Your Project <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
