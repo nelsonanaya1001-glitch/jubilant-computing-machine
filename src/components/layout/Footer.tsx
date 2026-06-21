@@ -44,7 +44,7 @@ export function Footer() {
             <h4 className="text-white text-sm font-semibold mb-4">Contact</h4>
             <ul className="space-y-2.5 text-sm">
               <li><a href="mailto:hello@launchboarding.co" className="hover:text-white transition-colors">hello@launchboarding.co</a></li>
-              <li><a href="tel:+15551234567" className="hover:text-white transition-colors">+1 (555) 123-4567</a></li>
+              <li><a href="tel:+17865015600" className="hover:text-white transition-colors">+1 (786) 501-5600</a></li>
               <li>Remote — Worldwide</li>
             </ul>
           </div>
