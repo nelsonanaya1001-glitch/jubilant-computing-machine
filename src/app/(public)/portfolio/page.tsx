@@ -25,6 +25,13 @@ const projects = [
     url: "https://motorlandmia.com",
     tags: ["E-Commerce", "Automotive", "Store"],
   },
+  {
+    title: "Founders Distribution",
+    category: "Business Website",
+    description: "Professional website for a wholesale distribution company. Built to showcase products, establish credibility, and connect with retail partners.",
+    url: "https://foundersdistribution.com",
+    tags: ["Business Website", "Distribution", "Wholesale"],
+  },
 ];
 
 function screenshotUrl(siteUrl: string) {

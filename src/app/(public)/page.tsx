@@ -7,6 +7,7 @@ const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
   { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
   { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
+  { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com" },
 ];
 
 const services = [
