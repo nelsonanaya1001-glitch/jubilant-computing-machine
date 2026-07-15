@@ -60,8 +60,8 @@ export default function PortfolioPage() {
       {/* Grid */}
       <section className="py-24 relative">
         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-violet-600/5 rounded-full filter blur-[100px]" />
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
             {projects.map((project) => (
               <div
                 key={project.title}
