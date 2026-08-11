@@ -586,12 +586,22 @@ export default function GetStartedPage() {
               rows={3}
               {...form3.register("competitorWebsites")}
             />
-            <Textarea
-              label="Websites You Like (optional)"
-              placeholder="Share links to websites whose design or functionality you admire..."
-              rows={3}
-              {...form3.register("websitesTheyLike")}
-            />
+
+            {/* Example domains / inspiration */}
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+              <h3 className="text-sm font-semibold text-blue-900 mb-1">
+                Example websites you'd like yours to look like
+              </h3>
+              <p className="text-xs text-blue-700 mb-3">
+                Share a few domains (e.g. <span className="font-medium">apple.com, stripe.com, airbnb.com</span>)
+                whose design, layout, or feel you love. This gives us a clear starting point and helps us match your vision.
+              </p>
+              <Textarea
+                placeholder={"Paste example domains here, one per line:\nhttps://example.com\nhttps://another-site.com"}
+                rows={4}
+                {...form3.register("websitesTheyLike")}
+              />
+            </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(1)}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
@@ -745,6 +755,9 @@ export default function GetStartedPage() {
               <SummarySection title="Design Preferences">
                 <SummaryRow label="Color Palette" value={formState.step3.preferredColors} />
                 <SummaryRow label="Style" value={formState.step3.preferredStyle} />
+                {formState.step3.websitesTheyLike && (
+                  <SummaryRow label="Example Websites" value={formState.step3.websitesTheyLike} />
+                )}
               </SummarySection>
 
               <SummarySection title="Features Selected">

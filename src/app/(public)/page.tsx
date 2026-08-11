@@ -27,7 +27,8 @@ const faqs = [
 ];
 
 function screenshotUrl(url: string) {
-  return `https://image.thum.io/get/width/800/crop/560/noanimate/${url}`;
+  // maxAge forces thum.io to regenerate stale/placeholder captures; wait lets the page fully load first
+  return `https://image.thum.io/get/width/1200/crop/840/maxAge/24/wait/3/noanimate/${url}`;
 }
 
 export default function HomePage() {
