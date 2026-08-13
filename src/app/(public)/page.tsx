@@ -3,11 +3,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar } from "lucide-react";
 
-const work: { title: string; cat: string; url: string }[] = [
-  { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
-  { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
-  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
-  { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com" },
+const work: { title: string; cat: string; url: string; domain: string; grad: string }[] = [
+  { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net", domain: "investinghouse.net", grad: "from-blue-600 to-indigo-800" },
+  { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com", domain: "elbarullo.com", grad: "from-red-700 to-rose-900" },
+  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com", domain: "motorlandmia.com", grad: "from-red-600 to-zinc-900" },
+  { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com", domain: "foundersdistribution.com", grad: "from-amber-600 to-orange-800" },
 ];
 
 const services = [
@@ -26,9 +26,8 @@ const faqs = [
   { q: "Do you work with international clients?", a: "Yes — our entire workflow is remote-friendly. We have clients across North America, Europe, and Australia." },
 ];
 
-function screenshotUrl(url: string) {
-  // maxAge forces thum.io to regenerate stale/placeholder captures; wait lets the page fully load first
-  return `https://image.thum.io/get/width/1200/crop/840/maxAge/24/wait/3/noanimate/${url}`;
+function faviconUrl(domain: string) {
+  return `https://www.google.com/s/2/favicons?domain=${domain}&sz=128`;
 }
 
 export default function HomePage() {
@@ -46,10 +45,10 @@ export default function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
           <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tight mb-8 max-w-5xl">
-            Websites that
+            Built for
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">
-              actually work.
+              businesses to grow.
             </span>
           </h1>
 
@@ -128,21 +127,22 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="group w-full bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-900/20 transition-all duration-300 block"
               >
-                <div className="relative w-full h-44 overflow-hidden bg-zinc-900">
-                  <Image
-                    src={screenshotUrl(p.url)}
-                    alt={`${p.title} preview`}
-                    fill
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className={`relative w-full h-44 overflow-hidden bg-gradient-to-br ${p.grad} flex flex-col items-center justify-center gap-3`}>
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.15),transparent_60%)]" />
+                  <div className="relative w-16 h-16 rounded-2xl bg-white/95 flex items-center justify-center shadow-xl overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                    <Image
+                      src={faviconUrl(p.domain)}
+                      alt={`${p.title} logo`}
+                      width={44}
+                      height={44}
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="relative text-white font-black text-lg tracking-tight drop-shadow-md">{p.title}</div>
                 </div>
                 <div className="p-4 flex items-center justify-between">
-                  <div>
-                    <div className="text-xs text-violet-400 font-medium mb-0.5">{p.cat}</div>
-                    <div className="text-sm font-bold text-white">{p.title}</div>
-                  </div>
+                  <div className="text-xs text-violet-400 font-medium">{p.cat}</div>
                   <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 transition-colors" />
                 </div>
               </a>
