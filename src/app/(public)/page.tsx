@@ -48,7 +48,7 @@ export default function HomePage() {
             Built for
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">
-              businesses to grow.
+              Businesses to Grow.
             </span>
           </h1>
 

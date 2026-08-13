@@ -92,10 +92,24 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Handle file uploads
+    // Handle file uploads.
+    // - Vercel Blob (persistent) when BLOB_READ_WRITE_TOKEN is set.
+    // - Local filesystem in development.
+    // On serverless the filesystem is read-only, so if Blob isn't configured we
+    // skip file storage gracefully rather than failing the whole submission.
     const uploadDir = path.join(process.cwd(), "public", "uploads", project.id);
+    let canStoreLocally = false;
     if (!useBlob) {
-      await mkdir(uploadDir, { recursive: true });
+      try {
+        await mkdir(uploadDir, { recursive: true });
+        canStoreLocally = true;
+      } catch (e) {
+        console.warn(
+          "[submissions] Uploads directory is not writable (read-only serverless FS). " +
+            "Files will not be stored. Enable Vercel Blob (adds BLOB_READ_WRITE_TOKEN) for persistent uploads.",
+          e
+        );
+      }
     }
 
     const categoriesMap: { [key: string]: string } = {
@@ -107,36 +121,44 @@ export async function POST(req: NextRequest) {
 
     for (const [key, value] of Array.from(formData.entries())) {
       if (key.startsWith("file_") && value instanceof File && value.size > 0) {
-        const category = categoriesMap[key] || "other";
-        const ext = path.extname(value.name);
-        const fileName = `${uuidv4()}${ext}`;
-        const buffer = Buffer.from(await value.arrayBuffer());
+        try {
+          const category = categoriesMap[key] || "other";
+          const ext = path.extname(value.name);
+          const fileName = `${uuidv4()}${ext}`;
+          const buffer = Buffer.from(await value.arrayBuffer());
 
-        let storedPath: string;
-        if (useBlob) {
-          // Persistent cloud storage (Vercel Blob)
-          const blob = await put(`${project.id}/${fileName}`, buffer, {
-            access: "public",
-            contentType: value.type || "application/octet-stream",
+          let storedPath: string;
+          if (useBlob) {
+            // Persistent cloud storage (Vercel Blob)
+            const blob = await put(`${project.id}/${fileName}`, buffer, {
+              access: "public",
+              contentType: value.type || "application/octet-stream",
+            });
+            storedPath = blob.url;
+          } else if (canStoreLocally) {
+            // Local filesystem (development)
+            await writeFile(path.join(uploadDir, fileName), buffer);
+            storedPath = `/uploads/${project.id}/${fileName}`;
+          } else {
+            // No writable storage available — skip this file but keep the submission.
+            continue;
+          }
+
+          await prisma.uploadedFile.create({
+            data: {
+              projectId: project.id,
+              fileName,
+              originalName: value.name,
+              fileType: value.type,
+              fileSize: value.size,
+              filePath: storedPath,
+              category,
+            },
           });
-          storedPath = blob.url;
-        } else {
-          // Local filesystem (development)
-          await writeFile(path.join(uploadDir, fileName), buffer);
-          storedPath = `/uploads/${project.id}/${fileName}`;
+        } catch (fileErr) {
+          // A single file failing to store must never break the whole submission.
+          console.error("[submissions] Failed to store an uploaded file, continuing:", fileErr);
         }
-
-        await prisma.uploadedFile.create({
-          data: {
-            projectId: project.id,
-            fileName,
-            originalName: value.name,
-            fileType: value.type,
-            fileSize: value.size,
-            filePath: storedPath,
-            category,
-          },
-        });
       }
     }
 
