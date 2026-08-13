@@ -26,6 +26,13 @@ export const step3Schema = z.object({
   preferredStyle: z.string().min(1, "Please select a preferred style"),
   competitorWebsites: z.string().optional(),
   websitesTheyLike: z.string().optional(),
+  // Logo & branding
+  hasLogo: z.string().min(1, "Please let us know about your logo"),
+  logoText: z.string().optional(),
+  logoStyle: z.string().optional(),
+  logoColorNotes: z.string().optional(),
+  logoIdeas: z.string().optional(),
+  logoInspiration: z.string().optional(),
 });
 
 export const step4Schema = z.object({

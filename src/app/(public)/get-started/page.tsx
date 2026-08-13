@@ -46,6 +46,21 @@ const styleOptions = [
   "Fun & Energetic",
 ];
 
+const logoOptions = [
+  { value: "have", label: "I already have a logo", desc: "You'll upload it in the next step — we'll use it as-is." },
+  { value: "redesign", label: "I have one, but want it improved", desc: "We'll refine or modernize your existing logo." },
+  { value: "need", label: "I need a logo designed", desc: "We'll create a brand-new logo for you from scratch." },
+];
+
+const logoStyleOptions = [
+  "Wordmark (text only)",
+  "Icon + text (combination)",
+  "Icon / symbol only",
+  "Lettermark (initials)",
+  "Emblem / badge",
+  "Not sure — you decide",
+];
+
 const featuresList = [
   { id: "contact-form", label: "Contact Form" },
   { id: "booking-system", label: "Booking System" },
@@ -88,7 +103,7 @@ export default function GetStartedPage() {
   const [formState, setFormState] = useState<FormState>({
     step1: {},
     step2: {},
-    step3: { preferredColors: "", preferredStyle: "" },
+    step3: { preferredColors: "", preferredStyle: "", hasLogo: "" },
     step4: { featuresNeeded: [] },
     files: {},
   });
@@ -580,6 +595,106 @@ export default function GetStartedPage() {
               )}
             </div>
 
+            {/* Logo & Branding */}
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-1">Logo &amp; Branding</h3>
+              <p className="text-sm text-gray-500 mb-4">Do you already have a logo, or would you like us to design one?</p>
+
+              <label className="block text-sm font-medium text-gray-700 mb-3">Your logo *</label>
+              <div className="space-y-2">
+                {logoOptions.map((opt) => (
+                  <label
+                    key={opt.value}
+                    className={cn(
+                      "flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
+                      form3.watch("hasLogo") === opt.value
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    )}
+                  >
+                    <input type="radio" value={opt.value} {...form3.register("hasLogo")} className="sr-only" />
+                    <div className={cn(
+                      "w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5",
+                      form3.watch("hasLogo") === opt.value ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                    )} />
+                    <div>
+                      <span className="text-sm font-medium text-gray-700 block">{opt.label}</span>
+                      <span className="text-xs text-gray-500">{opt.desc}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+              {form3.formState.errors.hasLogo && (
+                <p className="mt-1 text-xs text-red-600">{form3.formState.errors.hasLogo.message}</p>
+              )}
+
+              {/* If they already have a logo */}
+              {form3.watch("hasLogo") === "have" && (
+                <div className="mt-3 rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-800">
+                  Perfect — you'll be able to upload your logo files in the next step (PNG, SVG, AI, or EPS preferred).
+                </div>
+              )}
+
+              {/* If they need a logo designed or redesigned — collect exact preferences */}
+              {(form3.watch("hasLogo") === "need" || form3.watch("hasLogo") === "redesign") && (
+                <div className="mt-4 space-y-5 rounded-xl border-2 border-blue-200 bg-blue-50/40 p-5">
+                  <p className="text-sm text-gray-600">
+                    Tell us exactly how you'd like your logo to look. The more detail you share, the closer we'll get it on the first try.
+                  </p>
+
+                  <Input
+                    label="Exact text / wording for the logo"
+                    placeholder="e.g., Acme Co. — or a tagline you want included"
+                    {...form3.register("logoText")}
+                  />
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Logo type you prefer</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {logoStyleOptions.map((style) => (
+                        <label
+                          key={style}
+                          className={cn(
+                            "flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all",
+                            form3.watch("logoStyle") === style
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 bg-white hover:border-gray-300"
+                          )}
+                        >
+                          <input type="radio" value={style} {...form3.register("logoStyle")} className="sr-only" />
+                          <div className={cn(
+                            "w-4 h-4 rounded-full border-2 flex-shrink-0",
+                            form3.watch("logoStyle") === style ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                          )} />
+                          <span className="text-sm font-medium text-gray-700">{style}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Input
+                    label="Logo colors (optional)"
+                    placeholder="e.g., Same as my website colors, or gold & black, etc."
+                    {...form3.register("logoColorNotes")}
+                  />
+
+                  <Textarea
+                    label="Describe exactly how you want it"
+                    placeholder="Any icons, symbols, imagery, or feeling you want the logo to capture. e.g., 'A minimal truck icon next to the name, modern and bold, conveys speed and trust.'"
+                    rows={4}
+                    {...form3.register("logoIdeas")}
+                  />
+
+                  <Textarea
+                    label="Logos you admire (optional)"
+                    placeholder="Name brands or paste links to logos whose style you like..."
+                    rows={2}
+                    {...form3.register("logoInspiration")}
+                  />
+                </div>
+              )}
+            </div>
+
             <Textarea
               label="Competitor Websites (optional)"
               placeholder="List any competitor websites we should be aware of (one per line)..."
@@ -760,6 +875,18 @@ export default function GetStartedPage() {
                 )}
               </SummarySection>
 
+              <SummarySection title="Logo & Branding">
+                <SummaryRow
+                  label="Logo"
+                  value={logoOptions.find((o) => o.value === formState.step3.hasLogo)?.label || formState.step3.hasLogo}
+                />
+                <SummaryRow label="Logo text" value={formState.step3.logoText} />
+                <SummaryRow label="Logo type" value={formState.step3.logoStyle} />
+                <SummaryRow label="Logo colors" value={formState.step3.logoColorNotes} />
+                <SummaryRow label="Logo details" value={formState.step3.logoIdeas} multiline />
+                <SummaryRow label="Logo inspiration" value={formState.step3.logoInspiration} multiline />
+              </SummarySection>
+
               <SummarySection title="Features Selected">
                 <div className="flex flex-wrap gap-2">
                   {selectedFeatures.map((f) => {
@@ -787,6 +914,15 @@ export default function GetStartedPage() {
                   ))
                 )}
               </SummarySection>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-sm text-blue-900">
+              <h4 className="font-semibold mb-1">What happens after you submit</h4>
+              <p className="text-blue-800/90 leading-relaxed">
+                Once you submit, I'll personally start working on your website right away. I'll email you
+                with progress updates and any follow-up questions along the way, so you're never left
+                guessing. Most websites are completed and ready to review within <strong>1–3 business days</strong>.
+              </p>
             </div>
 
             {submitError && (

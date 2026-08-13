@@ -30,6 +30,12 @@ export async function POST(req: NextRequest) {
     const preferredStyle = formData.get("preferredStyle") as string;
     const competitorWebsites = formData.get("competitorWebsites") as string | undefined;
     const websitesTheyLike = formData.get("websitesTheyLike") as string | undefined;
+    const hasLogo = formData.get("hasLogo") as string | undefined;
+    const logoText = formData.get("logoText") as string | undefined;
+    const logoStyle = formData.get("logoStyle") as string | undefined;
+    const logoColorNotes = formData.get("logoColorNotes") as string | undefined;
+    const logoIdeas = formData.get("logoIdeas") as string | undefined;
+    const logoInspiration = formData.get("logoInspiration") as string | undefined;
     const featuresNeededRaw = formData.get("featuresNeeded") as string;
     const featuresNeeded = JSON.parse(featuresNeededRaw || "[]");
 
@@ -74,6 +80,12 @@ export async function POST(req: NextRequest) {
             preferredStyle,
             competitorWebsites: competitorWebsites || undefined,
             websitesTheyLike: websitesTheyLike || undefined,
+            hasLogo: hasLogo || undefined,
+            logoText: logoText || undefined,
+            logoStyle: logoStyle || undefined,
+            logoColorNotes: logoColorNotes || undefined,
+            logoIdeas: logoIdeas || undefined,
+            logoInspiration: logoInspiration || undefined,
             featuresNeeded,
           },
         },
@@ -136,6 +148,8 @@ export async function POST(req: NextRequest) {
        <p><strong>Contact:</strong> ${contactName} — ${email} — ${phone}</p>
        <p><strong>Services:</strong> ${servicesOffered}</p>
        <p><strong>Style:</strong> ${preferredStyle} · <strong>Colors:</strong> ${preferredColors}</p>
+       <p><strong>Logo:</strong> ${hasLogo || "—"}${logoText ? ` · Text: ${logoText}` : ""}${logoStyle ? ` · Type: ${logoStyle}` : ""}</p>
+       ${logoIdeas ? `<p><strong>Logo details:</strong> ${logoIdeas}</p>` : ""}
        <p><strong>Features:</strong> ${(featuresNeeded || []).join(", ")}</p>
        <p>Open the admin dashboard to review the full brief and files.</p>`
     );
@@ -146,6 +160,12 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error("Submission error:", err);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    const detail = err instanceof Error ? err.message : String(err);
+    // Surface the real reason so misconfiguration (e.g. missing DATABASE_URL or
+    // un-migrated tables) is actionable instead of a generic 500.
+    return NextResponse.json(
+      { message: detail || "Internal server error" },
+      { status: 500 }
+    );
   }
 }

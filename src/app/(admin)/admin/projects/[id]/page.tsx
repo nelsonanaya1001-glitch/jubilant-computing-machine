@@ -64,6 +64,14 @@ export default function AdminProjectDetailPage() {
 - Competitor websites: ${s.competitorWebsites || "—"}
 - Websites they like: ${s.websitesTheyLike || "—"}
 
+## Logo & branding
+- Logo status: ${s.hasLogo || "—"}
+- Logo text: ${s.logoText || "—"}
+- Logo type: ${s.logoStyle || "—"}
+- Logo colors: ${s.logoColorNotes || "—"}
+- Logo details: ${s.logoIdeas || "—"}
+- Logo inspiration: ${s.logoInspiration || "—"}
+
 ## Features requested
 ${features || "—"}
 
@@ -255,6 +263,14 @@ Build a complete, production-ready website for this client based on the brief ab
               {project.submission?.websitesTheyLike && (
                 <Row label="Liked Sites" value={project.submission?.websitesTheyLike} />
               )}
+            </Section>
+            <Section title="Logo & Branding">
+              <Row label="Logo" value={project.submission?.hasLogo} />
+              {project.submission?.logoText && <Row label="Logo Text" value={project.submission?.logoText} />}
+              {project.submission?.logoStyle && <Row label="Logo Type" value={project.submission?.logoStyle} />}
+              {project.submission?.logoColorNotes && <Row label="Logo Colors" value={project.submission?.logoColorNotes} />}
+              {project.submission?.logoIdeas && <Row label="Logo Details" value={project.submission?.logoIdeas} />}
+              {project.submission?.logoInspiration && <Row label="Logo Inspiration" value={project.submission?.logoInspiration} />}
             </Section>
             <Section title="Features Requested">
               <div className="flex flex-wrap gap-2">

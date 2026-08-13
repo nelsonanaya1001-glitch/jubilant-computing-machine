@@ -73,6 +73,12 @@ model FormSubmission {
   competitorWebsites  String?
   websitesTheyLike    String?
   featuresNeeded      Json
+  hasLogo             String?
+  logoText            String?
+  logoStyle           String?
+  logoColorNotes      String?
+  logoIdeas           String?
+  logoInspiration     String?
   createdAt           DateTime @default(now())
 
   project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
