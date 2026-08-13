@@ -27,7 +27,7 @@ export const step3Schema = z.object({
   competitorWebsites: z.string().optional(),
   websitesTheyLike: z.string().optional(),
   // Logo & branding
-  hasLogo: z.string().min(1, "Please let us know about your logo"),
+  hasLogo: z.string().optional(),
   logoText: z.string().optional(),
   logoStyle: z.string().optional(),
   logoColorNotes: z.string().optional(),
