@@ -1,13 +1,13 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar } from "lucide-react";
 
-const work: { title: string; cat: string; url: string; domain: string; grad: string }[] = [
-  { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net", domain: "investinghouse.net", grad: "from-blue-600 to-indigo-800" },
-  { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com", domain: "elbarullo.com", grad: "from-red-700 to-rose-900" },
-  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com", domain: "motorlandmia.com", grad: "from-red-600 to-zinc-900" },
-  { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com", domain: "foundersdistribution.com", grad: "from-amber-600 to-orange-800" },
+const work: { title: string; cat: string; url: string }[] = [
+  { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
+  { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
+  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
+  { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com" },
+  { title: "Elevat8 Sourcing", cat: "Landing Page · Sourcing", url: "https://elevat8sourcing.com" },
 ];
 
 const services = [
@@ -26,8 +26,9 @@ const faqs = [
   { q: "Do you work with international clients?", a: "Yes — our entire workflow is remote-friendly. We have clients across North America, Europe, and Australia." },
 ];
 
-function faviconUrl(domain: string) {
-  return `https://www.google.com/s/2/favicons?domain=${domain}&sz=128`;
+function screenshotUrl(url: string) {
+  // WordPress mShots — free, reliable, no API key. Renders a real screenshot of the live site.
+  return `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=1200&h=900`;
 }
 
 export default function HomePage() {
@@ -118,31 +119,30 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
             {work.map((p) => (
               <a
                 key={p.title}
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group w-full bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-900/20 transition-all duration-300 block"
+                className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-900/20 transition-all duration-300 block"
               >
-                <div className={`relative w-full h-44 overflow-hidden bg-gradient-to-br ${p.grad} flex flex-col items-center justify-center gap-3`}>
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.15),transparent_60%)]" />
-                  <div className="relative w-16 h-16 rounded-2xl bg-white/95 flex items-center justify-center shadow-xl overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                    <Image
-                      src={faviconUrl(p.domain)}
-                      alt={`${p.title} logo`}
-                      width={44}
-                      height={44}
-                      className="object-contain"
-                      unoptimized
-                    />
-                  </div>
-                  <div className="relative text-white font-black text-lg tracking-tight drop-shadow-md">{p.title}</div>
+                <div className="relative w-full h-44 overflow-hidden bg-zinc-900">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={screenshotUrl(p.url)}
+                    alt={`${p.title} website preview`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 <div className="p-4 flex items-center justify-between">
-                  <div className="text-xs text-violet-400 font-medium">{p.cat}</div>
+                  <div>
+                    <div className="text-xs text-violet-400 font-medium mb-0.5">{p.cat}</div>
+                    <div className="text-sm font-bold text-white">{p.title}</div>
+                  </div>
                   <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 transition-colors" />
                 </div>
               </a>

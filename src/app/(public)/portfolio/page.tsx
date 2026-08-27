@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
@@ -40,10 +39,18 @@ const projects = [
     grad: "from-amber-600 to-orange-800",
     tags: ["Business Website", "Distribution", "Wholesale"],
   },
+  {
+    title: "Elevat8 Sourcing",
+    category: "Landing Page",
+    description: "Conversion-focused landing page for a sourcing & supply company. Built to communicate value fast and turn visitors into qualified leads.",
+    url: "https://elevat8sourcing.com",
+    tags: ["Landing Page", "Sourcing", "Lead Generation"],
+  },
 ];
 
-function faviconUrl(domain: string) {
-  return `https://www.google.com/s/2/favicons?domain=${domain}&sz=128`;
+function screenshotUrl(siteUrl: string) {
+  // WordPress mShots — free, reliable, no API key. Renders a real screenshot of the live site.
+  return `https://s0.wp.com/mshots/v1/${encodeURIComponent(siteUrl)}?w=1200&h=900`;
 }
 
 export default function PortfolioPage() {
@@ -68,27 +75,27 @@ export default function PortfolioPage() {
       {/* Grid */}
       <section className="py-24 relative">
         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-violet-600/5 rounded-full filter blur-[100px]" />
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 relative">
+          <div className="flex flex-wrap justify-center gap-8">
             {projects.map((project) => (
               <div
                 key={project.title}
-                className="group w-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all duration-300"
+                className="group w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all duration-300"
               >
-                {/* Logo preview */}
-                <a href={project.url} target="_blank" rel="noopener noreferrer" className={`block relative w-full h-52 overflow-hidden bg-gradient-to-br ${project.grad} flex flex-col items-center justify-center gap-4`}>
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.15),transparent_60%)]" />
-                  <div className="relative w-20 h-20 rounded-2xl bg-white/95 flex items-center justify-center shadow-xl overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                    <Image
-                      src={faviconUrl(project.domain)}
-                      alt={`${project.title} logo`}
-                      width={56}
-                      height={56}
-                      className="object-contain"
-                      unoptimized
-                    />
+                {/* Screenshot preview */}
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="block relative w-full h-52 overflow-hidden bg-zinc-900">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={screenshotUrl(project.url)}
+                    alt={`${project.title} website preview`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                      Visit site <ExternalLink className="w-3 h-3" />
+                    </span>
                   </div>
-                  <div className="relative text-white font-black text-xl tracking-tight drop-shadow-md">{project.title}</div>
                 </a>
 
                 {/* Info */}
