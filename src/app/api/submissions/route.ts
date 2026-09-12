@@ -36,8 +36,11 @@ export async function POST(req: NextRequest) {
     const logoColorNotes = formData.get("logoColorNotes") as string | undefined;
     const logoIdeas = formData.get("logoIdeas") as string | undefined;
     const logoInspiration = formData.get("logoInspiration") as string | undefined;
+    const wantsWebsite = formData.get("wantsWebsite") !== "false";
     const wantsBranding = formData.get("wantsBranding") === "true";
     const wantsAds = formData.get("wantsAds") === "true";
+    const adsMonthlyBudget = formData.get("adsMonthlyBudget") as string | undefined;
+    const adsGoal = formData.get("adsGoal") as string | undefined;
     const featuresNeededRaw = formData.get("featuresNeeded") as string;
     const featuresNeeded = JSON.parse(featuresNeededRaw || "[]");
 
@@ -64,7 +67,7 @@ export async function POST(req: NextRequest) {
     const project = await prisma.project.create({
       data: {
         clientId: userId,
-        title: `${businessName} — Website Project`,
+        title: `${businessName} — ${[wantsWebsite ? "Website" : null, wantsBranding ? "Brand" : null, wantsAds ? "Ads" : null].filter(Boolean).join(" + ") || "Project"}`,
         status: "SUBMITTED",
         submission: {
           create: {
@@ -74,12 +77,12 @@ export async function POST(req: NextRequest) {
             email,
             phone,
             website: website || undefined,
-            servicesOffered,
-            serviceArea,
-            targetAudience,
-            businessDescription,
-            preferredColors,
-            preferredStyle,
+            servicesOffered: servicesOffered || "—",
+            serviceArea: serviceArea || "—",
+            targetAudience: targetAudience || "—",
+            businessDescription: businessDescription || "—",
+            preferredColors: preferredColors || "—",
+            preferredStyle: preferredStyle || "—",
             competitorWebsites: competitorWebsites || undefined,
             websitesTheyLike: websitesTheyLike || undefined,
             hasLogo: hasLogo || undefined,
@@ -88,8 +91,11 @@ export async function POST(req: NextRequest) {
             logoColorNotes: logoColorNotes || undefined,
             logoIdeas: logoIdeas || undefined,
             logoInspiration: logoInspiration || undefined,
+            wantsWebsite,
             wantsBranding,
             wantsAds,
+            adsMonthlyBudget: adsMonthlyBudget || undefined,
+            adsGoal: adsGoal || undefined,
             featuresNeeded,
           },
         },
@@ -177,7 +183,8 @@ export async function POST(req: NextRequest) {
        <p><strong>Logo:</strong> ${hasLogo || "—"}${logoText ? ` · Text: ${logoText}` : ""}${logoStyle ? ` · Type: ${logoStyle}` : ""}</p>
        ${logoIdeas ? `<p><strong>Logo details:</strong> ${logoIdeas}</p>` : ""}
        <p><strong>Features:</strong> ${(featuresNeeded || []).join(", ")}</p>
-       <p><strong>Add-ons:</strong> ${[wantsBranding ? "Brand &amp; Identity" : null, wantsAds ? "Meta Ads" : null].filter(Boolean).join(", ") || "none"}</p>
+       <p><strong>Services requested:</strong> ${[wantsWebsite ? "Website" : null, wantsBranding ? "Brand &amp; Identity" : null, wantsAds ? "Meta Ads" : null].filter(Boolean).join(", ")}</p>
+       ${wantsAds ? `<p><strong>Ads:</strong> budget ${adsMonthlyBudget || "—"} · goal ${adsGoal || "—"}</p>` : ""}
        <p>Open the admin dashboard to review the full brief and files.</p>`
     );
 

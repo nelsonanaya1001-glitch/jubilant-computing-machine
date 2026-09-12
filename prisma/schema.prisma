@@ -87,9 +87,13 @@ model FormSubmission {
   logoColorNotes      String?
   logoIdeas           String?
   logoInspiration     String?
-  /// Add-ons chosen during website intake.
+  /// Which services the client selected at the start of the intake.
+  wantsWebsite        Boolean  @default(true)
   wantsBranding       Boolean  @default(false)
   wantsAds            Boolean  @default(false)
+  /// Only collected when Meta Ads is selected.
+  adsMonthlyBudget    String?
+  adsGoal             String?
   createdAt           DateTime @default(now())
 
   project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

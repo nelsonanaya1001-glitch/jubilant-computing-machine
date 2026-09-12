@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle, Upload, ArrowRight, ArrowLeft, Zap, X } from "lucide-react";
+import { CheckCircle, Upload, ArrowRight, ArrowLeft, Zap, X, Globe, Palette, Megaphone, PlayCircle } from "lucide-react";
 import { step1Schema, step2Schema, step3Schema, step4Schema, Step1Data, Step2Data, Step3Data, Step4Data } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 
@@ -81,14 +81,47 @@ const fileCategories = [
   { id: "docs", label: "Other Documents", desc: "Content, copy, or any other relevant files", accept: ".pdf,.doc,.docx,.txt" },
 ];
 
-const steps = [
-  "Business Info",
-  "Business Details",
-  "Design Preferences",
-  "Features",
-  "File Uploads",
-  "Review & Submit",
+const serviceCatalogue = [
+  {
+    key: "website" as const,
+    icon: Globe,
+    title: "Website",
+    price: "from $399",
+    desc: "A business site, landing page, booking site or online store.",
+    ring: "border-violet-500 bg-violet-500/10",
+    dot: "border-violet-500 bg-violet-500",
+  },
+  {
+    key: "brand" as const,
+    icon: Palette,
+    title: "Brand & Identity",
+    price: "from $149",
+    desc: "Logo, colour palette, fonts and a brand guide built from scratch.",
+    ring: "border-amber-500 bg-amber-500/10",
+    dot: "border-amber-500 bg-amber-500",
+  },
+  {
+    key: "ads" as const,
+    icon: Megaphone,
+    title: "Meta Ads",
+    price: "from $299/mo",
+    desc: "Facebook & Instagram campaigns that bring customers to you.",
+    ring: "border-emerald-500 bg-emerald-500/10",
+    dot: "border-emerald-500 bg-emerald-500",
+  },
 ];
+
+/**
+ * Paste a YouTube video ID here to show a walkthrough on the Meta Ads step
+ * (the part after "v=" in a YouTube URL). Left empty, the step shows the
+ * written step-by-step instead — we don't embed a video we can't verify.
+ */
+const ADS_VIDEO_ID = "";
+
+type StepKey =
+  | "services" | "business" | "details"
+  | "design" | "features" | "brand" | "ads"
+  | "files" | "review";
 
 interface FormState {
   step1: Partial<Step1Data>;
@@ -101,6 +134,35 @@ interface FormState {
 
 export default function GetStartedPage() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [services, setServices] = useState({ website: true, brand: false, ads: false });
+
+  // The form adapts to what they picked: a brand-only order never sees website
+  // design questions, and ads questions only appear if ads were chosen.
+  const stepDefs = useMemo(() => {
+    const defs: { key: StepKey; label: string }[] = [
+      { key: "services", label: "Services" },
+      { key: "business", label: "Business Info" },
+      { key: "details", label: "Business Details" },
+    ];
+    if (services.website) {
+      defs.push({ key: "design", label: "Design" });
+      defs.push({ key: "features", label: "Features" });
+    }
+    if (services.brand) defs.push({ key: "brand", label: "Logo & Brand" });
+    if (services.ads) defs.push({ key: "ads", label: "Meta Ads" });
+    defs.push({ key: "files", label: "Files" });
+    defs.push({ key: "review", label: "Review" });
+    return defs;
+  }, [services]);
+
+  const steps = stepDefs.map((d) => d.label);
+  const stepIndex = Math.min(currentStep, stepDefs.length - 1);
+  const stepKey = stepDefs[stepIndex].key;
+  const anyService = services.website || services.brand || services.ads;
+
+  const goNext = () => setCurrentStep((i) => Math.min(stepDefs.length - 1, i + 1));
+  const goBack = () => setCurrentStep((i) => Math.max(0, i - 1));
+
   const [formState, setFormState] = useState<FormState>({
     step1: {},
     step2: {},
@@ -149,6 +211,8 @@ export default function GetStartedPage() {
   const form3 = useForm<Step3Data>({ resolver: zodResolver(step3Schema), defaultValues: formState.step3 });
 
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [adsBudget, setAdsBudget] = useState("");
+  const [adsGoal, setAdsGoal] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState<{ [category: string]: File[] }>({});
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [showCustomColors, setShowCustomColors] = useState(false);
@@ -183,28 +247,28 @@ export default function GetStartedPage() {
 
   async function handleStep1(data: Step1Data) {
     setFormState((prev) => ({ ...prev, step1: data }));
-    setCurrentStep(1);
+    goNext();
   }
 
   async function handleStep2(data: Step2Data) {
     setFormState((prev) => ({ ...prev, step2: data }));
-    setCurrentStep(2);
+    goNext();
   }
 
   async function handleStep3(data: Step3Data) {
     setFormState((prev) => ({ ...prev, step3: data }));
-    setCurrentStep(3);
+    goNext();
   }
 
   function handleStep4() {
     if (selectedFeatures.length === 0) return;
     setFormState((prev) => ({ ...prev, step4: { featuresNeeded: selectedFeatures } }));
-    setCurrentStep(4);
+    goNext();
   }
 
   function handleStep5() {
     setFormState((prev) => ({ ...prev, files: uploadedFiles }));
-    setCurrentStep(5);
+    goNext();
   }
 
   async function handleSubmit() {
@@ -219,9 +283,12 @@ export default function GetStartedPage() {
         ...formState.step1,
         ...formState.step2,
         ...formState.step3,
-        featuresNeeded: JSON.stringify(selectedFeatures),
-        wantsBranding: String(formState.addOns.branding),
-        wantsAds: String(formState.addOns.ads),
+        featuresNeeded: JSON.stringify(services.website ? selectedFeatures : []),
+        wantsWebsite: String(services.website),
+        wantsBranding: String(services.brand),
+        wantsAds: String(services.ads),
+        adsMonthlyBudget: services.ads ? adsBudget : "",
+        adsGoal: services.ads ? adsGoal : "",
       };
 
       Object.entries(allData).forEach(([key, value]) => {
@@ -365,7 +432,296 @@ export default function GetStartedPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Step 1 */}
-        {currentStep === 0 && (
+        {/* Step: choose services */}
+        {stepKey === "services" && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-1">What do you need?</h2>
+              <p className="text-white/50">
+                Pick everything you&apos;re interested in. We&apos;ll only ask questions about what
+                you choose.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {serviceCatalogue.map((sv) => {
+                const on = services[sv.key];
+                return (
+                  <button
+                    key={sv.key}
+                    type="button"
+                    onClick={() => setServices((prev) => ({ ...prev, [sv.key]: !prev[sv.key] }))}
+                    className={cn(
+                      "w-full text-left p-5 rounded-xl border-2 transition-all",
+                      on ? sv.ring : "border-white/10 hover:border-white/20"
+                    )}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={cn(
+                          "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all",
+                          on ? sv.dot : "border-white/15"
+                        )}
+                      >
+                        {on && <CheckCircle className="w-3 h-3 text-white" />}
+                      </div>
+                      <sv.icon className="w-5 h-5 text-white/50 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-semibold text-white">{sv.title}</span>
+                          <span className="text-xs font-bold text-white/40">{sv.price}</span>
+                        </div>
+                        <p className="text-sm text-white/50 mt-1 leading-relaxed">{sv.desc}</p>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {services.website && services.brand && (
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+                Nice — bundling branding with a website saves you $50.
+              </div>
+            )}
+
+            {!anyService && (
+              <p className="text-xs text-red-400">Please choose at least one service to continue.</p>
+            )}
+
+            <p className="text-xs text-white/30">
+              Not sure yet? Pick what sounds closest — nothing is charged now, and we&apos;ll
+              confirm everything before any work starts.
+            </p>
+
+            <Button type="button" size="lg" className="w-full" onClick={goNext} disabled={!anyService}>
+              Continue <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </div>
+        )}
+
+        {/* Step: brand & logo direction (only when branding was chosen) */}
+        {stepKey === "brand" && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-1">Your logo &amp; brand</h2>
+              <p className="text-white/50">
+                Tell us what you want your identity to look like. The more detail you give, the
+                closer we&apos;ll get it on the first round.
+              </p>
+            </div>
+
+            {/* Only asked here when there's no website step to ask it in. */}
+            {!services.website && (
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-2">
+                  Do you have a logo today?
+                </label>
+                <div className="space-y-2">
+                  {logoOptions.map((opt) => (
+                    <label
+                      key={opt.value}
+                      className={cn(
+                        "flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
+                        form3.watch("hasLogo") === opt.value
+                          ? "border-violet-500 bg-violet-500/10"
+                          : "border-white/10 hover:border-white/20"
+                      )}
+                    >
+                      <input type="radio" value={opt.value} {...form3.register("hasLogo")} className="sr-only" />
+                      <div
+                        className={cn(
+                          "w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5",
+                          form3.watch("hasLogo") === opt.value ? "border-violet-500 bg-violet-500" : "border-white/15"
+                        )}
+                      />
+                      <div>
+                        <div className="text-sm font-medium text-white">{opt.label}</div>
+                        <div className="text-xs text-white/40 mt-0.5">{opt.desc}</div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+                <div className="mt-4 space-y-5 rounded-xl border-2 border-violet-500/30 bg-violet-500/10 p-5">
+                  <p className="text-sm text-white/60">
+                    Tell us exactly how you'd like your logo to look. The more detail you share, the closer we'll get it on the first try.
+                  </p>
+
+                  <Input tone="dark"
+                    label="Exact text / wording for the logo"
+                    placeholder="e.g., Acme Co. — or a tagline you want included"
+                    {...form3.register("logoText")}
+                  />
+
+                  <div>
+                    <label className="block text-sm font-medium text-white/70 mb-3">Logo type you prefer</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {logoStyleOptions.map((style) => (
+                        <label
+                          key={style}
+                          className={cn(
+                            "flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all",
+                            form3.watch("logoStyle") === style
+                              ? "border-violet-500 bg-violet-500/10"
+                              : "border-white/10 bg-white/5 hover:border-white/20"
+                          )}
+                        >
+                          <input type="radio" value={style} {...form3.register("logoStyle")} className="sr-only" />
+                          <div className={cn(
+                            "w-4 h-4 rounded-full border-2 flex-shrink-0",
+                            form3.watch("logoStyle") === style ? "border-violet-500 bg-violet-500" : "border-white/15"
+                          )} />
+                          <span className="text-sm font-medium text-white/70">{style}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Input tone="dark"
+                    label="Logo colors (optional)"
+                    placeholder="e.g., Same as my website colors, or gold & black, etc."
+                    {...form3.register("logoColorNotes")}
+                  />
+
+                  <Textarea tone="dark"
+                    label="Describe exactly how you want it"
+                    placeholder="Any icons, symbols, imagery, or feeling you want the logo to capture. e.g., 'A minimal truck icon next to the name, modern and bold, conveys speed and trust.'"
+                    rows={4}
+                    {...form3.register("logoIdeas")}
+                  />
+
+                  <Textarea tone="dark"
+                    label="Logos you admire (optional)"
+                    placeholder="Name brands or paste links to logos whose style you like..."
+                    rows={2}
+                    {...form3.register("logoInspiration")}
+                  />
+                </div>
+
+            <div className="flex gap-3">
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+                <ArrowLeft className="mr-2 w-4 h-4" /> Back
+              </Button>
+              <Button
+                type="button"
+                size="lg"
+                className="flex-1"
+                onClick={() => {
+                  setFormState((prev) => ({ ...prev, step3: { ...prev.step3, ...form3.getValues() } }));
+                  goNext();
+                }}
+              >
+                Continue <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step: Meta Ads rundown (only when ads were chosen) */}
+        {stepKey === "ads" && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-1">How Meta Ads will work</h2>
+              <p className="text-white/50">
+                A quick rundown so you know exactly what you&apos;re signing up for, then two
+                questions.
+              </p>
+            </div>
+
+            {ADS_VIDEO_ID ? (
+              <div className="relative w-full overflow-hidden rounded-xl border border-white/10" style={{ paddingTop: "56.25%" }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${ADS_VIDEO_ID}`}
+                  title="How Meta Ads work"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                <PlayCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                <p className="text-sm text-white/50">
+                  A short walkthrough video is coming soon. The steps below cover everything in the
+                  meantime.
+                </p>
+              </div>
+            )}
+
+            <div className="divide-y divide-white/5 rounded-xl border border-white/10 bg-white/[0.02]">
+              {[
+                { t: "We set up tracking", d: "We connect the Meta Pixel and Conversions API to your site so every click, lead and sale is measured. Without this you're flying blind." },
+                { t: "We build your audiences", d: "We research who actually buys from you — by location, interest and behaviour — and build audiences around them, plus a retargeting audience of people who already visited." },
+                { t: "We create the ads", d: "Images and copy written for your offer. We launch several versions so we can see which one people respond to." },
+                { t: "Meta learns (7–14 days)", d: "Early on, Meta spends some budget learning who converts. Results usually look rough for the first week or two — that's normal, not a failure." },
+                { t: "We cut losers, scale winners", d: "Once there's data, we turn off what isn't working and put more budget behind what is. This is the part that compounds." },
+                { t: "You get a report", d: "What you spent, what came back, and what we're changing next. No jargon." },
+              ].map((st, i) => (
+                <div key={st.t} className="flex gap-4 p-5">
+                  <span className="font-mono text-xs text-emerald-400 flex-shrink-0 pt-0.5">0{i + 1}</span>
+                  <div>
+                    <div className="text-sm font-semibold text-white mb-1">{st.t}</div>
+                    <p className="text-sm text-white/45 leading-relaxed">{st.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-xl border border-amber-500/25 bg-amber-500/[0.07] p-4">
+              <p className="text-sm text-white/60 leading-relaxed">
+                <span className="font-semibold text-white">Your ad budget is separate.</span> It&apos;s
+                paid straight to Meta from your own ad account, never through us — so you keep
+                control of the spending and ownership of the account.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-2">
+                Roughly what monthly ad budget did you have in mind?
+              </label>
+              <select
+                value={adsBudget}
+                onChange={(e) => setAdsBudget(e.target.value)}
+                className="flex h-12 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+              >
+                <option value="" className="bg-zinc-900">Select a range…</option>
+                {["Under $500/mo", "$500–1,500/mo", "$1,500–5,000/mo", "$5,000+/mo", "Not sure yet"].map((b) => (
+                  <option key={b} value={b} className="bg-zinc-900">{b}</option>
+                ))}
+              </select>
+              <p className="text-xs text-white/30 mt-2">
+                This is what you&apos;d pay Meta, not us. It helps us recommend the right plan.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-2">
+                What should the ads actually achieve?
+              </label>
+              <Textarea
+                tone="dark"
+                value={adsGoal}
+                onChange={(e) => setAdsGoal(e.target.value)}
+                placeholder="e.g. Book 10 more appointments a week, sell more of a specific product, get quote requests from local businesses…"
+                rows={3}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+                <ArrowLeft className="mr-2 w-4 h-4" /> Back
+              </Button>
+              <Button type="button" size="lg" className="flex-1" onClick={goNext}>
+                Continue <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {stepKey === "business" && (
           <form onSubmit={form1.handleSubmit(handleStep1)} className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">Business Information</h2>
@@ -428,7 +784,7 @@ export default function GetStartedPage() {
         )}
 
         {/* Step 2 */}
-        {currentStep === 1 && (
+        {stepKey === "details" && (
           <form onSubmit={form2.handleSubmit(handleStep2)} className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">Business Details</h2>
@@ -471,7 +827,7 @@ export default function GetStartedPage() {
               error={form2.formState.errors.businessDescription?.message}
             />
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(0)}>
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="submit" size="lg" className="flex-1">
@@ -482,7 +838,7 @@ export default function GetStartedPage() {
         )}
 
         {/* Step 3 */}
-        {currentStep === 2 && (
+        {stepKey === "design" && (
           <form onSubmit={form3.handleSubmit(handleStep3)} className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">Design Preferences</h2>
@@ -639,62 +995,20 @@ export default function GetStartedPage() {
                 </div>
               )}
 
-              {/* If they need a logo designed or redesigned — collect exact preferences */}
-              {(form3.watch("hasLogo") === "need" || form3.watch("hasLogo") === "redesign") && (
-                <div className="mt-4 space-y-5 rounded-xl border-2 border-violet-500/30 bg-violet-500/10 p-5">
-                  <p className="text-sm text-white/60">
-                    Tell us exactly how you'd like your logo to look. The more detail you share, the closer we'll get it on the first try.
+              {(form3.watch("hasLogo") === "need" || form3.watch("hasLogo") === "redesign") && !services.brand && (
+                <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+                  <p className="text-sm text-amber-200/90 leading-relaxed">
+                    <span className="font-semibold text-amber-200">Want us to design it properly?</span>{" "}
+                    Our Brand &amp; Identity package covers the logo plus a colour palette, fonts and
+                    a brand guide — and it&apos;s $50 cheaper bought with a website.
                   </p>
-
-                  <Input tone="dark"
-                    label="Exact text / wording for the logo"
-                    placeholder="e.g., Acme Co. — or a tagline you want included"
-                    {...form3.register("logoText")}
-                  />
-
-                  <div>
-                    <label className="block text-sm font-medium text-white/70 mb-3">Logo type you prefer</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {logoStyleOptions.map((style) => (
-                        <label
-                          key={style}
-                          className={cn(
-                            "flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all",
-                            form3.watch("logoStyle") === style
-                              ? "border-violet-500 bg-violet-500/10"
-                              : "border-white/10 bg-white/5 hover:border-white/20"
-                          )}
-                        >
-                          <input type="radio" value={style} {...form3.register("logoStyle")} className="sr-only" />
-                          <div className={cn(
-                            "w-4 h-4 rounded-full border-2 flex-shrink-0",
-                            form3.watch("logoStyle") === style ? "border-violet-500 bg-violet-500" : "border-white/15"
-                          )} />
-                          <span className="text-sm font-medium text-white/70">{style}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Input tone="dark"
-                    label="Logo colors (optional)"
-                    placeholder="e.g., Same as my website colors, or gold & black, etc."
-                    {...form3.register("logoColorNotes")}
-                  />
-
-                  <Textarea tone="dark"
-                    label="Describe exactly how you want it"
-                    placeholder="Any icons, symbols, imagery, or feeling you want the logo to capture. e.g., 'A minimal truck icon next to the name, modern and bold, conveys speed and trust.'"
-                    rows={4}
-                    {...form3.register("logoIdeas")}
-                  />
-
-                  <Textarea tone="dark"
-                    label="Logos you admire (optional)"
-                    placeholder="Name brands or paste links to logos whose style you like..."
-                    rows={2}
-                    {...form3.register("logoInspiration")}
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setServices((prev) => ({ ...prev, brand: true }))}
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40 px-3 py-1.5 text-xs font-semibold text-amber-100 hover:bg-amber-500/30 transition"
+                  >
+                    Add Brand &amp; Identity (+$99)
+                  </button>
                 </div>
               )}
             </div>
@@ -722,7 +1036,7 @@ export default function GetStartedPage() {
               />
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(1)}>
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="submit" size="lg" className="flex-1">
@@ -733,7 +1047,7 @@ export default function GetStartedPage() {
         )}
 
         {/* Step 4 */}
-        {currentStep === 3 && (
+        {stepKey === "features" && (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">Features Needed</h2>
@@ -767,91 +1081,8 @@ export default function GetStartedPage() {
               <p className="text-xs text-red-600">Please select at least one feature</p>
             )}
 
-            {/* ── Add-ons ───────────────────────────────── */}
-            <div className="pt-8 border-t border-white/10">
-              <h3 className="text-lg font-bold text-white mb-1">Anything else?</h3>
-              <p className="text-white/50 text-sm mb-5">
-                Optional add-ons. Nothing is charged now — we&apos;ll include them in your quote.
-              </p>
-
-              {/* Recommend branding when they told us they have no logo. */}
-              {(formState.step3.hasLogo === "need" || formState.step3.hasLogo === "redesign") &&
-                !formState.addOns.branding && (
-                  <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
-                    <p className="text-sm text-amber-200/90 leading-relaxed">
-                      <span className="font-semibold text-amber-200">
-                        You said you{formState.step3.hasLogo === "need" ? " need a logo" : "'d like your logo improved"}.
-                      </span>{" "}
-                      Our Brand &amp; Identity package covers that properly — logo concepts, a full
-                      colour palette, fonts and a brand guide — and it&apos;s $50 cheaper added to a
-                      website. Add it below and your site will be built around it.
-                    </p>
-                  </div>
-                )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  {
-                    key: "branding" as const,
-                    title: "Brand & Identity",
-                    price: "+$99",
-                    strike: "$149",
-                    desc: "Logo concepts, colour palette, fonts and a brand guide.",
-                    ring: "border-amber-500 bg-amber-500/10",
-                  },
-                  {
-                    key: "ads" as const,
-                    title: "Meta Ads Management",
-                    price: "from $299/mo",
-                    strike: null,
-                    desc: "Facebook & Instagram campaigns to drive traffic to your new site.",
-                    ring: "border-emerald-500 bg-emerald-500/10",
-                  },
-                ].map((a) => {
-                  const on = formState.addOns[a.key];
-                  return (
-                    <button
-                      key={a.key}
-                      type="button"
-                      onClick={() =>
-                        setFormState((prev) => ({
-                          ...prev,
-                          addOns: { ...prev.addOns, [a.key]: !prev.addOns[a.key] },
-                        }))
-                      }
-                      className={cn(
-                        "text-left p-4 rounded-xl border-2 transition-all",
-                        on ? a.ring : "border-white/10 hover:border-white/15"
-                      )}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className={cn(
-                            "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all",
-                            on ? "border-violet-500 bg-violet-500" : "border-white/15"
-                          )}
-                        >
-                          {on && <CheckCircle className="w-3 h-3 text-white" />}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-baseline gap-2 flex-wrap">
-                            <span className="text-sm font-semibold text-white">{a.title}</span>
-                            <span className="text-xs font-bold text-violet-300">{a.price}</span>
-                            {a.strike && (
-                              <span className="text-xs text-white/30 line-through">{a.strike}</span>
-                            )}
-                          </div>
-                          <p className="text-xs text-white/50 mt-1 leading-relaxed">{a.desc}</p>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(2)}>
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button
@@ -868,7 +1099,7 @@ export default function GetStartedPage() {
         )}
 
         {/* Step 5 */}
-        {currentStep === 4 && (
+        {stepKey === "files" && (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">File Uploads</h2>
@@ -921,7 +1152,7 @@ export default function GetStartedPage() {
             ))}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(3)}>
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="button" size="lg" className="flex-1" onClick={handleStep5}>
@@ -932,7 +1163,7 @@ export default function GetStartedPage() {
         )}
 
         {/* Step 6 — Summary */}
-        {currentStep === 5 && (
+        {stepKey === "review" && (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">Review & Submit</h2>
@@ -940,6 +1171,16 @@ export default function GetStartedPage() {
             </div>
 
             <div className="space-y-4">
+              <SummarySection title="Services Requested">
+                <div className="flex flex-wrap gap-2">
+                  {serviceCatalogue.filter((sv) => services[sv.key]).map((sv) => (
+                    <span key={sv.key} className="bg-violet-500/15 text-violet-300 text-xs font-medium px-2.5 py-1 rounded-full">
+                      {sv.title}
+                    </span>
+                  ))}
+                </div>
+              </SummarySection>
+
               <SummarySection title="Business Information">
                 <SummaryRow label="Business" value={formState.step1.businessName} />
                 <SummaryRow label="Industry" value={formState.step1.industry} />
@@ -955,6 +1196,7 @@ export default function GetStartedPage() {
                 <SummaryRow label="Target Audience" value={formState.step2.targetAudience} />
               </SummarySection>
 
+              {services.website && (
               <SummarySection title="Design Preferences">
                 <SummaryRow label="Color Palette" value={formState.step3.preferredColors} />
                 <SummaryRow label="Style" value={formState.step3.preferredStyle} />
@@ -962,7 +1204,9 @@ export default function GetStartedPage() {
                   <SummaryRow label="Example Websites" value={formState.step3.websitesTheyLike} />
                 )}
               </SummarySection>
+              )}
 
+              {services.brand && (
               <SummarySection title="Logo & Branding">
                 <SummaryRow
                   label="Logo"
@@ -974,7 +1218,9 @@ export default function GetStartedPage() {
                 <SummaryRow label="Logo details" value={formState.step3.logoIdeas} multiline />
                 <SummaryRow label="Logo inspiration" value={formState.step3.logoInspiration} multiline />
               </SummarySection>
+              )}
 
+              {services.website && (
               <SummarySection title="Features Selected">
                 <div className="flex flex-wrap gap-2">
                   {selectedFeatures.map((f) => {
@@ -987,25 +1233,14 @@ export default function GetStartedPage() {
                   })}
                 </div>
               </SummarySection>
+              )}
 
-              <SummarySection title="Add-ons">
-                {!formState.addOns.branding && !formState.addOns.ads ? (
-                  <p className="text-sm text-white/30">None selected</p>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {formState.addOns.branding && (
-                      <span className="bg-amber-500/15 text-amber-300 text-xs font-medium px-2.5 py-1 rounded-full">
-                        Brand &amp; Identity (+$99)
-                      </span>
-                    )}
-                    {formState.addOns.ads && (
-                      <span className="bg-emerald-500/15 text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
-                        Meta Ads (from $299/mo)
-                      </span>
-                    )}
-                  </div>
-                )}
+              {services.ads && (
+              <SummarySection title="Meta Ads">
+                <SummaryRow label="Monthly ad budget" value={adsBudget} />
+                <SummaryRow label="Goal" value={adsGoal} multiline />
               </SummarySection>
+              )}
 
               <SummarySection title="Uploaded Files">
                 {Object.keys(uploadedFiles).length === 0 ? (
@@ -1039,7 +1274,7 @@ export default function GetStartedPage() {
             )}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(4)}>
+              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button
