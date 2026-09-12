@@ -95,6 +95,7 @@ interface FormState {
   step2: Partial<Step2Data>;
   step3: Partial<Step3Data>;
   step4: { featuresNeeded: string[] };
+  addOns: { branding: boolean; ads: boolean };
   files: { [category: string]: File[] };
 }
 
@@ -105,6 +106,7 @@ export default function GetStartedPage() {
     step2: {},
     step3: { preferredColors: "", preferredStyle: "", hasLogo: "" },
     step4: { featuresNeeded: [] },
+    addOns: { branding: false, ads: false },
     files: {},
   });
   const [submitted, setSubmitted] = useState(false);
@@ -218,6 +220,8 @@ export default function GetStartedPage() {
         ...formState.step2,
         ...formState.step3,
         featuresNeeded: JSON.stringify(selectedFeatures),
+        wantsBranding: String(formState.addOns.branding),
+        wantsAds: String(formState.addOns.ads),
       };
 
       Object.entries(allData).forEach(([key, value]) => {
@@ -762,6 +766,90 @@ export default function GetStartedPage() {
             {selectedFeatures.length === 0 && (
               <p className="text-xs text-red-600">Please select at least one feature</p>
             )}
+
+            {/* ── Add-ons ───────────────────────────────── */}
+            <div className="pt-8 border-t border-white/10">
+              <h3 className="text-lg font-bold text-white mb-1">Anything else?</h3>
+              <p className="text-white/50 text-sm mb-5">
+                Optional add-ons. Nothing is charged now — we&apos;ll include them in your quote.
+              </p>
+
+              {/* Recommend branding when they told us they have no logo. */}
+              {(formState.step3.hasLogo === "need" || formState.step3.hasLogo === "redesign") &&
+                !formState.addOns.branding && (
+                  <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+                    <p className="text-sm text-amber-200/90 leading-relaxed">
+                      <span className="font-semibold text-amber-200">
+                        You said you{formState.step3.hasLogo === "need" ? " need a logo" : "'d like your logo improved"}.
+                      </span>{" "}
+                      Our Brand &amp; Identity package covers that properly — logo concepts, a full
+                      colour palette, fonts and a brand guide — and it&apos;s $50 cheaper added to a
+                      website. Add it below and your site will be built around it.
+                    </p>
+                  </div>
+                )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  {
+                    key: "branding" as const,
+                    title: "Brand & Identity",
+                    price: "+$99",
+                    strike: "$149",
+                    desc: "Logo concepts, colour palette, fonts and a brand guide.",
+                    ring: "border-amber-500 bg-amber-500/10",
+                  },
+                  {
+                    key: "ads" as const,
+                    title: "Meta Ads Management",
+                    price: "from $299/mo",
+                    strike: null,
+                    desc: "Facebook & Instagram campaigns to drive traffic to your new site.",
+                    ring: "border-emerald-500 bg-emerald-500/10",
+                  },
+                ].map((a) => {
+                  const on = formState.addOns[a.key];
+                  return (
+                    <button
+                      key={a.key}
+                      type="button"
+                      onClick={() =>
+                        setFormState((prev) => ({
+                          ...prev,
+                          addOns: { ...prev.addOns, [a.key]: !prev.addOns[a.key] },
+                        }))
+                      }
+                      className={cn(
+                        "text-left p-4 rounded-xl border-2 transition-all",
+                        on ? a.ring : "border-white/10 hover:border-white/15"
+                      )}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className={cn(
+                            "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all",
+                            on ? "border-violet-500 bg-violet-500" : "border-white/15"
+                          )}
+                        >
+                          {on && <CheckCircle className="w-3 h-3 text-white" />}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="text-sm font-semibold text-white">{a.title}</span>
+                            <span className="text-xs font-bold text-violet-300">{a.price}</span>
+                            {a.strike && (
+                              <span className="text-xs text-white/30 line-through">{a.strike}</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-white/50 mt-1 leading-relaxed">{a.desc}</p>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="flex gap-3">
               <Button type="button" variant="outline" size="lg" className="flex-1" onClick={() => setCurrentStep(2)}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
@@ -898,6 +986,25 @@ export default function GetStartedPage() {
                     );
                   })}
                 </div>
+              </SummarySection>
+
+              <SummarySection title="Add-ons">
+                {!formState.addOns.branding && !formState.addOns.ads ? (
+                  <p className="text-sm text-white/30">None selected</p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {formState.addOns.branding && (
+                      <span className="bg-amber-500/15 text-amber-300 text-xs font-medium px-2.5 py-1 rounded-full">
+                        Brand &amp; Identity (+$99)
+                      </span>
+                    )}
+                    {formState.addOns.ads && (
+                      <span className="bg-emerald-500/15 text-emerald-300 text-xs font-medium px-2.5 py-1 rounded-full">
+                        Meta Ads (from $299/mo)
+                      </span>
+                    )}
+                  </div>
+                )}
               </SummarySection>
 
               <SummarySection title="Uploaded Files">

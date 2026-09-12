@@ -21,10 +21,11 @@ export function Footer() {
             <h4 className="text-white text-sm font-semibold mb-4">Services</h4>
             <ul className="space-y-2.5 text-sm">
               {["Business Websites", "E-Commerce", "Landing Pages", "Booking Systems"].map((s) => (
-                <li key={s}><Link href="/services" className="hover:text-white transition-colors">{s}</Link></li>
+                <li key={s}><Link href="/websites" className="hover:text-white transition-colors">{s}</Link></li>
               ))}
               <li><Link href="/brand" className="hover:text-white transition-colors">Brand &amp; Identity</Link></li>
               <li><Link href="/ads" className="hover:text-white transition-colors">Meta Ads</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">All services</Link></li>
             </ul>
           </div>
 

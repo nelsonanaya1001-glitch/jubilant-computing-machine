@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
     const logoColorNotes = formData.get("logoColorNotes") as string | undefined;
     const logoIdeas = formData.get("logoIdeas") as string | undefined;
     const logoInspiration = formData.get("logoInspiration") as string | undefined;
+    const wantsBranding = formData.get("wantsBranding") === "true";
+    const wantsAds = formData.get("wantsAds") === "true";
     const featuresNeededRaw = formData.get("featuresNeeded") as string;
     const featuresNeeded = JSON.parse(featuresNeededRaw || "[]");
 
@@ -86,6 +88,8 @@ export async function POST(req: NextRequest) {
             logoColorNotes: logoColorNotes || undefined,
             logoIdeas: logoIdeas || undefined,
             logoInspiration: logoInspiration || undefined,
+            wantsBranding,
+            wantsAds,
             featuresNeeded,
           },
         },
@@ -173,6 +177,7 @@ export async function POST(req: NextRequest) {
        <p><strong>Logo:</strong> ${hasLogo || "—"}${logoText ? ` · Text: ${logoText}` : ""}${logoStyle ? ` · Type: ${logoStyle}` : ""}</p>
        ${logoIdeas ? `<p><strong>Logo details:</strong> ${logoIdeas}</p>` : ""}
        <p><strong>Features:</strong> ${(featuresNeeded || []).join(", ")}</p>
+       <p><strong>Add-ons:</strong> ${[wantsBranding ? "Brand &amp; Identity" : null, wantsAds ? "Meta Ads" : null].filter(Boolean).join(", ") || "none"}</p>
        <p>Open the admin dashboard to review the full brief and files.</p>`
     );
 

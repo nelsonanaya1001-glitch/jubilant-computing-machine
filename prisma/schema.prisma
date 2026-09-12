@@ -87,6 +87,9 @@ model FormSubmission {
   logoColorNotes      String?
   logoIdeas           String?
   logoInspiration     String?
+  /// Add-ons chosen during website intake.
+  wantsBranding       Boolean  @default(false)
+  wantsAds            Boolean  @default(false)
   createdAt           DateTime @default(now())
 
   project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
