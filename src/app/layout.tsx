@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Launchboarding | Web Development That Converts",
+  title: "Launchboarding | Business Startup",
   description:
-    "Launchboarding builds high-performance websites for ambitious businesses. No templates. No shortcuts.",
-  keywords: "web development, web design, custom websites, e-commerce, digital agency",
+    "Launchboarding helps you start and grow a business — websites that convert, branding people remember, and ads that bring in real customers.",
+  keywords:
+    "business startup, start a business, small business growth, web design, branding, logo design, meta ads, facebook ads",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

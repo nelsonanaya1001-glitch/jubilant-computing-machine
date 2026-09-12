@@ -56,8 +56,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed mb-10">
-            We build custom websites for businesses serious about growth.
-            No templates. No shortcuts. Just results.
+            We help you start and grow a real business — a website that converts,
+            a brand people remember, and ads that bring customers to your door.
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
