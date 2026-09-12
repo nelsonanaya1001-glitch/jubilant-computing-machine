@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar, Palette, Megaphone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar, Palette, Megaphone, TrendingUp } from "lucide-react";
 
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
@@ -157,6 +157,113 @@ export default function HomePage() {
         </div>
       </section>
       )}
+
+      {/* ── Growth: what brand + ads actually do ── */}
+      <section className="py-28 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute left-1/4 top-0 w-[450px] h-[450px] bg-amber-600/8 rounded-full filter blur-[120px]" />
+        <div className="absolute right-1/4 bottom-0 w-[450px] h-[450px] bg-emerald-600/8 rounded-full filter blur-[120px]" />
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-2xl mb-16">
+            <div className="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-3">
+              Growth
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black mb-5">
+              A website is the start, not the finish
+            </h2>
+            <p className="text-white/45 text-lg leading-relaxed">
+              A great site converts the people who reach it. But someone has to find you first —
+              and remember you afterwards. That&apos;s what branding and ads are for.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {/* Brand */}
+            <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.03] p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center">
+                  <Palette className="w-5 h-5 text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Brand &amp; Identity</h3>
+                  <p className="text-xs text-amber-400/80">Makes people trust you and remember you</p>
+                </div>
+              </div>
+
+              <ul className="space-y-4 mb-7">
+                {[
+                  { t: "Look established from day one", d: "Customers judge credibility in seconds. A consistent identity makes a brand-new business look like the safe choice." },
+                  { t: "Get remembered, not just seen", d: "Recognisable colours and a distinct logo mean people recall you later — when they're actually ready to buy." },
+                  { t: "Support a higher price", d: "Businesses that look premium can charge above competitors offering the exact same work." },
+                  { t: "Stop looking like five companies", d: "Your site, invoices, socials and signage finally match — which is what makes a small business look bigger." },
+                ].map((b) => (
+                  <li key={b.t} className="flex gap-3">
+                    <TrendingUp className="w-4 h-4 text-amber-400 flex-shrink-0 mt-1" />
+                    <div>
+                      <div className="text-sm font-semibold text-white mb-0.5">{b.t}</div>
+                      <p className="text-sm text-white/40 leading-relaxed">{b.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <Link href="/brand" className="inline-flex items-center gap-1.5 text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">
+                Explore Brand &amp; Identity <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Ads */}
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center">
+                  <Megaphone className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Meta Ads</h3>
+                  <p className="text-xs text-emerald-400/80">Brings you customers who&apos;d never have found you</p>
+                </div>
+              </div>
+
+              <ul className="space-y-4 mb-7">
+                {[
+                  { t: "Reach buyers this week", d: "SEO takes months to build. Paid ads put your offer in front of the right people almost immediately." },
+                  { t: "Turn growth into arithmetic", d: "Once you know what a lead costs, scaling stops being a guess and becomes a budget decision." },
+                  { t: "Know exactly what works", d: "Proper tracking ties each sale back to the ad that caused it — so you stop paying for what doesn't." },
+                  { t: "Win back the near-misses", d: "Retargeting brings back people who visited, hesitated and left. They're your cheapest customers." },
+                ].map((b) => (
+                  <li key={b.t} className="flex gap-3">
+                    <TrendingUp className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-1" />
+                    <div>
+                      <div className="text-sm font-semibold text-white mb-0.5">{b.t}</div>
+                      <p className="text-sm text-white/40 leading-relaxed">{b.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <Link href="/ads" className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
+                Explore Meta Ads <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Together */}
+          <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1.5">The three work best together</h3>
+              <p className="text-sm text-white/45 leading-relaxed max-w-2xl">
+                Ads bring people in, your brand makes them trust what they find, and your website
+                turns them into customers. Any one alone leaks — all three together compound.
+              </p>
+            </div>
+            <Link href="/pricing" className="flex-shrink-0">
+              <Button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0">
+                See bundle pricing <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* ── Process ──────────────────────────────── */}
       <section className="py-28 border-t border-white/5 relative overflow-hidden">

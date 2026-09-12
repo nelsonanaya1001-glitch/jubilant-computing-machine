@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight, ArrowUpRight } from "lucide-react";
+import { BundleBuilder } from "./BundleBuilder";
 
 const plans = [
   {
@@ -309,6 +310,24 @@ export default function PricingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Bundle builder — pick one from each category */}
+      <section className="py-24 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-violet-600/10 rounded-full filter blur-[120px]" />
+        <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">
+              Build your bundle
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black mb-3">Mix and match</h2>
+            <p className="text-white/40 max-w-xl mx-auto">
+              Pick one from each category — or skip any you don&apos;t need. The more you combine,
+              the more you save.
+            </p>
+          </div>
+          <BundleBuilder />
         </div>
       </section>
 
