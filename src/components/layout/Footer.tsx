@@ -9,7 +9,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2.5 mb-5">
               <div className="w-7 h-7 bg-violet-500 rounded-md rotate-12" />
               <span className="font-bold text-white text-lg tracking-tight">
-                launch<span className="text-violet-400">board</span>
+                launch<span className="text-violet-400">boarding</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed">
@@ -23,6 +23,7 @@ export function Footer() {
               {["Business Websites", "E-Commerce", "Landing Pages", "Booking Systems"].map((s) => (
                 <li key={s}><Link href="/services" className="hover:text-white transition-colors">{s}</Link></li>
               ))}
+              <li><Link href="/brand" className="hover:text-white transition-colors">Brand &amp; Identity</Link></li>
             </ul>
           </div>
 
