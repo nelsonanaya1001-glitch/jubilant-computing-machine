@@ -137,6 +137,97 @@ export default function PricingPage() {
           ))}
         </div>
 
+        {/* Brand & Identity — its own category, sold with a site or on its own */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-20">
+          <div className="text-center mb-10">
+            <div className="text-xs font-semibold text-fuchsia-400 uppercase tracking-widest mb-3">
+              Add-on category
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black mb-3">Brand &amp; Identity</h2>
+            <p className="text-white/40 max-w-xl mx-auto">
+              Logo, colour palette, fonts and a brand guide. Add it to any website above, or buy
+              it on its own.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+            {[
+              {
+                name: "Brand Standard",
+                solo: "149",
+                bundled: "99",
+                popular: false,
+                features: [
+                  "Up to 4 logo concepts",
+                  "Full 6-colour palette",
+                  "Heading + body font pairing",
+                  "One-page web brand guide",
+                  "Editable SVG logo files",
+                ],
+              },
+              {
+                name: "Brand Pro",
+                solo: "249",
+                bundled: "199",
+                popular: true,
+                features: [
+                  "Everything in Standard",
+                  "All 6 logo concepts",
+                  "Favicon + social avatar exports",
+                  "Downloadable PDF brand guide",
+                  "One round of hand revisions",
+                  "Usage do's and don'ts",
+                ],
+              },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className={`relative rounded-2xl border p-7 overflow-hidden ${
+                  p.popular ? "border-violet-500/40 bg-violet-500/[0.04]" : "border-white/5 bg-white/[0.02]"
+                }`}
+              >
+                {p.popular && (
+                  <div className="absolute top-0 right-0 bg-violet-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
+                    Best value
+                  </div>
+                )}
+                <h3 className="text-lg font-bold mb-3">{p.name}</h3>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-xl font-medium text-white/40">$</span>
+                  <span className="text-4xl font-black text-white">{p.bundled}</span>
+                  <span className="text-white/30 text-sm ml-1">with a website</span>
+                </div>
+                <div className="text-sm text-white/30 mb-6">
+                  <span className="line-through">${p.solo}</span> on its own — save $50 bundled
+                </div>
+                <ul className="space-y-2.5 mb-7">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-white/60">
+                      <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-violet-400" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/brand/start">
+                  <Button
+                    className={`w-full border-0 ${
+                      p.popular ? "bg-violet-600 hover:bg-violet-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                    }`}
+                  >
+                    Start your brand <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-sm text-white/30 mt-8">
+            Want the full picture?{" "}
+            <Link href="/brand" className="text-violet-400 hover:text-violet-300">
+              See everything in the Brand &amp; Identity package
+            </Link>
+          </p>
+        </div>
       </section>
 
       {/* FAQ */}
@@ -149,6 +240,8 @@ export default function PricingPage() {
               { q: "Are there any hidden fees?", a: "No. The price you see is the full project cost. Hosting and domain are yours to own directly, and maintenance is entirely optional." },
               { q: "Is the maintenance plan required?", a: "Not at all. Your site is yours once it launches. The $150/mo plan is there if you'd like us to keep it updated and supported." },
               { q: "Can I add features later?", a: "Yes. Many clients start simple and expand over time. We can scope additional pages or features whenever you're ready." },
+              { q: "Do I need the Brand & Identity package?", a: "Only if you don't already have a logo and brand colours. If you do, send them over and we'll build your site around them at no extra cost. If you don't, the brand package gives you a logo, palette, fonts and a brand guide — and it's $50 cheaper bundled with a website." },
+              { q: "Who owns the logo and brand files?", a: "You do, completely. You get editable vector files and a brand guide that are yours to use anywhere — signage, packaging, social media, print — with no ongoing licence or fee." },
             ].map((faq) => (
               <details key={faq.q} className="group bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-semibold text-sm">

@@ -34,6 +34,43 @@ const brandSchema = z.object({
   projectId: z.string().optional().or(z.literal("")),
 });
 
+/** Admin-only listing of brand orders, with optional search + status filter. */
+export async function GET(req: NextRequest) {
+  const session = await auth();
+  if (session?.user?.role !== "ADMIN") {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(req.url);
+  const search = searchParams.get("search")?.trim() || "";
+  const status = searchParams.get("status")?.trim() || "";
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+  const perPage = 20;
+
+  const where: Record<string, unknown> = {};
+  if (status) where.status = status;
+  if (search) {
+    where.OR = [
+      { businessName: { contains: search, mode: "insensitive" } },
+      { contactName: { contains: search, mode: "insensitive" } },
+      { email: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  const [submissions, total] = await Promise.all([
+    prisma.brandSubmission.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * perPage,
+      take: perPage,
+      include: { _count: { select: { assets: true } } },
+    }),
+    prisma.brandSubmission.count({ where }),
+  ]);
+
+  return NextResponse.json({ submissions, total });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

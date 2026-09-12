@@ -52,8 +52,10 @@ function hash(input: string): number {
 /** First letters of up to two significant words, e.g. "Founders Distribution" → "FD". */
 export function initials(name: string): string {
   const skip = new Set(["the", "a", "an", "of", "and", "&", "for", "llc", "inc", "co"]);
+  // Strip punctuation while keeping Latin-1/Extended letters. Avoids the `u`
+  // regex flag, which needs a newer compile target than this project uses.
   const words = name
-    .replace(/[^\p{L}\p{N}\s&]/gu, " ")
+    .replace(/[^\s\w&À-ɏ]|_/g, " ")
     .split(/\s+/)
     .filter((w) => w && !skip.has(w.toLowerCase()));
 

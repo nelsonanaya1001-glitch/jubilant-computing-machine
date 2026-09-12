@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, FolderKanban, MessageSquare, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Users, FolderKanban, MessageSquare, Palette, LogOut, ExternalLink } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/brand", label: "Branding", icon: Palette },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
 ];
 
@@ -21,7 +22,7 @@ export function AdminSidebar() {
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
           <div className="w-6 h-6 bg-violet-500 rounded-md rotate-12" />
           <span className="font-bold text-white text-sm tracking-tight">
-            launch<span className="text-violet-400">board</span>
+            launch<span className="text-violet-400">boarding</span>
           </span>
         </Link>
         <div className="text-[10px] text-white/30 mt-1 ml-8 font-medium uppercase tracking-widest">Admin</div>
