@@ -256,18 +256,18 @@ export default function GetStartedPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Project Submitted!</h1>
-          <p className="text-gray-500 mb-6">
+          <h1 className="text-3xl font-bold text-white mb-4">Project Submitted!</h1>
+          <p className="text-white/50 mb-6">
             Thank you for submitting your project details. Our team will review your information and reach out within 1 business day to discuss next steps.
           </p>
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-left mb-6">
-            <h4 className="font-semibold text-gray-900 mb-2">What happens next?</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
+          <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-5 text-left mb-6">
+            <h4 className="font-semibold text-white mb-2">What happens next?</h4>
+            <ul className="space-y-2 text-sm text-white/60">
               <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> We review your project details</li>
               <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Discovery call to align on scope & goals</li>
               <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Custom proposal sent within 24–48 hours</li>
@@ -277,8 +277,8 @@ export default function GetStartedPage() {
           {/* Stay in touch — set up portal access to message us */}
           {portalDone ? (
             <div className="bg-green-50 border border-green-100 rounded-xl p-5 text-left mb-8">
-              <h4 className="font-semibold text-gray-900 mb-1">Your portal is ready</h4>
-              <p className="text-sm text-gray-600 mb-3">
+              <h4 className="font-semibold text-white mb-1">Your portal is ready</h4>
+              <p className="text-sm text-white/60 mb-3">
                 Sign in any time to track progress and message us directly.
               </p>
               <a href="/login">
@@ -286,13 +286,13 @@ export default function GetStartedPage() {
               </a>
             </div>
           ) : accountCreated ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-5 text-left mb-8">
-              <h4 className="font-semibold text-gray-900 mb-1">Stay in touch</h4>
-              <p className="text-sm text-gray-500 mb-4">
+            <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5 text-left mb-8">
+              <h4 className="font-semibold text-white mb-1">Stay in touch</h4>
+              <p className="text-sm text-white/50 mb-4">
                 Create a password to access your client portal — track your project status and message us directly, any time.
               </p>
               <div className="space-y-3">
-                <Input
+                <Input tone="dark"
                   type="password"
                   placeholder="Choose a password (min. 8 characters)"
                   value={portalPassword}
@@ -305,29 +305,29 @@ export default function GetStartedPage() {
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-gray-200 rounded-xl p-5 text-left mb-8">
-              <p className="text-sm text-gray-500 mb-3">
+            <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5 text-left mb-8">
+              <p className="text-sm text-white/50 mb-3">
                 You can track this project and message us from your client portal.
               </p>
               <a href="/login"><Button variant="outline" className="w-full">Sign In to Your Portal</Button></a>
             </div>
           )}
 
-          <a href="/" className="text-blue-600 font-semibold hover:underline">← Return to Homepage</a>
+          <a href="/" className="text-violet-400 font-semibold hover:underline">← Return to Homepage</a>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#080810]">
       {/* Top bar */}
-      <div className="bg-white border-b border-gray-100 sticky top-16 z-10">
+      <div className="bg-[#080810]/90 backdrop-blur-md border-b border-white/10 sticky top-16 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-5 h-5 text-blue-600" />
-            <span className="font-semibold text-gray-900">Project Intake Form</span>
-            <span className="text-gray-400 text-sm ml-2">Step {currentStep + 1} of {steps.length}</span>
+            <Zap className="w-5 h-5 text-violet-400" />
+            <span className="font-semibold text-white">Project Intake Form</span>
+            <span className="text-white/30 text-sm ml-2">Step {currentStep + 1} of {steps.length}</span>
           </div>
           {/* Progress bar */}
           <div className="flex items-center gap-1">
@@ -336,7 +336,7 @@ export default function GetStartedPage() {
                 <div
                   className={cn(
                     "h-1.5 flex-1 rounded-full transition-all duration-300",
-                    i <= currentStep ? "bg-blue-600" : "bg-gray-200"
+                    i <= currentStep ? "bg-violet-500" : "bg-white/10"
                   )}
                 />
               </div>
@@ -348,7 +348,7 @@ export default function GetStartedPage() {
                 key={step}
                 className={cn(
                   "text-xs font-medium hidden sm:block",
-                  i === currentStep ? "text-blue-600" : i < currentStep ? "text-gray-500" : "text-gray-300"
+                  i === currentStep ? "text-violet-400" : i < currentStep ? "text-white/50" : "text-white/25"
                 )}
               >
                 {step}
@@ -364,20 +364,20 @@ export default function GetStartedPage() {
         {currentStep === 0 && (
           <form onSubmit={form1.handleSubmit(handleStep1)} className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Business Information</h2>
-              <p className="text-gray-500">Tell us about your business so we can tailor the right solution.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">Business Information</h2>
+              <p className="text-white/50">Tell us about your business so we can tailor the right solution.</p>
             </div>
-            <Input
+            <Input tone="dark"
               label="Business Name *"
               placeholder="Acme Corporation"
               {...form1.register("businessName")}
               error={form1.formState.errors.businessName?.message}
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Industry *</label>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">Industry *</label>
               <select
                 {...form1.register("industry")}
-                className="flex h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                className="flex h-11 w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm text-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 transition-all"
               >
                 <option value="">Select your industry...</option>
                 {industries.map((i) => <option key={i} value={i}>{i}</option>)}
@@ -387,13 +387,13 @@ export default function GetStartedPage() {
               )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <Input tone="dark"
                 label="Your Name *"
                 placeholder="Jane Smith"
                 {...form1.register("contactName")}
                 error={form1.formState.errors.contactName?.message}
               />
-              <Input
+              <Input tone="dark"
                 label="Email Address *"
                 type="email"
                 placeholder="jane@company.com"
@@ -402,14 +402,14 @@ export default function GetStartedPage() {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <Input tone="dark"
                 label="Phone Number *"
                 type="tel"
                 placeholder="+1 (555) 000-0000"
                 {...form1.register("phone")}
                 error={form1.formState.errors.phone?.message}
               />
-              <Input
+              <Input tone="dark"
                 label="Current Website (optional)"
                 type="url"
                 placeholder="https://yourwebsite.com"
@@ -427,11 +427,11 @@ export default function GetStartedPage() {
         {currentStep === 1 && (
           <form onSubmit={form2.handleSubmit(handleStep2)} className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Business Details</h2>
-              <p className="text-gray-500">Help us understand what you do and who you serve.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">Business Details</h2>
+              <p className="text-white/50">Help us understand what you do and who you serve.</p>
             </div>
             <div>
-              <Textarea
+              <Textarea tone="dark"
                 label="Services You Offer * (be detailed — at least 50 words)"
                 placeholder="Describe your products or services in detail. The more you share — what you offer, who it's for, what makes you different, your pricing approach, and any specialties — the better we can build for you. Aim for at least 50 words."
                 rows={5}
@@ -441,25 +441,25 @@ export default function GetStartedPage() {
               {(() => {
                 const words = (form2.watch("servicesOffered") || "").trim().split(/\s+/).filter(Boolean).length;
                 return (
-                  <p className={cn("mt-1 text-xs", words >= 50 ? "text-green-600" : "text-gray-400")}>
+                  <p className={cn("mt-1 text-xs", words >= 50 ? "text-green-600" : "text-white/30")}>
                     {words} / 50 words {words >= 50 ? "✓" : ""}
                   </p>
                 );
               })()}
             </div>
-            <Input
+            <Input tone="dark"
               label="Service Area / Location *"
               placeholder="e.g., New York City, Nationwide, Online"
               {...form2.register("serviceArea")}
               error={form2.formState.errors.serviceArea?.message}
             />
-            <Input
+            <Input tone="dark"
               label="Target Audience *"
               placeholder="e.g., Small business owners aged 30–55 in the US"
               {...form2.register("targetAudience")}
               error={form2.formState.errors.targetAudience?.message}
             />
-            <Textarea
+            <Textarea tone="dark"
               label="About Your Business *"
               placeholder="Give us a summary of your business — your story, mission, and what makes you different..."
               rows={4}
@@ -481,12 +481,12 @@ export default function GetStartedPage() {
         {currentStep === 2 && (
           <form onSubmit={form3.handleSubmit(handleStep3)} className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Design Preferences</h2>
-              <p className="text-gray-500">Help us understand your aesthetic so we can design something you'll love.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">Design Preferences</h2>
+              <p className="text-white/50">Help us understand your aesthetic so we can design something you'll love.</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Color Palette Preference *</label>
+              <label className="block text-sm font-medium text-white/70 mb-3">Color Palette Preference *</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {colorOptions.map((opt) => (
                   <label
@@ -494,8 +494,8 @@ export default function GetStartedPage() {
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
                       form3.watch("preferredColors") === opt.value
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-violet-500 bg-violet-500/10"
+                        : "border-white/10 hover:border-white/15"
                     )}
                   >
                     <input
@@ -506,10 +506,10 @@ export default function GetStartedPage() {
                     />
                     <div className="flex gap-1">
                       {opt.colors.map((c) => (
-                        <div key={c} className="w-5 h-5 rounded-full border border-gray-200" style={{ backgroundColor: c }} />
+                        <div key={c} className="w-5 h-5 rounded-full border border-white/10" style={{ backgroundColor: c }} />
                       ))}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{opt.label}</span>
+                    <span className="text-sm font-medium text-white/70">{opt.label}</span>
                   </label>
                 ))}
               </div>
@@ -524,15 +524,15 @@ export default function GetStartedPage() {
                 }}
                 className={cn(
                   "mt-3 w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all",
-                  showCustomColors ? "border-blue-500 bg-blue-50 text-blue-700" : "border-dashed border-gray-300 text-gray-600 hover:border-gray-400"
+                  showCustomColors ? "border-violet-500 bg-violet-500/15 text-violet-300" : "border-dashed border-white/15 text-white/60 hover:border-white/30"
                 )}
               >
                 + Choose my own exact colors
               </button>
 
               {showCustomColors && (
-                <div className="mt-3 p-4 rounded-xl border-2 border-blue-200 bg-blue-50/40">
-                  <p className="text-sm text-gray-600 mb-3">Pick the exact colors you'd like us to use:</p>
+                <div className="mt-3 p-4 rounded-xl border-2 border-violet-500/30 bg-violet-500/10">
+                  <p className="text-sm text-white/60 mb-3">Pick the exact colors you'd like us to use:</p>
                   <div className="grid grid-cols-3 gap-3">
                     {[
                       { label: "Primary", i: 0 },
@@ -548,10 +548,10 @@ export default function GetStartedPage() {
                             next[i] = e.target.value;
                             applyCustomColors(next);
                           }}
-                          className="w-14 h-14 rounded-lg border border-gray-200 cursor-pointer bg-white p-1"
+                          className="w-14 h-14 rounded-lg border border-white/10 cursor-pointer bg-white/10 p-1"
                         />
-                        <span className="text-xs font-medium text-gray-600">{label}</span>
-                        <span className="text-[10px] text-gray-400 uppercase">{customColors[i]}</span>
+                        <span className="text-xs font-medium text-white/60">{label}</span>
+                        <span className="text-[10px] text-white/30 uppercase">{customColors[i]}</span>
                       </div>
                     ))}
                   </div>
@@ -564,7 +564,7 @@ export default function GetStartedPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Website Style / Feel *</label>
+              <label className="block text-sm font-medium text-white/70 mb-3">Website Style / Feel *</label>
               <div className="space-y-2">
                 {styleOptions.map((style) => (
                   <label
@@ -572,8 +572,8 @@ export default function GetStartedPage() {
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
                       form3.watch("preferredStyle") === style
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-violet-500 bg-violet-500/10"
+                        : "border-white/10 hover:border-white/15"
                     )}
                   >
                     <input
@@ -584,9 +584,9 @@ export default function GetStartedPage() {
                     />
                     <div className={cn(
                       "w-4 h-4 rounded-full border-2 flex-shrink-0",
-                      form3.watch("preferredStyle") === style ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                      form3.watch("preferredStyle") === style ? "border-violet-500 bg-violet-500" : "border-white/15"
                     )} />
-                    <span className="text-sm font-medium text-gray-700">{style}</span>
+                    <span className="text-sm font-medium text-white/70">{style}</span>
                   </label>
                 ))}
               </div>
@@ -596,11 +596,11 @@ export default function GetStartedPage() {
             </div>
 
             {/* Logo & Branding */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Logo &amp; Branding</h3>
-              <p className="text-sm text-gray-500 mb-4">Do you already have a logo, or would you like us to design one?</p>
+            <div className="border-t border-white/10 pt-6">
+              <h3 className="text-lg font-bold text-white mb-1">Logo &amp; Branding</h3>
+              <p className="text-sm text-white/50 mb-4">Do you already have a logo, or would you like us to design one?</p>
 
-              <label className="block text-sm font-medium text-gray-700 mb-3">Your logo *</label>
+              <label className="block text-sm font-medium text-white/70 mb-3">Your logo *</label>
               <div className="space-y-2">
                 {logoOptions.map((opt) => (
                   <label
@@ -608,18 +608,18 @@ export default function GetStartedPage() {
                     className={cn(
                       "flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
                       form3.watch("hasLogo") === opt.value
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-violet-500 bg-violet-500/10"
+                        : "border-white/10 hover:border-white/15"
                     )}
                   >
                     <input type="radio" value={opt.value} {...form3.register("hasLogo")} className="sr-only" />
                     <div className={cn(
                       "w-4 h-4 rounded-full border-2 flex-shrink-0 mt-0.5",
-                      form3.watch("hasLogo") === opt.value ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                      form3.watch("hasLogo") === opt.value ? "border-violet-500 bg-violet-500" : "border-white/15"
                     )} />
                     <div>
-                      <span className="text-sm font-medium text-gray-700 block">{opt.label}</span>
-                      <span className="text-xs text-gray-500">{opt.desc}</span>
+                      <span className="text-sm font-medium text-white/70 block">{opt.label}</span>
+                      <span className="text-xs text-white/50">{opt.desc}</span>
                     </div>
                   </label>
                 ))}
@@ -637,19 +637,19 @@ export default function GetStartedPage() {
 
               {/* If they need a logo designed or redesigned — collect exact preferences */}
               {(form3.watch("hasLogo") === "need" || form3.watch("hasLogo") === "redesign") && (
-                <div className="mt-4 space-y-5 rounded-xl border-2 border-blue-200 bg-blue-50/40 p-5">
-                  <p className="text-sm text-gray-600">
+                <div className="mt-4 space-y-5 rounded-xl border-2 border-violet-500/30 bg-violet-500/10 p-5">
+                  <p className="text-sm text-white/60">
                     Tell us exactly how you'd like your logo to look. The more detail you share, the closer we'll get it on the first try.
                   </p>
 
-                  <Input
+                  <Input tone="dark"
                     label="Exact text / wording for the logo"
                     placeholder="e.g., Acme Co. — or a tagline you want included"
                     {...form3.register("logoText")}
                   />
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Logo type you prefer</label>
+                    <label className="block text-sm font-medium text-white/70 mb-3">Logo type you prefer</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {logoStyleOptions.map((style) => (
                         <label
@@ -657,35 +657,35 @@ export default function GetStartedPage() {
                           className={cn(
                             "flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all",
                             form3.watch("logoStyle") === style
-                              ? "border-blue-500 bg-blue-50"
-                              : "border-gray-200 bg-white hover:border-gray-300"
+                              ? "border-violet-500 bg-violet-500/10"
+                              : "border-white/10 bg-white/5 hover:border-white/20"
                           )}
                         >
                           <input type="radio" value={style} {...form3.register("logoStyle")} className="sr-only" />
                           <div className={cn(
                             "w-4 h-4 rounded-full border-2 flex-shrink-0",
-                            form3.watch("logoStyle") === style ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                            form3.watch("logoStyle") === style ? "border-violet-500 bg-violet-500" : "border-white/15"
                           )} />
-                          <span className="text-sm font-medium text-gray-700">{style}</span>
+                          <span className="text-sm font-medium text-white/70">{style}</span>
                         </label>
                       ))}
                     </div>
                   </div>
 
-                  <Input
+                  <Input tone="dark"
                     label="Logo colors (optional)"
                     placeholder="e.g., Same as my website colors, or gold & black, etc."
                     {...form3.register("logoColorNotes")}
                   />
 
-                  <Textarea
+                  <Textarea tone="dark"
                     label="Describe exactly how you want it"
                     placeholder="Any icons, symbols, imagery, or feeling you want the logo to capture. e.g., 'A minimal truck icon next to the name, modern and bold, conveys speed and trust.'"
                     rows={4}
                     {...form3.register("logoIdeas")}
                   />
 
-                  <Textarea
+                  <Textarea tone="dark"
                     label="Logos you admire (optional)"
                     placeholder="Name brands or paste links to logos whose style you like..."
                     rows={2}
@@ -695,7 +695,7 @@ export default function GetStartedPage() {
               )}
             </div>
 
-            <Textarea
+            <Textarea tone="dark"
               label="Competitor Websites (optional)"
               placeholder="List any competitor websites we should be aware of (one per line)..."
               rows={3}
@@ -703,15 +703,15 @@ export default function GetStartedPage() {
             />
 
             {/* Example domains / inspiration */}
-            <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
-              <h3 className="text-sm font-semibold text-blue-900 mb-1">
+            <div className="rounded-xl border border-violet-500/30 bg-violet-500/10 p-5">
+              <h3 className="text-sm font-semibold text-violet-200 mb-1">
                 Example websites you'd like yours to look like
               </h3>
-              <p className="text-xs text-blue-700 mb-3">
+              <p className="text-xs text-violet-300 mb-3">
                 Share a few domains (e.g. <span className="font-medium">apple.com, stripe.com, airbnb.com</span>)
                 whose design, layout, or feel you love. This gives us a clear starting point and helps us match your vision.
               </p>
-              <Textarea
+              <Textarea tone="dark"
                 placeholder={"Paste example domains here, one per line:\nhttps://example.com\nhttps://another-site.com"}
                 rows={4}
                 {...form3.register("websitesTheyLike")}
@@ -732,8 +732,8 @@ export default function GetStartedPage() {
         {currentStep === 3 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Features Needed</h2>
-              <p className="text-gray-500">Select all the features you'd like on your website.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">Features Needed</h2>
+              <p className="text-white/50">Select all the features you'd like on your website.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {featuresList.map((feature) => (
@@ -743,19 +743,19 @@ export default function GetStartedPage() {
                   className={cn(
                     "flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all",
                     selectedFeatures.includes(feature.id)
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-violet-500 bg-violet-500/10"
+                      : "border-white/10 hover:border-white/15"
                   )}
                 >
                   <div className={cn(
                     "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all",
-                    selectedFeatures.includes(feature.id) ? "border-blue-500 bg-blue-500" : "border-gray-300"
+                    selectedFeatures.includes(feature.id) ? "border-violet-500 bg-violet-500" : "border-white/15"
                   )}>
                     {selectedFeatures.includes(feature.id) && (
                       <CheckCircle className="w-3 h-3 text-white" />
                     )}
                   </div>
-                  <span className="text-sm font-medium text-gray-700">{feature.label}</span>
+                  <span className="text-sm font-medium text-white/70">{feature.label}</span>
                 </label>
               ))}
             </div>
@@ -783,24 +783,24 @@ export default function GetStartedPage() {
         {currentStep === 4 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">File Uploads</h2>
-              <p className="text-gray-500">Upload your branding assets and any files that will help us understand your project. All files are optional.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">File Uploads</h2>
+              <p className="text-white/50">Upload your branding assets and any files that will help us understand your project. All files are optional.</p>
             </div>
 
             {fileCategories.map((cat) => (
               <div key={cat.id}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{cat.label}</label>
+                <label className="block text-sm font-medium text-white/70 mb-2">{cat.label}</label>
                 <div
                   className={cn(
                     "border-2 border-dashed rounded-xl p-6 text-center transition-all",
-                    dragOver === cat.id ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                    dragOver === cat.id ? "border-violet-500 bg-violet-500/10" : "border-white/10 hover:border-white/15"
                   )}
                   onDragOver={(e) => { e.preventDefault(); setDragOver(cat.id); }}
                   onDragLeave={() => setDragOver(null)}
                   onDrop={(e) => { e.preventDefault(); setDragOver(null); handleFileDrop(cat.id, e.dataTransfer.files); }}
                 >
-                  <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500 mb-1">{cat.desc}</p>
+                  <Upload className="w-8 h-8 text-white/30 mx-auto mb-2" />
+                  <p className="text-sm text-white/50 mb-1">{cat.desc}</p>
                   <input
                     type="file"
                     multiple
@@ -809,19 +809,19 @@ export default function GetStartedPage() {
                     id={`file-${cat.id}`}
                     onChange={(e) => handleFileDrop(cat.id, e.target.files)}
                   />
-                  <label htmlFor={`file-${cat.id}`} className="text-sm text-blue-600 font-medium cursor-pointer hover:underline">
+                  <label htmlFor={`file-${cat.id}`} className="text-sm text-violet-400 font-medium cursor-pointer hover:underline">
                     Browse files
                   </label>
                 </div>
                 {uploadedFiles[cat.id]?.length > 0 && (
                   <div className="mt-2 space-y-1">
                     {uploadedFiles[cat.id].map((file, i) => (
-                      <div key={i} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 text-sm">
-                        <span className="text-gray-700 truncate">{file.name}</span>
+                      <div key={i} className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2 text-sm">
+                        <span className="text-white/70 truncate">{file.name}</span>
                         <button
                           type="button"
                           onClick={() => removeFile(cat.id, i)}
-                          className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
+                          className="text-white/30 hover:text-red-500 ml-2 flex-shrink-0"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -847,8 +847,8 @@ export default function GetStartedPage() {
         {currentStep === 5 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Review & Submit</h2>
-              <p className="text-gray-500">Review your information before submitting.</p>
+              <h2 className="text-2xl font-bold text-white mb-1">Review & Submit</h2>
+              <p className="text-white/50">Review your information before submitting.</p>
             </div>
 
             <div className="space-y-4">
@@ -892,7 +892,7 @@ export default function GetStartedPage() {
                   {selectedFeatures.map((f) => {
                     const label = featuresList.find((fl) => fl.id === f)?.label || f;
                     return (
-                      <span key={f} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                      <span key={f} className="bg-violet-500/15 text-violet-300 text-xs font-medium px-2.5 py-1 rounded-full">
                         {label}
                       </span>
                     );
@@ -902,13 +902,13 @@ export default function GetStartedPage() {
 
               <SummarySection title="Uploaded Files">
                 {Object.keys(uploadedFiles).length === 0 ? (
-                  <p className="text-sm text-gray-400">No files uploaded</p>
+                  <p className="text-sm text-white/30">No files uploaded</p>
                 ) : (
                   Object.entries(uploadedFiles).map(([cat, files]) => (
                     <div key={cat} className="mb-2">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">{cat}</div>
+                      <div className="text-xs text-white/50 uppercase tracking-wide mb-1">{cat}</div>
                       {files.map((f, i) => (
-                        <div key={i} className="text-sm text-gray-700">{f.name}</div>
+                        <div key={i} className="text-sm text-white/70">{f.name}</div>
                       ))}
                     </div>
                   ))
@@ -916,9 +916,9 @@ export default function GetStartedPage() {
               </SummarySection>
             </div>
 
-            <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-sm text-blue-900">
+            <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-5 text-sm text-violet-200">
               <h4 className="font-semibold mb-1">What happens after you submit</h4>
-              <p className="text-blue-800/90 leading-relaxed">
+              <p className="text-violet-200/80 leading-relaxed">
                 Once you submit, I'll personally start working on your website right away. I'll email you
                 with progress updates and any follow-up questions along the way, so you're never left
                 guessing. Most websites are completed and ready to review within <strong>1–3 business days</strong>.
@@ -954,9 +954,9 @@ export default function GetStartedPage() {
 
 function SummarySection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-      <div className="bg-gray-50 px-5 py-3 border-b border-gray-100">
-        <h4 className="text-sm font-semibold text-gray-700">{title}</h4>
+    <div className="bg-white/[0.03] rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white/5 px-5 py-3 border-b border-white/10">
+        <h4 className="text-sm font-semibold text-white/70">{title}</h4>
       </div>
       <div className="p-5 space-y-2">{children}</div>
     </div>
@@ -967,8 +967,8 @@ function SummaryRow({ label, value, multiline }: { label: string; value?: string
   if (!value) return null;
   return (
     <div className={`flex gap-3 text-sm ${multiline ? "flex-col" : ""}`}>
-      <span className="text-gray-400 font-medium min-w-[120px] flex-shrink-0">{label}</span>
-      <span className="text-gray-700">{value}</span>
+      <span className="text-white/30 font-medium min-w-[120px] flex-shrink-0">{label}</span>
+      <span className="text-white/70">{value}</span>
     </div>
   );
 }

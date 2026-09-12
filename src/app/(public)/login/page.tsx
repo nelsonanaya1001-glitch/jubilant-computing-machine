@@ -52,22 +52,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-7 h-7 bg-violet-500 rounded-md rotate-12" />
-            <span className="font-bold text-gray-900 text-xl">
-              launch<span className="text-violet-400">board</span>
+            <span className="font-bold text-white text-xl">
+              launch<span className="text-violet-400">boarding</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-          <p className="text-gray-500 mt-1">Sign in to access your client portal</p>
+          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+          <p className="text-white/50 mt-1">Sign in to access your client portal</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <div className="bg-white/[0.03] rounded-2xl border border-white/10 p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <Input
+            <Input tone="dark"
               label="Email Address"
               type="email"
               placeholder="you@company.com"
@@ -75,7 +75,7 @@ export default function LoginPage() {
               error={errors.email?.message}
             />
             <div>
-              <Input
+              <Input tone="dark"
                 label="Password"
                 type="password"
                 placeholder="••••••••"
@@ -83,31 +83,31 @@ export default function LoginPage() {
                 error={errors.password?.message}
               />
               <div className="text-right mt-1">
-                <a href="#" className="text-xs text-blue-600 hover:underline">Forgot password?</a>
+                <a href="#" className="text-xs text-violet-400 hover:underline">Forgot password?</a>
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm flex items-center gap-2">
+              <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded-lg px-4 py-3 text-sm flex items-center gap-2">
                 <Lock className="w-4 h-4 flex-shrink-0" />
                 {error}
               </div>
             )}
 
-            <Button type="submit" className="w-full" size="lg" disabled={loading}>
+            <Button type="submit" className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0" size="lg" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-500">
+          <div className="mt-6 text-center text-sm text-white/50">
             Don't have an account?{" "}
-            <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+            <Link href="/register" className="text-violet-400 font-semibold hover:underline">
               Create one
             </Link>
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-6">
+        <p className="text-center text-xs text-white/30 mt-6">
           By signing in you agree to our{" "}
           <a href="#" className="hover:underline">Terms of Service</a> and{" "}
           <a href="#" className="hover:underline">Privacy Policy</a>

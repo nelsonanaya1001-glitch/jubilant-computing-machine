@@ -2,11 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Space Grotesk carries every heading. Applied globally rather than per-page so
+   the whole site shifts together and new pages inherit it automatically. */
+h1, h2, h3, h4, .font-display {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 html {
@@ -16,5 +23,12 @@ html {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #0a0a0a; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #4c3a7a; }
 
 details summary::-webkit-details-marker { display: none; }
+
+/* The brand guide is a print deliverable — it opts out of the dark-site
+   heading treatment so it renders as a clean document. */
+.sheet h1, .sheet h2, .sheet h3, .sheet h4 {
+  letter-spacing: -0.02em;
+}

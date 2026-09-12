@@ -15,7 +15,7 @@ const plans = [
       "Google Maps & analytics",
       "Launch in 3–5 business days",
     ],
-    accent: "#4f46e5",
+    accent: "#a78bfa",
     popular: false,
   },
   {
@@ -30,7 +30,7 @@ const plans = [
       "Pixel & analytics tracking",
       "Launch in 3–5 business days",
     ],
-    accent: "#16a34a",
+    accent: "#f472b6",
     popular: true,
   },
   {
@@ -47,7 +47,7 @@ const plans = [
       "$150/mo maintenance available",
       "Launch in 5–7 business days",
     ],
-    accent: "#ea580c",
+    accent: "#38bdf8",
     popular: false,
   },
   {
@@ -65,14 +65,14 @@ const plans = [
       "$150/mo maintenance available",
       "Launch in 5–7 business days",
     ],
-    accent: "#db2777",
+    accent: "#e879f9",
     popular: false,
   },
 ];
 
 export default function PricingPage() {
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#080810] text-white">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />

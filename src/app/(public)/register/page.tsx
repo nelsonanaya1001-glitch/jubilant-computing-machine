@@ -45,42 +45,42 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-7 h-7 bg-violet-500 rounded-md rotate-12" />
-            <span className="font-bold text-gray-900 text-xl">
-              launch<span className="text-violet-400">board</span>
+            <span className="font-bold text-white text-xl">
+              launch<span className="text-violet-400">boarding</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
-          <p className="text-gray-500 mt-1">Track your project and communicate with our team</p>
+          <h1 className="text-2xl font-bold text-white">Create your account</h1>
+          <p className="text-white/50 mt-1">Track your project and communicate with our team</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <div className="bg-white/[0.03] rounded-2xl border border-white/10 p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <Input
+            <Input tone="dark"
               label="Full Name"
               placeholder="Jane Smith"
               {...register("name")}
               error={errors.name?.message}
             />
-            <Input
+            <Input tone="dark"
               label="Email Address"
               type="email"
               placeholder="jane@company.com"
               {...register("email")}
               error={errors.email?.message}
             />
-            <Input
+            <Input tone="dark"
               label="Password"
               type="password"
               placeholder="Minimum 8 characters"
               {...register("password")}
               error={errors.password?.message}
             />
-            <Input
+            <Input tone="dark"
               label="Confirm Password"
               type="password"
               placeholder="Repeat your password"
@@ -89,19 +89,19 @@ export default function RegisterPage() {
             />
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+              <div className="bg-red-500/10 border border-red-500/30 text-red-300 rounded-lg px-4 py-3 text-sm">
                 {error}
               </div>
             )}
 
-            <Button type="submit" className="w-full" size="lg" disabled={loading}>
+            <Button type="submit" className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0" size="lg" disabled={loading}>
               {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-500">
+          <div className="mt-6 text-center text-sm text-white/50">
             Already have an account?{" "}
-            <Link href="/login" className="text-blue-600 font-semibold hover:underline">
+            <Link href="/login" className="text-violet-400 font-semibold hover:underline">
               Sign in
             </Link>
           </div>

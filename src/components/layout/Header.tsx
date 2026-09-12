@@ -27,7 +27,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-black/90 backdrop-blur-md border-b",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#080810]/90 backdrop-blur-md border-b",
         scrolled
           ? "border-white/10 shadow-xl shadow-black/30"
           : "border-white/5"
@@ -77,7 +77,7 @@ export function Header() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden bg-black border-t border-white/5 px-6 py-5 space-y-3">
+        <div className="md:hidden bg-[#080810] border-t border-white/5 px-6 py-5 space-y-3">
           {navLinks.map((link) => (
             <Link
               key={link.href}
