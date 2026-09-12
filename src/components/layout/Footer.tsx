@@ -24,6 +24,7 @@ export function Footer() {
                 <li key={s}><Link href="/services" className="hover:text-white transition-colors">{s}</Link></li>
               ))}
               <li><Link href="/brand" className="hover:text-white transition-colors">Brand &amp; Identity</Link></li>
+              <li><Link href="/ads" className="hover:text-white transition-colors">Meta Ads</Link></li>
             </ul>
           </div>
 

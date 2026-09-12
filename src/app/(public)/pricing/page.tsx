@@ -228,6 +228,88 @@ export default function PricingPage() {
             </Link>
           </p>
         </div>
+
+        {/* Meta Ads — recurring management, priced separately from build work */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-24">
+          <div className="text-center mb-10">
+            <div className="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-3">
+              Ongoing service
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black mb-3">Meta Ads Management</h2>
+            <p className="text-white/40 max-w-xl mx-auto">
+              Facebook and Instagram campaigns, managed month to month. Ad spend is paid directly
+              to Meta and is not included below.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+            {[
+              {
+                name: "Ads Starter",
+                setup: "349",
+                monthly: "299",
+                popular: false,
+                features: [
+                  "1 campaign, up to 2 ad sets",
+                  "Audience research & setup",
+                  "Meta Pixel + Conversions API",
+                  "Ad creative (up to 3 variations)",
+                  "Monthly performance report",
+                ],
+              },
+              {
+                name: "Ads Growth",
+                setup: "499",
+                monthly: "549",
+                popular: true,
+                features: [
+                  "Multiple campaigns & ad sets",
+                  "Cold, warm & retargeting funnel",
+                  "Monthly creative refresh",
+                  "Ongoing A/B testing",
+                  "Weekly reporting & optimisation",
+                ],
+              },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className={`relative rounded-2xl border p-7 overflow-hidden ${
+                  p.popular ? "border-emerald-500/40 bg-emerald-500/[0.04]" : "border-white/5 bg-white/[0.02]"
+                }`}
+              >
+                {p.popular && (
+                  <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
+                    Most Popular
+                  </div>
+                )}
+                <h3 className="text-lg font-bold mb-3">{p.name}</h3>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-xl font-medium text-white/40">$</span>
+                  <span className="text-4xl font-black text-white">{p.monthly}</span>
+                  <span className="text-white/30 text-sm ml-1">/mo</span>
+                </div>
+                <div className="text-sm text-white/30 mb-6">plus a one-time ${p.setup} setup</div>
+                <ul className="space-y-2.5 mb-7">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-white/60">
+                      <Check className="w-4 h-4 flex-shrink-0 mt-0.5 text-emerald-400" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/ads">
+                  <Button
+                    className={`w-full border-0 ${
+                      p.popular ? "bg-emerald-600 hover:bg-emerald-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                    }`}
+                  >
+                    Learn more <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* FAQ */}

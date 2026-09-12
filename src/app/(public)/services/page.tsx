@@ -1,9 +1,26 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Globe, ShoppingCart, MousePointerClick, Calendar, Palette, Check, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Globe, ShoppingCart, MousePointerClick, Calendar, Palette, Megaphone, Check, ArrowRight, ArrowUpRight } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+type Service = {
+  n: string;
+  icon: LucideIcon;
+  title: string;
+  tagline: string;
+  description: string;
+  features: string[];
+  price: string;
+  /** Set for recurring services (e.g. "/mo"); absent means a one-time fee. */
+  priceSuffix?: string;
+  timeline: string;
+  accent: string;
+  chip: string;
+  href: string;
+};
 
 // Prices here are the single source of truth alongside /pricing — keep them in step.
-const services = [
+const services: Service[] = [
   {
     n: "01",
     icon: Globe,
@@ -112,6 +129,28 @@ const services = [
     chip: "bg-amber-500/10 border-amber-500/25",
     href: "/brand",
   },
+  {
+    n: "06",
+    icon: Megaphone,
+    title: "Meta Ads Management",
+    tagline: "Reach the people who buy.",
+    description:
+      "Facebook and Instagram campaigns built around your offer, tracked properly and optimised every week. You keep the ad account and every piece of data in it.",
+    features: [
+      "Audience research & targeting",
+      "Ad creative and copywriting",
+      "Meta Pixel & Conversions API setup",
+      "Full funnel incl. retargeting",
+      "Ongoing A/B testing",
+      "Regular performance reporting",
+    ],
+    price: "299",
+    priceSuffix: "/mo",
+    timeline: "plus one-time setup",
+    accent: "text-emerald-400",
+    chip: "bg-emerald-500/10 border-emerald-500/25",
+    href: "/ads",
+  },
 ];
 
 export default function ServicesPage() {
@@ -175,8 +214,13 @@ export default function ServicesPage() {
                       <div className="flex items-baseline gap-1 mb-1">
                         <span className="text-xl font-medium text-white/40">$</span>
                         <span className="text-5xl font-black text-white">{s.price}</span>
+                        {s.priceSuffix && (
+                          <span className="text-lg font-medium text-white/40">{s.priceSuffix}</span>
+                        )}
                       </div>
-                      <div className="text-sm text-white/30 mb-6">one-time · {s.timeline}</div>
+                      <div className="text-sm text-white/30 mb-6">
+                        {s.priceSuffix ? s.timeline : `one-time · ${s.timeline}`}
+                      </div>
                       <Link href={s.href}>
                         <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white border-0">
                           Get started <ArrowRight className="ml-2 w-4 h-4" />

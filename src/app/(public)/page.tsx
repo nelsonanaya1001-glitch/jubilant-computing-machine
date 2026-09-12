@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar, Palette, Megaphone } from "lucide-react";
 
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
@@ -11,10 +11,12 @@ const work: { title: string; cat: string; url: string }[] = [
 ];
 
 const services = [
-  { n: "01", icon: Zap, title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads.", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
-  { n: "02", icon: ShoppingBag, title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management.", color: "text-fuchsia-400", bg: "bg-fuchsia-500/10 border-fuchsia-500/20" },
-  { n: "03", icon: MousePointerClick, title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales.", color: "text-pink-400", bg: "bg-pink-500/10 border-pink-500/20" },
-  { n: "04", icon: Calendar, title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls.", color: "text-sky-400", bg: "bg-sky-500/10 border-sky-500/20" },
+  { n: "01", icon: Zap, title: "Business Websites", desc: "Multi-page sites that establish authority and generate consistent inbound leads.", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20", href: "/services" },
+  { n: "02", icon: ShoppingBag, title: "E-Commerce Stores", desc: "Custom storefronts with conversion-optimized checkout and inventory management.", color: "text-fuchsia-400", bg: "bg-fuchsia-500/10 border-fuchsia-500/20", href: "/services" },
+  { n: "03", icon: MousePointerClick, title: "Landing Pages", desc: "Single-purpose pages built around one goal — capturing leads or making sales.", color: "text-pink-400", bg: "bg-pink-500/10 border-pink-500/20", href: "/services" },
+  { n: "04", icon: Calendar, title: "Booking Systems", desc: "Online scheduling that lets clients book 24/7 without emails or phone calls.", color: "text-sky-400", bg: "bg-sky-500/10 border-sky-500/20", href: "/services" },
+  { n: "05", icon: Palette, title: "Brand & Identity", desc: "Logo, colour palette, fonts and a brand guide — a complete identity built from scratch.", color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20", href: "/brand" },
+  { n: "06", icon: Megaphone, title: "Meta Ads Management", desc: "Facebook and Instagram campaigns built, launched and optimised to bring you real customers.", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20", href: "/ads" },
 ];
 
 const faqs = [
@@ -90,7 +92,11 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {services.map((s) => (
-              <div key={s.n} className={`group relative rounded-2xl border p-7 hover:scale-[1.01] transition-all duration-200 cursor-default ${s.bg}`}>
+              <Link
+                key={s.n}
+                href={s.href}
+                className={`group relative rounded-2xl border p-7 hover:scale-[1.01] transition-all duration-200 block ${s.bg}`}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.bg} border`}>
                     <s.icon className={`w-5 h-5 ${s.color}`} />
@@ -99,7 +105,7 @@ export default function HomePage() {
                 </div>
                 <h3 className={`text-xl font-bold mb-2 ${s.color}`}>{s.title}</h3>
                 <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

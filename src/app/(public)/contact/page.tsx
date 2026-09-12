@@ -164,7 +164,7 @@ export default function ContactPage() {
                     <label className={labelCls}>What are you interested in?</label>
                     <select name="service" className={inputCls} defaultValue="">
                       <option value="" className="bg-zinc-900">Select…</option>
-                      {["Business Website", "Landing Page", "Booking Website", "Online Store", "Brand & Identity", "Not sure yet"].map((s) => (
+                      {["Business Website", "Landing Page", "Booking Website", "Online Store", "Brand & Identity", "Meta Ads", "Not sure yet"].map((s) => (
                         <option key={s} value={s} className="bg-zinc-900">{s}</option>
                       ))}
                     </select>
