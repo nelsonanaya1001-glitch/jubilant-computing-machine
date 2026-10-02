@@ -6,7 +6,6 @@ import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerCl
 const work: { title: string; cat: string; url: string }[] = [
   { title: "InvestingHouse", cat: "Landing Page · Logistics", url: "https://investinghouse.net" },
   { title: "El Barullo", cat: "Landing Page · Logistics", url: "https://elbarullo.com" },
-  { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
   { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com" },
   { title: "Elevat8 Sourcing", cat: "Landing Page · Sourcing", url: "https://elevat8sourcing.com" },
   { title: "Voltiva Wholesale", cat: "Landing Page · Wholesale", url: "https://voltivawholesale.com" },

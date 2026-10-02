@@ -23,15 +23,6 @@ const projects = [
     tags: ["Landing Page", "Logistics", "Branding"],
   },
   {
-    title: "Motorland MIA",
-    category: "E-Commerce Store",
-    description: "Full e-commerce storefront for an automotive parts & accessories dealer. Built for browsing, filtering, and purchasing with a seamless checkout experience.",
-    url: "https://motorlandmia.com",
-    domain: "motorlandmia.com",
-    grad: "from-red-600 to-zinc-900",
-    tags: ["E-Commerce", "Automotive", "Store"],
-  },
-  {
     title: "Founders Distribution",
     category: "Business Website",
     description: "Professional website for a wholesale distribution company. Built to showcase products, establish credibility, and connect with retail partners.",
