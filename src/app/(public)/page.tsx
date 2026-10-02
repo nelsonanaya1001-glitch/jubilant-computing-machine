@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SitePreview } from "@/components/SitePreview";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight, ChevronDown, Zap, ShoppingBag, MousePointerClick, Calendar, Palette, Megaphone, TrendingUp } from "lucide-react";
 
@@ -29,11 +30,6 @@ const faqs = [
   { q: "Are there ongoing fees?", a: "Our quoted price is a one-time project fee. Hosting and domain costs are yours to own directly. Maintenance plans are optional add-ons." },
   { q: "Do you work with international clients?", a: "Yes — our entire workflow is remote-friendly. We have clients across North America, Europe, and Australia." },
 ];
-
-function screenshotUrl(url: string) {
-  // WordPress mShots — free, reliable, no API key. Renders a real screenshot of the live site.
-  return `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=1200&h=900`;
-}
 
 export default function HomePage() {
   return (
@@ -137,11 +133,9 @@ export default function HomePage() {
                 className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-900/20 transition-all duration-300 block"
               >
                 <div className="relative w-full h-44 overflow-hidden bg-zinc-900">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={screenshotUrl(p.url)}
-                    alt={`${p.title} website preview`}
-                    loading="lazy"
+                  <SitePreview
+                    url={p.url}
+                    title={p.title}
                     className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SitePreview } from "@/components/SitePreview";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
@@ -62,11 +63,6 @@ const projects = [
   },
 ];
 
-function screenshotUrl(siteUrl: string) {
-  // WordPress mShots — free, reliable, no API key. Renders a real screenshot of the live site.
-  return `https://s0.wp.com/mshots/v1/${encodeURIComponent(siteUrl)}?w=1200&h=900`;
-}
-
 export default function PortfolioPage() {
   return (
     <div className="bg-[#080810] text-white">
@@ -98,11 +94,9 @@ export default function PortfolioPage() {
               >
                 {/* Screenshot preview */}
                 <a href={project.url} target="_blank" rel="noopener noreferrer" className="block relative w-full h-52 overflow-hidden bg-zinc-900">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={screenshotUrl(project.url)}
-                    alt={`${project.title} website preview`}
-                    loading="lazy"
+                  <SitePreview
+                    url={project.url}
+                    title={project.title}
                     className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
