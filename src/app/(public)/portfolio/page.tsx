@@ -46,6 +46,20 @@ const projects = [
     url: "https://elevat8sourcing.com",
     tags: ["Landing Page", "Sourcing", "Lead Generation"],
   },
+  {
+    title: "Voltiva Wholesale",
+    category: "Landing Page",
+    description: "Conversion-focused landing page for a wholesale supply business. Built to present the offer clearly and turn visitors into qualified buyers.",
+    url: "https://voltivawholesale.com",
+    tags: ["Landing Page", "Wholesale", "Lead Generation"],
+  },
+  {
+    title: "Tovexa One",
+    category: "Landing Page",
+    description: "Single-page site built around one goal — introduce the brand, make the offer clear, and capture enquiries without distraction.",
+    url: "https://tovexaone.com",
+    tags: ["Landing Page", "Conversion", "Lead Generation"],
+  },
 ];
 
 function screenshotUrl(siteUrl: string) {

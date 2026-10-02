@@ -8,6 +8,8 @@ const work: { title: string; cat: string; url: string }[] = [
   { title: "Motorland MIA", cat: "E-Commerce · Automotive", url: "https://motorlandmia.com" },
   { title: "Founders Distribution", cat: "Business Site · Distribution", url: "https://foundersdistribution.com" },
   { title: "Elevat8 Sourcing", cat: "Landing Page · Sourcing", url: "https://elevat8sourcing.com" },
+  { title: "Voltiva Wholesale", cat: "Landing Page · Wholesale", url: "https://voltivawholesale.com" },
+  { title: "Tovexa One", cat: "Landing Page", url: "https://tovexaone.com" },
 ];
 
 const services = [
