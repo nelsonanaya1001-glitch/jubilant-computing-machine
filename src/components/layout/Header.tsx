@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CartButton } from "@/components/cart/CartButton";
 
 const navLinks = [
   { href: "/websites", label: "Websites" },
@@ -55,7 +56,8 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
+            <CartButton />
             <Link href="/login">
               <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5">
                 Sign In
@@ -68,12 +70,15 @@ export function Header() {
             </Link>
           </div>
 
+          <div className="md:hidden flex items-center gap-1">
+            <CartButton />
           <button
-            className="md:hidden p-2 text-white/60 hover:text-white"
+            className="p-2 text-white/60 hover:text-white"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
+          </div>
         </div>
       </div>
 

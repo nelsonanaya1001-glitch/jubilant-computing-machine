@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, FolderKanban, MessageSquare, Palette, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Users, FolderKanban, MessageSquare, Palette, CreditCard, LogOut, ExternalLink } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/brand", label: "Branding", icon: Palette },
+  { href: "/admin/orders", label: "Orders", icon: CreditCard },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
 ];
 

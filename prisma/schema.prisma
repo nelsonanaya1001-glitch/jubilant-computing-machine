@@ -21,6 +21,14 @@ enum ProjectStatus {
   COMPLETED
 }
 
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
 enum BrandStatus {
   SUBMITTED
   GENERATED
@@ -29,31 +37,32 @@ enum BrandStatus {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  password      String?
-  role          Role      @default(CLIENT)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String?
+  role      Role     @default(CLIENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  projects      Project[]
-  sentMessages  Message[] @relation("SentMessages")
-  adminNotes    AdminNote[]
+  projects         Project[]
+  sentMessages     Message[]         @relation("SentMessages")
+  adminNotes       AdminNote[]
   brandSubmissions BrandSubmission[]
+  orders           Order[]
 
   @@map("users")
 }
 
 model Project {
-  id            String        @id @default(cuid())
-  clientId      String
-  title         String
-  status        ProjectStatus @default(SUBMITTED)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id        String        @id @default(cuid())
+  clientId  String
+  title     String
+  status    ProjectStatus @default(SUBMITTED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
-  client        User          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  client        User                  @relation(fields: [clientId], references: [id], onDelete: Cascade)
   submission    FormSubmission?
   files         UploadedFile[]
   statusUpdates ProjectStatusUpdate[]
@@ -96,7 +105,7 @@ model FormSubmission {
   adsGoal             String?
   createdAt           DateTime @default(now())
 
-  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("form_submissions")
 }
@@ -112,7 +121,7 @@ model UploadedFile {
   category     String   @default("other")
   uploadedAt   DateTime @default(now())
 
-  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("uploaded_files")
 }
@@ -125,7 +134,7 @@ model ProjectStatusUpdate {
   note      String?
   createdAt DateTime      @default(now())
 
-  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("project_status_updates")
 }
@@ -139,8 +148,8 @@ model Message {
   createdAt      DateTime  @default(now())
   readAt         DateTime?
 
-  project        Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  sender         User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sender  User    @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
@@ -148,40 +157,40 @@ model Message {
 /// A Brand & Identity Package order. Intentionally standalone (its own category),
 /// not nested under Project — a client can buy branding with or without a website.
 model BrandSubmission {
-  id                  String      @id @default(cuid())
-  clientId            String?
+  id        String  @id @default(cuid())
+  clientId  String?
   /// Optional link when branding is bought alongside a website order.
-  projectId           String?
+  projectId String?
 
-  businessName        String
-  tagline             String?
-  industry            String
-  contactName         String
-  email               String
-  phone               String?
+  businessName String
+  tagline      String?
+  industry     String
+  contactName  String
+  email        String
+  phone        String?
 
   targetAudience      String
   businessDescription String
 
   /// e.g. ["modern","bold"] — chosen style directions
-  stylePreferences    Json
+  stylePreferences Json
   /// e.g. ["#7c3aed","#f43f5e"] — client-picked seed colors
-  seedColors          Json
-  colorNotes          String?
-  avoidColors         String?
+  seedColors       Json
+  colorNotes       String?
+  avoidColors      String?
 
   /// wordmark | monogram | icon-wordmark | no-preference
-  logoTypePref        String?
-  inspirationRefs     String?
-  competitorNotes     String?
+  logoTypePref    String?
+  inspirationRefs String?
+  competitorNotes String?
 
-  tier                String      @default("standard")
-  status              BrandStatus @default(SUBMITTED)
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+  tier      String      @default("standard")
+  status    BrandStatus @default(SUBMITTED)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
-  client              User?        @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  assets              BrandAsset[]
+  client User?        @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  assets BrandAsset[]
 
   @@map("brand_submissions")
 }
@@ -202,7 +211,7 @@ model BrandAsset {
   selected          Boolean  @default(false)
   createdAt         DateTime @default(now())
 
-  submission        BrandSubmission @relation(fields: [brandSubmissionId], references: [id], onDelete: Cascade)
+  submission BrandSubmission @relation(fields: [brandSubmissionId], references: [id], onDelete: Cascade)
 
   @@index([brandSubmissionId])
   @@map("brand_assets")
@@ -216,8 +225,57 @@ model AdminNote {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  author  User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("admin_notes")
+}
+
+/// A client's purchase, created the moment they hit checkout and updated by the
+/// Stripe webhook once payment succeeds. Amounts are always recomputed from
+/// src/lib/catalog.ts on the server — never taken from the browser.
+model Order {
+  id        String @id @default(cuid())
+  /// Short human-friendly code we quote in emails, e.g. "LB-4F9K2A".
+  reference String @unique
+
+  email   String
+  name    String?
+  company String?
+  phone   String?
+  notes   String?
+
+  /// The purchased catalogue items as they were priced at checkout:
+  /// [{ sku, name, setupCents, monthlyCents }]
+  items Json
+
+  /// "deposit" (half the one-time fee now) or "full".
+  paymentChoice String
+  /// One-time total before the bundle discount.
+  subtotalCents Int
+  discountCents Int
+  /// Charged today.
+  dueTodayCents Int
+  /// Remaining one-time balance, due on delivery.
+  balanceCents  Int
+  /// Recurring monthly total, if any.
+  monthlyCents  Int
+  currency      String @default("usd")
+
+  status                OrderStatus @default(PENDING)
+  stripeSessionId       String?     @unique
+  stripeCustomerId      String?
+  stripePaymentIntentId String?
+  stripeSubscriptionId  String?
+  paidAt                DateTime?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@map("orders")
 }

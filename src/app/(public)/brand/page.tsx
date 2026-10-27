@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { generateBrandKit } from "@/lib/brand";
 import { ArrowRight, Check, Palette, Type, Shapes, FileText } from "lucide-react";
 
@@ -147,11 +148,11 @@ export default function BrandPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
               {
-                name: "Brand Standard", price: "149", popular: false,
+                name: "Brand Standard", sku: "brand-standard", price: "149", popular: false,
                 features: ["Up to 4 logo concepts", "Full 6-colour palette", "Heading + body font pairing", "One-page web brand guide", "Editable SVG logo files"],
               },
               {
-                name: "Brand Pro", price: "249", popular: true,
+                name: "Brand Pro", sku: "brand-pro", price: "249", popular: true,
                 features: ["Everything in Standard", "All 6 logo concepts", "Favicon + social avatar exports", "Downloadable PDF brand guide", "One round of hand revisions", "Usage do's and don'ts"],
               },
             ].map((p) => (
@@ -175,10 +176,12 @@ export default function BrandPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/brand/start">
-                  <Button className={`w-full border-0 ${p.popular ? "bg-violet-600 hover:bg-violet-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"}`}>
-                    Get started <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton sku={p.sku} variant={p.popular ? "solid" : "subtle"} />
+                <Link
+                  href="/brand/start"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  Or fill in the brand brief first
                 </Link>
               </div>
             ))}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ArrowRight, ArrowUpRight, Check, Target, Users, BarChart3, Repeat, Megaphone, AlertCircle } from "lucide-react";
 
 export const metadata = {
@@ -25,6 +26,7 @@ const funnel = [
 const plans = [
   {
     name: "Ads Starter",
+    sku: "ads-starter",
     setup: "349",
     monthly: "299",
     popular: false,
@@ -40,6 +42,7 @@ const plans = [
   },
   {
     name: "Ads Growth",
+    sku: "ads-growth",
     setup: "499",
     monthly: "549",
     popular: true,
@@ -174,14 +177,16 @@ export default function AdsPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/contact">
-                  <Button
-                    className={`w-full border-0 ${
-                      p.popular ? "bg-emerald-600 hover:bg-emerald-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"
-                    }`}
-                  >
-                    Get started <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton
+                  sku={p.sku}
+                  variant={p.popular ? "solid" : "subtle"}
+                  className={p.popular ? "bg-emerald-600 hover:bg-emerald-500" : undefined}
+                />
+                <Link
+                  href="/contact"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  Or ask us a question first
                 </Link>
               </div>
             ))}

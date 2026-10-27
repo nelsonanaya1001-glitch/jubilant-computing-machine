@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { Globe, MousePointerClick, Calendar, ShoppingCart, Check, Minus, ArrowRight } from "lucide-react";
 
 export const metadata = {
@@ -13,6 +14,7 @@ const types = [
     id: "business",
     icon: Globe,
     name: "Business Website",
+    sku: "website-business",
     price: "399",
     timeline: "3–5 days",
     bestFor: "You want customers to find you, trust you, and get in touch.",
@@ -24,6 +26,7 @@ const types = [
     id: "landing",
     icon: MousePointerClick,
     name: "Landing Page",
+    sku: "website-landing",
     price: "399",
     timeline: "3–5 days",
     bestFor: "You're running ads or launching one offer and need it to convert.",
@@ -35,6 +38,7 @@ const types = [
     id: "booking",
     icon: Calendar,
     name: "Booking Website",
+    sku: "website-booking",
     price: "459",
     timeline: "5–7 days",
     bestFor: "Your business runs on appointments and you're tired of phone tag.",
@@ -46,6 +50,7 @@ const types = [
     id: "store",
     icon: ShoppingCart,
     name: "Online Store",
+    sku: "website-store",
     price: "549",
     timeline: "5–7 days",
     bestFor: "You sell products and need checkout, inventory and orders handled.",
@@ -126,10 +131,12 @@ export default function WebsitesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/get-started">
-                  <Button className="w-full bg-white/5 hover:bg-white/10 text-white border-0">
-                    Start this project <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton sku={t.sku} variant="subtle" />
+                <Link
+                  href="/get-started"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  Or start with a free brief
                 </Link>
               </div>
             ))}

@@ -73,6 +73,30 @@ In the Vercel project settings → Environment Variables, add:
 | `DATABASE_URL` | Your PostgreSQL connection string |
 | `NEXTAUTH_SECRET` | 32-byte random string |
 | `NEXTAUTH_URL` | Your Vercel deployment URL (e.g., `https://yourapp.vercel.app`) |
+| `NEXT_PUBLIC_SITE_URL` | Your live origin, e.g. `https://launchboarding.com` |
+| `STRIPE_SECRET_KEY` | Stripe secret key (`sk_live_…`) — needed to take card payments |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret of the webhook endpoint below (`whsec_…`) |
+
+### 3b. Turning on card payments (Stripe)
+
+The cart and checkout work without Stripe — orders are recorded in the
+database and emailed to you so you can invoice by hand. To charge cards:
+
+1. Create a Stripe account and copy the **secret key** into `STRIPE_SECRET_KEY`.
+2. In Stripe → **Developers → Webhooks**, add an endpoint pointing at
+   `https://launchboarding.com/api/webhooks/stripe`.
+3. Subscribe it to these events:
+   - `checkout.session.completed`
+   - `checkout.session.expired`
+   - `checkout.session.async_payment_failed`
+4. Copy that endpoint's signing secret into `STRIPE_WEBHOOK_SECRET`.
+5. Redeploy.
+
+Prices live only in `src/lib/catalog.ts` and are always recalculated on the
+server, so changing a price there is the single edit needed — and a tampered
+cart in someone's browser can't change what they're charged. Orders appear
+under **Admin → Orders**, and an order is only ever marked paid by the
+signature-verified webhook.
 
 ### 4. Database (Recommended: Neon or Supabase)
 

@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight, ArrowUpRight } from "lucide-react";
 import { BundleBuilder } from "./BundleBuilder";
+import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 const plans = [
   {
     name: "Business Website",
+    sku: "website-business",
     price: "399",
     tagline: "A professional multi-page site that builds trust and brings in leads.",
     features: [
@@ -21,6 +23,7 @@ const plans = [
   },
   {
     name: "Landing Page",
+    sku: "website-landing",
     price: "399",
     tagline: "A single high-converting page built around one clear goal.",
     features: [
@@ -36,6 +39,7 @@ const plans = [
   },
   {
     name: "Booking Website",
+    sku: "website-booking",
     price: "459",
     tagline: "Let clients book appointments online, 24/7, with zero back-and-forth.",
     features: [
@@ -53,6 +57,7 @@ const plans = [
   },
   {
     name: "Online Store",
+    sku: "website-store",
     price: "549",
     tagline: "A complete e-commerce store designed to sell from day one.",
     features: [
@@ -126,12 +131,12 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/get-started">
-                  <Button
-                    className={`w-full border-0 ${plan.popular ? "bg-violet-600 hover:bg-violet-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"}`}
-                  >
-                    Get Started <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton sku={plan.sku} variant={plan.popular ? "solid" : "subtle"} />
+                <Link
+                  href="/get-started"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  Or start with a free brief
                 </Link>
               </div>
             </div>
@@ -155,6 +160,7 @@ export default function PricingPage() {
             {[
               {
                 name: "Brand Standard",
+                sku: "brand-standard",
                 solo: "149",
                 bundled: "99",
                 popular: false,
@@ -168,6 +174,7 @@ export default function PricingPage() {
               },
               {
                 name: "Brand Pro",
+                sku: "brand-pro",
                 solo: "249",
                 bundled: "199",
                 popular: true,
@@ -209,14 +216,12 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/brand/start">
-                  <Button
-                    className={`w-full border-0 ${
-                      p.popular ? "bg-violet-600 hover:bg-violet-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"
-                    }`}
-                  >
-                    Start your brand <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton sku={p.sku} variant={p.popular ? "solid" : "subtle"} />
+                <Link
+                  href="/brand/start"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  Or fill in the brand brief first
                 </Link>
               </div>
             ))}
@@ -247,6 +252,7 @@ export default function PricingPage() {
             {[
               {
                 name: "Ads Starter",
+                sku: "ads-starter",
                 setup: "349",
                 monthly: "299",
                 popular: false,
@@ -260,6 +266,7 @@ export default function PricingPage() {
               },
               {
                 name: "Ads Growth",
+                sku: "ads-growth",
                 setup: "499",
                 monthly: "549",
                 popular: true,
@@ -298,14 +305,16 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/ads">
-                  <Button
-                    className={`w-full border-0 ${
-                      p.popular ? "bg-emerald-600 hover:bg-emerald-500 text-white" : "bg-white/5 hover:bg-white/10 text-white"
-                    }`}
-                  >
-                    Learn more <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                <AddToCartButton
+                  sku={p.sku}
+                  variant={p.popular ? "solid" : "subtle"}
+                  className={p.popular ? "bg-emerald-600 hover:bg-emerald-500" : undefined}
+                />
+                <Link
+                  href="/ads"
+                  className="mt-3 block text-center text-xs text-white/30 hover:text-white/60 transition-colors"
+                >
+                  How Meta Ads work with us
                 </Link>
               </div>
             ))}
