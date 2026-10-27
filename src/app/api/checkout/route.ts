@@ -1,19 +1,34 @@
 /**
- * Creates a Stripe Checkout Session for whatever is in the client's cart.
+ * Starts a purchase: either a Stripe Checkout Session (pay by card now) or a
+ * Stripe Invoice emailed to the client (pay on terms).
  *
  * The request body carries SKUs and contact details only. Every amount is
  * recomputed here from src/lib/catalog.ts, so prices can't be altered by
  * editing the cart in the browser.
+ *
+ * Note on payment methods: we never pass `payment_method_types`. Leaving it
+ * out enables Stripe's dynamic payment methods, so whatever is switched on in
+ * the Dashboard (cards, Link, Cash App, Klarna…) shows up without a code
+ * change, ranked for conversion.
  */
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getStripe, siteUrl, stripeEnabled } from "@/lib/stripe";
-import { formatMoney, quote, resolveSkus, type PaymentChoice } from "@/lib/catalog";
+import {
+  INTEGRATION_IDENTIFIER,
+  findOrCreateCustomer,
+  getStripe,
+  siteUrl,
+  stripeEnabled,
+} from "@/lib/stripe";
+import { formatMoney, quote, resolveSkus, type PaymentChoice, type Quote } from "@/lib/catalog";
 import { notifyAdmin } from "@/lib/notify";
 import type Stripe from "stripe";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** How many days a client gets to pay an emailed invoice. */
+const INVOICE_DUE_DAYS = 7;
 
 function reference(): string {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -57,13 +72,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Nothing to charge." }, { status: 400 });
   }
 
+  // A recurring service has to be a subscription, which can't be collected on a
+  // one-off emailed invoice, so card checkout is the only route for those.
+  const wantsInvoice = body.method === "invoice" && !q.hasRecurring;
+
+  const company = trim(body.company, 160) || null;
+  const phone = trim(body.phone, 40) || null;
+
   const order = await prisma.order.create({
     data: {
       reference: reference(),
       email,
       name,
-      company: trim(body.company, 160) || null,
-      phone: trim(body.phone, 40) || null,
+      company,
+      phone,
       notes: trim(body.notes, 2000) || null,
       items: items.map((i) => ({
         sku: i.sku,
@@ -97,20 +119,55 @@ export async function POST(req: Request) {
     });
   }
 
+  try {
+    const customerId = await findOrCreateCustomer({ email, name, phone, company });
+
+    if (wantsInvoice) {
+      const url = await createInvoice({ order, q, customerId, items });
+      return NextResponse.json({ invoice: true, url, reference: order.reference });
+    }
+
+    const url = await createCheckoutSession({ order, q, customerId, items, payment });
+    return NextResponse.json({ url, reference: order.reference });
+  } catch (err) {
+    console.error("[checkout] Stripe call failed", err);
+    await prisma.order.update({ where: { id: order.id }, data: { status: "FAILED" } });
+    return NextResponse.json(
+      { error: "We couldn't start the payment. Please try again or contact us." },
+      { status: 502 }
+    );
+  }
+}
+
+type CatalogItem = { sku: string; name: string; note: string; setupCents: number; monthlyCents: number };
+
+/** Hosted Checkout — one-off, subscription, or a subscription plus setup fee. */
+async function createCheckoutSession({
+  order,
+  q,
+  customerId,
+  items,
+  payment,
+}: {
+  order: { id: string; reference: string };
+  q: Quote;
+  customerId: string;
+  items: CatalogItem[];
+  payment: PaymentChoice;
+}): Promise<string> {
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
   if (q.dueTodayCents > 0) {
-    const oneTimeLabel =
-      payment === "deposit"
-        ? `${items.map((i) => i.name).join(" + ")} — 50% deposit`
-        : items.map((i) => i.name).join(" + ");
     lineItems.push({
       quantity: 1,
       price_data: {
         currency: "usd",
         unit_amount: q.dueTodayCents,
         product_data: {
-          name: oneTimeLabel,
+          name:
+            payment === "deposit"
+              ? `${items.map((i) => i.name).join(" + ")} — 50% deposit`
+              : items.map((i) => i.name).join(" + "),
           description:
             payment === "deposit"
               ? `Deposit against ${formatMoney(q.oneTimeCents)}. Balance of ${formatMoney(q.balanceCents)} due on delivery.`
@@ -120,6 +177,8 @@ export async function POST(req: Request) {
     });
   }
 
+  // Each recurring service gets its own line so the Dashboard and the client's
+  // invoice name it, rather than lumping them into one "monthly" charge.
   for (const item of items) {
     if (item.monthlyCents <= 0) continue;
     lineItems.push({
@@ -128,50 +187,98 @@ export async function POST(req: Request) {
         currency: "usd",
         unit_amount: item.monthlyCents,
         recurring: { interval: "month" },
-        product_data: {
-          name: `${item.name} — monthly`,
-          description: item.note,
-        },
+        product_data: { name: `${item.name} — monthly`, description: item.note },
       },
     });
   }
 
   const base = siteUrl();
+  const metadata = { orderId: order.id, reference: order.reference };
 
-  try {
-    const session = await getStripe().checkout.sessions.create({
-      mode: q.hasRecurring ? "subscription" : "payment",
-      line_items: lineItems,
-      customer_email: email,
-      client_reference_id: order.id,
-      // The webhook is the source of truth, so everything it needs to reconcile
-      // the payment lives on the session itself.
-      metadata: { orderId: order.id, reference: order.reference },
-      allow_promotion_codes: true,
-      success_url: `${base}/checkout/success?ref=${order.reference}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/checkout/cancelled?ref=${order.reference}`,
-      ...(q.hasRecurring
-        ? { subscription_data: { metadata: { orderId: order.id, reference: order.reference } } }
-        : { payment_intent_data: { metadata: { orderId: order.id, reference: order.reference } } }),
-    });
+  const session = await getStripe().checkout.sessions.create({
+    mode: q.hasRecurring ? "subscription" : "payment",
+    line_items: lineItems,
+    customer: customerId,
+    client_reference_id: order.id,
+    integration_identifier: INTEGRATION_IDENTIFIER,
+    metadata,
+    allow_promotion_codes: true,
+    success_url: `${base}/checkout/success?ref=${order.reference}&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${base}/checkout/cancelled?ref=${order.reference}`,
+    // Carried onto the subscription/payment too, so risk events that arrive
+    // without a session still resolve back to this order.
+    ...(q.hasRecurring
+      ? { subscription_data: { metadata } }
+      : { payment_intent_data: { metadata } }),
+  });
 
-    if (!session.url) throw new Error("Stripe returned no checkout URL");
+  if (!session.url) throw new Error("Stripe returned no checkout URL");
 
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { stripeSessionId: session.id },
-    });
+  await prisma.order.update({
+    where: { id: order.id },
+    data: { stripeSessionId: session.id, stripeCustomerId: customerId },
+  });
 
-    return NextResponse.json({ url: session.url, reference: order.reference });
-  } catch (err) {
-    console.error("[checkout] Stripe session failed", err);
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { status: "FAILED" },
-    });
-    return NextResponse.json(
-      { error: "We couldn't start the payment. Please try again or contact us." },
-      { status: 502 }
-    );
-  }
+  return session.url;
+}
+
+/**
+ * A real Stripe Invoice, emailed to the client with a hosted pay page.
+ * Used when someone would rather be invoiced than pay by card on the spot.
+ */
+async function createInvoice({
+  order,
+  q,
+  customerId,
+  items,
+}: {
+  order: { id: string; reference: string };
+  q: Quote;
+  customerId: string;
+  items: CatalogItem[];
+}): Promise<string | null> {
+  const stripe = getStripe();
+  const metadata = { orderId: order.id, reference: order.reference };
+
+  const invoice = await stripe.invoices.create({
+    customer: customerId,
+    collection_method: "send_invoice",
+    days_until_due: INVOICE_DUE_DAYS,
+    auto_advance: false,
+    description:
+      order.reference +
+      (q.balanceCents > 0
+        ? ` — 50% deposit. Balance of ${formatMoney(q.balanceCents)} due on delivery.`
+        : ""),
+    metadata,
+  });
+
+  // Invoice items must exist before the invoice is finalised.
+  await stripe.invoiceItems.create({
+    customer: customerId,
+    invoice: invoice.id,
+    currency: "usd",
+    amount: q.dueTodayCents,
+    description:
+      q.balanceCents > 0
+        ? `${items.map((i) => i.name).join(" + ")} — 50% deposit`
+        : items.map((i) => i.name).join(" + "),
+    metadata,
+  });
+
+  if (!invoice.id) throw new Error("Stripe returned no invoice id");
+
+  const finalised = await stripe.invoices.finalizeInvoice(invoice.id);
+  await stripe.invoices.sendInvoice(invoice.id);
+
+  await prisma.order.update({
+    where: { id: order.id },
+    data: {
+      status: "INVOICED",
+      stripeInvoiceId: invoice.id,
+      stripeCustomerId: customerId,
+    },
+  });
+
+  return finalised.hosted_invoice_url ?? null;
 }

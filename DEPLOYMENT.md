@@ -85,12 +85,72 @@ database and emailed to you so you can invoice by hand. To charge cards:
 1. Create a Stripe account and copy the **secret key** into `STRIPE_SECRET_KEY`.
 2. In Stripe → **Developers → Webhooks**, add an endpoint pointing at
    `https://launchboarding.com/api/webhooks/stripe`.
-3. Subscribe it to these events:
-   - `checkout.session.completed`
-   - `checkout.session.expired`
-   - `checkout.session.async_payment_failed`
+3. Subscribe it to exactly these events (and nothing more):
+
+   | Event | Why |
+   |---|---|
+   | `checkout.session.completed` | Card paid — fulfil the order |
+   | `checkout.session.async_payment_succeeded` | Bank-debit style payment finally cleared |
+   | `checkout.session.async_payment_failed` | …or it bounced |
+   | `checkout.session.expired` | They abandoned checkout |
+   | `invoice.paid` | Monthly renewal, or an emailed invoice was paid |
+   | `invoice.payment_failed` | Card declined on a renewal — Stripe starts retrying |
+   | `customer.subscription.updated` | Plan or status changed |
+   | `customer.subscription.deleted` | Monthly service cancelled |
+   | `charge.refunded` | Money sent back |
+   | `charge.dispute.created` | Chargeback — has a hard response deadline |
+   | `radar.early_fraud_warning.created` | Stripe thinks the card is stolen |
+
 4. Copy that endpoint's signing secret into `STRIPE_WEBHOOK_SECRET`.
 5. Redeploy.
+
+### 3c. Key handling
+
+- **Use a restricted key (`rk_live_…`), not a secret key (`sk_live_…`).** A
+  restricted key only does what you let it. This integration needs *write* on
+  Checkout Sessions, Customers, Invoices and Subscriptions, and *read* on
+  Charges, Disputes and Early fraud warnings. Nothing else.
+- On Vercel, mark `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` as
+  [sensitive environment variables](https://vercel.com/docs/environment-variables/sensitive-environment-variables)
+  so the values are write-only and never show in logs or the dashboard UI.
+- Use a **separate key per environment** (a sandbox key for local work, a live
+  key only in production), so one leak doesn't expose everything.
+- **Never paste a key into chat, a ticket, a commit or a screenshot.** If one
+  ever gets out, roll it at <https://dashboard.stripe.com/apikeys> — rolling is
+  instant, free, and makes the leaked string worthless. That is the only fix;
+  a key cannot be "un-leaked" any other way.
+- Install the key guard so a key can't be committed by accident:
+
+  ```bash
+  git config core.hooksPath scripts/git-hooks
+  ```
+
+### 3d. Build against a sandbox, not live mode
+
+Do development and testing in a [sandbox](https://docs.stripe.com/sandboxes),
+not with a live key — a mistake in live mode moves real money. Test cards are
+at <https://docs.stripe.com/testing>; `4242 4242 4242 4242` succeeds and
+`4000 0000 0000 9995` is declined.
+
+To exercise webhooks locally:
+
+```bash
+stripe login
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
+```
+
+`stripe listen` prints its own `whsec_…` — use that as `STRIPE_WEBHOOK_SECRET`
+while developing.
+
+### 3e. Sales tax
+
+Launchboarding sells services from Florida. Stripe does **not** collect any tax
+until you enable Stripe Tax *and* have an active registration in the customer's
+jurisdiction — it fails silently rather than erroring. Once you know where you
+have a filing obligation, register in the Dashboard and switch
+`automatic_tax: { enabled: true }` on in `src/app/api/checkout/route.ts`. See
+[Collect taxes for recurring payments](https://docs.stripe.com/billing/taxes/collect-taxes).
+Worth a word with an accountant before turning it on.
 
 Prices live only in `src/lib/catalog.ts` and are always recalculated on the
 server, so changing a price there is the single edit needed — and a tampered

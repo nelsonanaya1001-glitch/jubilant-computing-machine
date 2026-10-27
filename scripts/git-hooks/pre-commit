@@ -1,0 +1,40 @@
+#!/bin/sh
+# Blocks a commit that contains a Stripe API key.
+#
+# Key exposure in a git repository is the leading cause of Stripe account
+# takeover, and a key committed once stays in the history even if the next
+# commit removes it.
+#
+# Install it once per clone (it is not active until you run this):
+#
+#   git config core.hooksPath scripts/git-hooks
+#
+# To commit anyway (you almost certainly shouldn't): git commit --no-verify
+
+set -e
+
+# sk_ = secret, rk_ = restricted. Both are secrets. pk_ is publishable and fine.
+PATTERN='[sr]k_\(live\|test\)_[A-Za-z0-9]\{16,\}'
+
+if git diff --cached -U0 --no-color | grep -n "^+" | grep -q "$PATTERN"; then
+  echo "x Commit blocked: a Stripe secret or restricted API key is in the staged changes."
+  echo ""
+  git diff --cached --name-only | while read -r f; do
+    if git show ":$f" 2>/dev/null | grep -q "$PATTERN"; then
+      echo "  -> $f"
+    fi
+  done
+  echo ""
+  echo "Keys belong in an environment variable or secrets vault, never in the repo."
+  echo "If this key was ever real, roll it now: https://dashboard.stripe.com/apikeys"
+  exit 1
+fi
+
+# Catch .env files being committed by accident (.env.example is fine).
+if git diff --cached --name-only | grep -qE '(^|/)\.env($|\.)' &&
+   ! git diff --cached --name-only | grep -qE '\.env\.example$'; then
+  echo "x Commit blocked: a .env file is staged. Only .env.example belongs in the repo."
+  exit 1
+fi
+
+exit 0

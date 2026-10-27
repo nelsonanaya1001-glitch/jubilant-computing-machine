@@ -23,10 +23,17 @@ enum ProjectStatus {
 
 enum OrderStatus {
   PENDING
+  /// Awaiting a delayed-notification payment (e.g. a bank debit) to settle.
+  PROCESSING
   PAID
+  /// A recurring invoice failed — Stripe is retrying (dunning).
+  PAST_DUE
   FAILED
   CANCELLED
   REFUNDED
+  DISPUTED
+  /// Sent as a Stripe Invoice; waiting for the client to pay it.
+  INVOICED
 }
 
 enum BrandStatus {
@@ -50,6 +57,9 @@ model User {
   adminNotes       AdminNote[]
   brandSubmissions BrandSubmission[]
   orders           Order[]
+
+  /// Reused so a client never ends up with duplicate Stripe Customers.
+  stripeCustomerId String? @unique
 
   @@map("users")
 }
@@ -267,7 +277,18 @@ model Order {
   stripeCustomerId      String?
   stripePaymentIntentId String?
   stripeSubscriptionId  String?
+  /// Set when the client chose "invoice me" instead of paying by card.
+  stripeInvoiceId       String?
+  /// Stripe's own subscription status (active, past_due, canceled, …).
+  subscriptionStatus    String?
   paidAt                DateTime?
+  /// Most recent recurring invoice we saw settle.
+  lastInvoicePaidAt     DateTime?
+  /// Total refunded so far, in cents.
+  refundedCents         Int         @default(0)
+  disputedAt            DateTime?
+  /// Set when Radar flags the charge as likely fraudulent.
+  fraudWarningAt        DateTime?
 
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -277,5 +298,7 @@ model Order {
 
   @@index([email])
   @@index([status])
+  @@index([stripeSubscriptionId])
+  @@index([stripeCustomerId])
   @@map("orders")
 }

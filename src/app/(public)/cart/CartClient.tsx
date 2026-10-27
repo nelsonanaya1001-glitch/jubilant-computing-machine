@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowRight,
   Check,
+  FileText,
   Lock,
   Loader2,
   Plus,
@@ -43,7 +44,7 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
     phone: "",
     notes: "",
   });
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState<null | "card" | "invoice">(null);
   const [error, setError] = useState<string | null>(null);
   const [manual, setManual] = useState<string | null>(null);
 
@@ -52,19 +53,19 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
 
   const missing = SUGGEST_ORDER.filter((c) => !items.some((i) => i.category === c));
 
-  async function checkout() {
+  async function checkout(method: "card" | "invoice") {
     setError(null);
     setManual(null);
     if (!form.name.trim()) return setError("Please enter your name.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim()))
       return setError("Please enter a valid email address.");
 
-    setSubmitting(true);
+    setSubmitting(method);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ skus, payment, ...form }),
+        body: JSON.stringify({ skus, payment, method, ...form }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -77,11 +78,19 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
         clear();
         return;
       }
+      if (data.invoice && !data.url) {
+        // Invoice sent, but Stripe gave us no hosted page to send them to.
+        setManual(
+          `Invoice ${data.reference} is on its way to ${form.email.trim()}. It's payable online and due in 7 days.`
+        );
+        clear();
+        return;
+      }
       window.location.href = data.url;
     } catch {
       setError("We couldn't reach the payment service. Please check your connection.");
     } finally {
-      setSubmitting(false);
+      setSubmitting(null);
     }
   }
 
@@ -345,12 +354,12 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
           )}
 
           <Button
-            onClick={checkout}
-            disabled={submitting}
+            onClick={() => checkout("card")}
+            disabled={submitting !== null}
             size="lg"
             className="w-full mt-5 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0"
           >
-            {submitting ? (
+            {submitting === "card" ? (
               <>
                 <Loader2 className="mr-2 w-4 h-4 animate-spin" /> Starting checkout…
               </>
@@ -363,6 +372,27 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
               </>
             )}
           </Button>
+
+          {/* Invoicing. A monthly service has to be set up as a subscription,
+              which can't be collected on a one-off invoice. */}
+          {paymentsLive && !q.hasRecurring && (
+            <button
+              type="button"
+              onClick={() => checkout("invoice")}
+              disabled={submitting !== null}
+              className="w-full mt-2.5 rounded-xl border border-white/10 px-4 py-2.5 text-xs font-medium text-white/50 hover:text-white hover:border-white/25 transition disabled:opacity-50"
+            >
+              {submitting === "invoice" ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" /> Sending invoice…
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-2">
+                  <FileText className="w-3.5 h-3.5" /> Email me an invoice instead
+                </span>
+              )}
+            </button>
+          )}
 
           <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-white/30">
             <ShieldCheck className="w-3.5 h-3.5" />
