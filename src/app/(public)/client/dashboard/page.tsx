@@ -92,7 +92,7 @@ export default function ClientDashboardPage() {
                     </div>
                   </div>
                   <Link href={`/client/project/${project.id}`} className="ml-6 flex-shrink-0">
-                    <Button variant="outline" size="sm">View Details →</Button>
+                    <Button variant="outlineDark" size="sm">View Details →</Button>
                   </Link>
                 </div>
               </div>
@@ -102,7 +102,7 @@ export default function ClientDashboardPage() {
 
         <div className="mt-6">
           <Link href="/get-started">
-            <Button variant="outline">+ Submit Another Project</Button>
+            <Button variant="outlineDark">+ Submit Another Project</Button>
           </Link>
         </div>
       </div>

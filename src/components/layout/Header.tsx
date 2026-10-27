@@ -95,7 +95,7 @@ export function Header() {
             </Link>
           ))}
           <div className="pt-4 border-t border-white/5 flex flex-col gap-2">
-            <Link href="/login"><Button variant="outline" className="w-full border-white/10 text-white hover:bg-white/5" size="sm">Sign In</Button></Link>
+            <Link href="/login"><Button variant="outlineDark" className="w-full" size="sm">Sign In</Button></Link>
             <Link href="/get-started"><Button className="w-full bg-violet-600 hover:bg-violet-500" size="sm">Start a Project</Button></Link>
           </div>
         </div>

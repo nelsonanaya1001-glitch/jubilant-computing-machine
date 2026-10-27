@@ -134,7 +134,7 @@ export function CartClient({ paymentsLive }: { paymentsLive: boolean }) {
             </Button>
           </Link>
           <Link href="/contact">
-            <Button variant="outline" className="border-white/10 text-white hover:bg-white/5">
+            <Button variant="outlineDark">
               Talk to us first
             </Button>
           </Link>

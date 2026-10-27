@@ -10,6 +10,11 @@ const buttonVariants = cva(
         default: "bg-blue-600 text-white hover:bg-blue-700 shadow-sm",
         destructive: "bg-red-600 text-white hover:bg-red-700",
         outline: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50",
+        // Outline on a dark surface. The plain `outline` variant is white on
+        // white there — its `bg-white` survives a caller passing `text-white`,
+        // so the label disappears. Dark pages use this instead.
+        outlineDark:
+          "border border-white/15 bg-transparent text-white hover:bg-white/10 hover:border-white/30",
         secondary: "bg-slate-900 text-white hover:bg-slate-800",
         ghost: "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
         link: "text-blue-600 underline-offset-4 hover:underline",

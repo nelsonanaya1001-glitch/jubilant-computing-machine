@@ -380,7 +380,7 @@ export default function GetStartedPage() {
               <p className="text-sm text-white/50 mb-3">
                 You can track this project and message us from your client portal.
               </p>
-              <a href="/login"><Button variant="outline" className="w-full">Sign In to Your Portal</Button></a>
+              <a href="/login"><Button variant="outlineDark" className="w-full">Sign In to Your Portal</Button></a>
             </div>
           )}
 
@@ -602,7 +602,7 @@ export default function GetStartedPage() {
                 </div>
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button
@@ -711,7 +711,7 @@ export default function GetStartedPage() {
             </div>
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="button" size="lg" className="flex-1" onClick={goNext}>
@@ -827,7 +827,7 @@ export default function GetStartedPage() {
               error={form2.formState.errors.businessDescription?.message}
             />
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="submit" size="lg" className="flex-1">
@@ -1036,7 +1036,7 @@ export default function GetStartedPage() {
               />
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="submit" size="lg" className="flex-1">
@@ -1082,7 +1082,7 @@ export default function GetStartedPage() {
             )}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button
@@ -1152,7 +1152,7 @@ export default function GetStartedPage() {
             ))}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button type="button" size="lg" className="flex-1" onClick={handleStep5}>
@@ -1274,7 +1274,7 @@ export default function GetStartedPage() {
             )}
 
             <div className="flex gap-3">
-              <Button type="button" variant="outline" size="lg" className="flex-1" onClick={goBack}>
+              <Button type="button" variant="outlineDark" size="lg" className="flex-1" onClick={goBack}>
                 <ArrowLeft className="mr-2 w-4 h-4" /> Back
               </Button>
               <Button

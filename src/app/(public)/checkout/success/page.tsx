@@ -111,7 +111,7 @@ export default async function CheckoutSuccessPage({
               </Button>
             </Link>
             <Link href="/contact">
-              <Button variant="outline" className="border-white/10 text-white hover:bg-white/5">
+              <Button variant="outlineDark">
                 <Mail className="mr-2 w-4 h-4" /> Contact us
               </Button>
             </Link>

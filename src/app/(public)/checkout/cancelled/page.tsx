@@ -20,7 +20,7 @@ export default function CheckoutCancelledPage() {
             </Button>
           </Link>
           <Link href="/contact">
-            <Button variant="outline" className="border-white/10 text-white hover:bg-white/5">
+            <Button variant="outlineDark">
               <MessageCircle className="mr-2 w-4 h-4" /> Ask a question
             </Button>
           </Link>
