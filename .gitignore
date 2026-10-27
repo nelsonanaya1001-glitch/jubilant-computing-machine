@@ -37,3 +37,6 @@ Thumbs.db
 # Uploads (user data)
 public/uploads/*
 !public/uploads/.gitkeep
+
+# TypeScript incremental build cache — regenerated on every build
+*.tsbuildinfo
